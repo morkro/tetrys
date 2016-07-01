@@ -2,21 +2,21 @@
 	"env": {
 		"es6": true,
 		"node": true,
-		"browser": true,
-		"jasmine": true
-	},
-	"globals": {
-		"atom": true
+		"browser": true
 	},
 	"parserOptions": {
 		"ecmaVersion": 6,
 		"sourceType": "module"
 	},
+	"ecmaFeatures": {
+		"modules": true
+	},
 	"plugins": ["import"],
-	"extends": "airbnb/base",
+	"extends": "airbnb-base",
 	"rules": {
 		"indent": [2, "tab"],
 		"quotes": [2, "single"],
+		"no-console": 0,
 		"linebreak-style": [2, "unix"],
 		"semi": [2, "always"],
 		"comma-dangle": [2, "never"],

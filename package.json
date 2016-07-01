@@ -2,35 +2,66 @@
   "name": "tetrys",
   "version": "1.0.0",
   "description": "Tetris as progressive web application",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "homepage": "https://github.com/morkro/tetrys#readme",
+  "author": "Moritz Kröger <write@morkro.de> (www.morkro.de)",
+  "license": "Apache-2.0",
+  "main": "src/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/morkro/tetrys.git"
   },
+  "bugs": {
+    "url": "https://github.com/morkro/tetrys/issues"
+  },
   "keywords": [
+    "redux",
     "pwa",
     "offline",
     "service-worker",
     "tetris"
   ],
-  "author": "Moritz Kröger <write@morkro.de>",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/morkro/tetrys/issues"
+  "engines": {
+    "node": ">=6.0.0"
   },
-  "homepage": "https://github.com/morkro/tetrys#readme",
+  "scripts": {
+    "clean": "rimraf ./dist && mkdirp ./dist",
+    "lint": "eslint -f tap src/scripts",
+    "test": "tape tests/**/*.js | tap-spec",
+    "dev": "DEBUG=app:* node bin/build-dev.js"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015"
+          ]
+        }
+      ]
+    ]
+  },
   "devDependencies": {
+    "babel": "^6.5.2",
     "babel-preset-es2015": "^6.9.0",
     "babelify": "^7.3.0",
     "browserify": "^13.0.1",
     "eslint": "^2.13.1",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-import": "^1.9.2",
+    "node-sass": "^3.8.0",
+    "node-watch": "^0.3.5",
     "redux-devtools": "^3.3.1",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.6.0",
     "uglify-js": "^2.6.4"
   },
   "dependencies": {
-    "redux": "^3.5.2"
+    "debug": "^2.2.0",
+    "express": "^4.14.0",
+    "fs-extra": "^0.30.0",
+    "mkdirp": "^0.5.1",
+    "redux": "^3.5.2",
+    "rimraf": "^2.5.2"
   }
 }
