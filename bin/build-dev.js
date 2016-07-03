@@ -1,7 +1,7 @@
 const build = require('./build.js');
 
-build.buildHTML();
-build.buildScripts();
+build.html();
+build.scripts();
 
 require('./watch.js');
 require('../server.js');

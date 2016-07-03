@@ -1,10 +1,8 @@
-import { startGame } from './actions/start';
+import Controls from './components/controls';
+import Canvas from './components/canvas';
 
-export default class Foo {
-	start () {
-		console.log(startGame('now!'));
-	}
-}
+const game = new Canvas('#game');
+const controls = new Controls('.controls-btn');
 
-const foo = new Foo();
-foo.start();
+controls.addEvents();
+game.init();

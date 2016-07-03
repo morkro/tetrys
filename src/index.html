@@ -6,7 +6,31 @@
 </head>
 <body>
 	<h1>tetrys</h1>
-	<canvas id="game"></canvas>
+	<div class="game-window" style="width:500px;height:500px;">
+		<canvas id="game"></canvas>
+	</div>
+	<nav class="tetrys-controls">
+		<ul>
+			<li><button class="controls-btn" data-control="start">
+				Start
+			</button></li>
+			<li><button class="controls-btn" data-control="left">
+				Left
+			</button></li>
+			<li><button class="controls-btn" data-control="down">
+				Down
+			</button></li>
+			<li><button class="controls-btn" data-control="right">
+				Right
+			</button></li>
+			<li><button class="controls-btn" data-control="rotate">
+				Rotate
+			</button></li>
+			<li><button class="controls-btn" data-control="end">
+				End
+			</button></li>
+		</ul>
+	</nav>
 	<script src="index.js"></script>
 </body>
 </html>

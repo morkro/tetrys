@@ -3,7 +3,7 @@ const browserify = require('browserify');
 const debug = require('debug')('app:build');
 
 module.exports = {
-	buildHTML () {
+	html () {
 		debug('build html files');
 		fs.copy('./src/index.html', './dist/index.html',
 			{ clobber: true },
@@ -13,7 +13,7 @@ module.exports = {
 		);
 	},
 
-	buildScripts () {
+	scripts () {
 		debug('build javascript');
 		browserify('./src/scripts/index.js')
 			.transform('babelify', { presets: ['es2015'] })
@@ -21,7 +21,7 @@ module.exports = {
 			.pipe(fs.createWriteStream('./dist/index.js'));
 	},
 
-	buildCSS () {
+	css () {
 		debug('build css files');
 	}
 };
