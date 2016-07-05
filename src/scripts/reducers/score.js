@@ -5,7 +5,7 @@ const initialState = {
 	all: []
 };
 
-export default function Score (state = initialState, action) {
+export default function score (state = initialState, action) {
 	switch (action.type) {
 	case ADD_SCORE:
 		return Object.assign({}, state, {

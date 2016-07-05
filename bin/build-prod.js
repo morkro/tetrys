@@ -1,9 +1,6 @@
 const build = require('./build.js');
 const debug = require('debug')('tetrys:build');
 
-debug('start development build');
+debug('start production build');
 build.html();
 build.scripts();
-
-require('./watch.js');
-require('../server.js');

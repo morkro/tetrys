@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const browserify = require('browserify');
-const debug = require('debug')('app:build');
+const debug = require('debug')('tetrys:build');
 
 module.exports = {
 	html () {
@@ -17,6 +17,7 @@ module.exports = {
 		debug('build javascript');
 		browserify('./src/scripts/index.js')
 			.transform('babelify', { presets: ['es2015'] })
+			.transform('envify', { _: 'purge', NODE_ENV: process.env.NODE_ENV })
 			.bundle()
 			.pipe(fs.createWriteStream('./dist/index.js'));
 	},

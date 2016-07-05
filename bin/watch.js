@@ -1,5 +1,5 @@
 const watch = require('node-watch');
-const debug = require('debug')('app:watcher');
+const debug = require('debug')('tetrys:watcher');
 const build = require('./build.js');
 
 watch('./src/index.html', { recursive: true }, () => {

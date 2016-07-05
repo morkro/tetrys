@@ -141,127 +141,6 @@ function isPlainObject(value) {
 module.exports = isPlainObject;
 
 },{"./_getPrototype":1,"./_isHostObject":2,"./isObjectLike":3}],5:[function(require,module,exports){
-// shim for using process in browser
-
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-(function () {
-  try {
-    cachedSetTimeout = setTimeout;
-  } catch (e) {
-    cachedSetTimeout = function () {
-      throw new Error('setTimeout is not defined');
-    }
-  }
-  try {
-    cachedClearTimeout = clearTimeout;
-  } catch (e) {
-    cachedClearTimeout = function () {
-      throw new Error('clearTimeout is not defined');
-    }
-  }
-} ())
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = cachedSetTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    cachedClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        cachedSetTimeout(drainQueue, 0);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-},{}],6:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -320,7 +199,7 @@ function applyMiddleware() {
     };
   };
 }
-},{"./compose":9}],7:[function(require,module,exports){
+},{"./compose":8}],6:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -372,8 +251,7 @@ function bindActionCreators(actionCreators, dispatch) {
   }
   return boundActionCreators;
 }
-},{}],8:[function(require,module,exports){
-(function (process){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -477,7 +355,7 @@ function combineReducers(reducers) {
       throw sanityError;
     }
 
-    if (process.env.NODE_ENV !== 'production') {
+    if ("development" !== 'production') {
       var warningMessage = getUnexpectedStateShapeWarningMessage(state, finalReducers, action);
       if (warningMessage) {
         (0, _warning2["default"])(warningMessage);
@@ -501,8 +379,7 @@ function combineReducers(reducers) {
     return hasChanged ? nextState : state;
   };
 }
-}).call(this,require('_process'))
-},{"./createStore":10,"./utils/warning":12,"_process":5,"lodash/isPlainObject":4}],9:[function(require,module,exports){
+},{"./createStore":9,"./utils/warning":11,"lodash/isPlainObject":4}],8:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -543,7 +420,7 @@ function compose() {
     if (typeof _ret === "object") return _ret.v;
   }
 }
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -806,8 +683,7 @@ function createStore(reducer, initialState, enhancer) {
     replaceReducer: replaceReducer
   }, _ref2[_symbolObservable2["default"]] = observable, _ref2;
 }
-},{"lodash/isPlainObject":4,"symbol-observable":13}],11:[function(require,module,exports){
-(function (process){
+},{"lodash/isPlainObject":4,"symbol-observable":13}],10:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -845,7 +721,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 */
 function isCrushed() {}
 
-if (process.env.NODE_ENV !== 'production' && typeof isCrushed.name === 'string' && isCrushed.name !== 'isCrushed') {
+if ("development" !== 'production' && typeof isCrushed.name === 'string' && isCrushed.name !== 'isCrushed') {
   (0, _warning2["default"])('You are currently using minified code outside of NODE_ENV === \'production\'. ' + 'This means that you are running a slower development build of Redux. ' + 'You can use loose-envify (https://github.com/zertosh/loose-envify) for browserify ' + 'or DefinePlugin for webpack (http://stackoverflow.com/questions/30030031) ' + 'to ensure you have the correct code for your production build.');
 }
 
@@ -854,8 +730,7 @@ exports.combineReducers = _combineReducers2["default"];
 exports.bindActionCreators = _bindActionCreators2["default"];
 exports.applyMiddleware = _applyMiddleware2["default"];
 exports.compose = _compose2["default"];
-}).call(this,require('_process'))
-},{"./applyMiddleware":6,"./bindActionCreators":7,"./combineReducers":8,"./compose":9,"./createStore":10,"./utils/warning":12,"_process":5}],12:[function(require,module,exports){
+},{"./applyMiddleware":5,"./bindActionCreators":6,"./combineReducers":7,"./compose":8,"./createStore":9,"./utils/warning":11}],11:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -881,6 +756,13 @@ function warning(message) {
   } catch (e) {}
   /* eslint-enable no-empty */
 }
+},{}],12:[function(require,module,exports){
+// stats.js - http://github.com/mrdoob/stats.js
+var Stats=function(){function h(a){c.appendChild(a.dom);return a}function k(a){for(var d=0;d<c.children.length;d++)c.children[d].style.display=d===a?"block":"none";l=a}var l=0,c=document.createElement("div");c.style.cssText="position:fixed;top:0;left:0;cursor:pointer;opacity:0.9;z-index:10000";c.addEventListener("click",function(a){a.preventDefault();k(++l%c.children.length)},!1);var g=(performance||Date).now(),e=g,a=0,r=h(new Stats.Panel("FPS","#0ff","#002")),f=h(new Stats.Panel("MS","#0f0","#020"));
+if(self.performance&&self.performance.memory)var t=h(new Stats.Panel("MB","#f08","#201"));k(0);return{REVISION:16,dom:c,addPanel:h,showPanel:k,begin:function(){g=(performance||Date).now()},end:function(){a++;var c=(performance||Date).now();f.update(c-g,200);if(c>e+1E3&&(r.update(1E3*a/(c-e),100),e=c,a=0,t)){var d=performance.memory;t.update(d.usedJSHeapSize/1048576,d.jsHeapSizeLimit/1048576)}return c},update:function(){g=this.end()},domElement:c,setMode:k}};
+Stats.Panel=function(h,k,l){var c=Infinity,g=0,e=Math.round,a=e(window.devicePixelRatio||1),r=80*a,f=48*a,t=3*a,u=2*a,d=3*a,m=15*a,n=74*a,p=30*a,q=document.createElement("canvas");q.width=r;q.height=f;q.style.cssText="width:80px;height:48px";var b=q.getContext("2d");b.font="bold "+9*a+"px Helvetica,Arial,sans-serif";b.textBaseline="top";b.fillStyle=l;b.fillRect(0,0,r,f);b.fillStyle=k;b.fillText(h,t,u);b.fillRect(d,m,n,p);b.fillStyle=l;b.globalAlpha=.9;b.fillRect(d,m,n,p);return{dom:q,update:function(f,
+v){c=Math.min(c,f);g=Math.max(g,f);b.fillStyle=l;b.globalAlpha=1;b.fillRect(0,0,r,m);b.fillStyle=k;b.fillText(e(f)+" "+h+" ("+e(c)+"-"+e(g)+")",t,u);b.drawImage(q,d+a,m,n-a,p,d,m,n-a,p);b.fillRect(d+n-a,m,a,p);b.fillStyle=l;b.globalAlpha=.9;b.fillRect(d+n-a,m,a,e((1-f/v)*p))}}};"object"===typeof module&&(module.exports=Stats);
+
 },{}],13:[function(require,module,exports){
 (function (global){
 /* global window */
@@ -916,6 +798,37 @@ module.exports = function symbolObservablePonyfill(root) {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+exports.setActiveBlock = setActiveBlock;
+exports.updateActiveBlock = updateActiveBlock;
+
+var _actionTypes = require('../constants/actionTypes');
+
+var type = _interopRequireWildcard(_actionTypes);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function setActiveBlock(identifier, shape) {
+	return {
+		type: type.SET_ACTIVE_BLOCK,
+		identifier: identifier,
+		shape: shape
+	};
+}
+
+function updateActiveBlock(column, row) {
+	return {
+		type: type.UPDATE_ACTIVE_BLOCK,
+		column: column,
+		row: row
+	};
+}
+
+},{"../constants/actionTypes":20}],16:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 exports.startGame = startGame;
 exports.endGame = endGame;
 
@@ -923,17 +836,7 @@ var _actionTypes = require('../constants/actionTypes');
 
 var type = _interopRequireWildcard(_actionTypes);
 
-function _interopRequireWildcard(obj) {
-	if (obj && obj.__esModule) {
-		return obj;
-	} else {
-		var newObj = {};if (obj != null) {
-			for (var key in obj) {
-				if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
-			}
-		}newObj.default = obj;return newObj;
-	}
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function startGame() {
 	return {
@@ -949,22 +852,18 @@ function endGame() {
 	};
 }
 
-},{"../constants/actionTypes":18}],16:[function(require,module,exports){
+},{"../constants/actionTypes":20}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () {
-	function defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}return function (Constructor, protoProps, staticProps) {
-		if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-	};
-}();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _stats = require('stats.js');
+
+var _stats2 = _interopRequireDefault(_stats);
 
 var _dom = require('../helpers/dom');
 
@@ -972,17 +871,19 @@ var _store = require('../store');
 
 var _store2 = _interopRequireDefault(_store);
 
+var _tetromino = require('../components/tetromino');
+
+var _tetromino2 = _interopRequireDefault(_tetromino);
+
 var _connect = require('../store/connect');
 
-function _interopRequireDefault(obj) {
-	return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) {
-	if (!(instance instanceof Constructor)) {
-		throw new TypeError("Cannot call a class as a function");
-	}
-}
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _window = window;
+var requestAnimationFrame = _window.requestAnimationFrame;
+var cancelAnimationFrame = _window.cancelAnimationFrame;
 
 var Canvas = function () {
 	function Canvas(canvas) {
@@ -991,33 +892,98 @@ var Canvas = function () {
 		this.canvas = (0, _dom.$)(canvas);
 		this.context = this.canvas.getContext('2d');
 		this.wrapper = this.canvas.parentNode;
+		this.width = this.wrapper.offsetWidth;
+		this.height = this.wrapper.offsetHeight;
+		this.blockWidth = this.width / (0, _connect.getColumnsSize)();
+		this.blockHeight = this.height / (0, _connect.getRowSize)();
+		this.animationFrame = null;
+
+		if ("development" === 'development') {
+			this.stats = new _stats2.default();
+		}
 	}
 
 	_createClass(Canvas, [{
+		key: 'appendStats',
+		value: function appendStats() {
+			this.stats.showPanel(0);
+			document.body.appendChild(this.stats.dom);
+		}
+	}, {
 		key: 'setSize',
 		value: function setSize() {
-			this.canvas.width = this.wrapper.offsetWidth;
-			this.canvas.height = this.wrapper.offsetHeight;
+			this.canvas.width = this.width = this.wrapper.offsetWidth;
+			this.canvas.height = this.height = this.wrapper.offsetHeight;
+			this.blockWidth = this.width / (0, _connect.getColumnsSize)();
+			this.blockHeight = this.height / (0, _connect.getRowSize)();
 		}
 	}, {
-		key: 'fillBackground',
-		value: function fillBackground() {
-			this.context.fillStyle = '#f1f1f1';
-			this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+		key: 'toggleGameState',
+		value: function toggleGameState() {
+			if ((0, _connect.isRunning)()) this.loop();else this.cancelLoop();
 		}
 	}, {
-		key: 'startGame',
-		value: function startGame() {
-			if ((0, _connect.isRunning)()) {
-				console.log('start the loop');
+		key: 'setBlockStyle',
+		value: function setBlockStyle() {
+			var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+			var fill = _ref.fill;
+			var stroke = _ref.stroke;
+
+			this.context.fillStyle = fill;
+			this.context.strokeStyle = stroke;
+		}
+	}, {
+		key: 'drawBlock',
+		value: function drawBlock(x, y) {
+			this.context.fillRect(this.blockWidth * x, this.blockHeight * y, this.blockWidth - 1, this.blockHeight - 1);
+			this.context.strokeRect(this.blockWidth * x, this.blockHeight * y, this.blockWidth - 1, this.blockHeight - 1);
+		}
+	}, {
+		key: 'loop',
+		value: function loop() {
+			if ("development" === 'development') this.stats.begin();
+			this.context.clearRect(0, 0, this.width, this.height);
+			this.setBlockStyle({ fill: '#f1f1f1', stroke: 'white' });
+
+			for (var x = 0; x < (0, _connect.getColumnsSize)(); x++) {
+				for (var y = 0; y < (0, _connect.getRowSize)(); y++) {
+					// if (getGrid()[y][x]) {
+					this.drawBlock(x, y);
+					// }
+				}
 			}
+
+			this.setBlockStyle({ fill: 'red', stroke: 'white' });
+
+			for (var _y = 0; _y < 4; _y++) {
+				for (var _x2 = 0; _x2 < 4; _x2++) {
+					if ((0, _connect.getActiveBlockShape)()[_y][_x2]) {
+						this.drawBlock((0, _connect.getActiveBlockPosition)().column + _x2, (0, _connect.getActiveBlockPosition)().row + _y);
+					}
+				}
+			}
+
+			if ("development" === 'development') this.stats.end();
+			this.animationFrame = requestAnimationFrame(this.loop.bind(this));
+		}
+	}, {
+		key: 'cancelLoop',
+		value: function cancelLoop() {
+			cancelAnimationFrame(this.animationFrame);
 		}
 	}, {
 		key: 'init',
 		value: function init() {
+			var block = new _tetromino2.default();
+			if ("development" === 'development') {
+				this.appendStats();
+			}
+
 			this.setSize();
-			this.fillBackground();
-			_store2.default.subscribe(this.startGame);
+			block.add();
+			this.loop();
+			_store2.default.subscribe(this.toggleGameState.bind(this));
 		}
 	}]);
 
@@ -1026,22 +992,14 @@ var Canvas = function () {
 
 exports.default = Canvas;
 
-},{"../helpers/dom":19,"../store":25,"../store/connect":24}],17:[function(require,module,exports){
+},{"../components/tetromino":19,"../helpers/dom":23,"../store":31,"../store/connect":30,"stats.js":12}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () {
-	function defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}return function (Constructor, protoProps, staticProps) {
-		if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-	};
-}();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _dom = require('../helpers/dom');
 
@@ -1051,25 +1009,11 @@ var _store2 = _interopRequireDefault(_store);
 
 var _game = require('../actions/game');
 
-function _interopRequireDefault(obj) {
-	return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _toConsumableArray(arr) {
-	if (Array.isArray(arr)) {
-		for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
-			arr2[i] = arr[i];
-		}return arr2;
-	} else {
-		return Array.from(arr);
-	}
-}
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-function _classCallCheck(instance, Constructor) {
-	if (!(instance instanceof Constructor)) {
-		throw new TypeError("Cannot call a class as a function");
-	}
-}
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Controls = function () {
 	function Controls(controls) {
@@ -1106,18 +1050,108 @@ var Controls = function () {
 
 exports.default = Controls;
 
-},{"../actions/game":15,"../helpers/dom":19,"../store":25}],18:[function(require,module,exports){
+},{"../actions/game":16,"../helpers/dom":23,"../store":31}],19:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _shapes = require('../constants/shapes');
+
+var _shapes2 = _interopRequireDefault(_shapes);
+
+var _activeBlock = require('../actions/activeBlock');
+
+var _store = require('../store');
+
+var _store2 = _interopRequireDefault(_store);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Tetromino = function () {
+	function Tetromino() {
+		_classCallCheck(this, Tetromino);
+
+		this.randomID = Math.floor(Math.random() * _shapes2.default.all.length);
+		this.identifier = _shapes2.default.all[this.randomID];
+		this.shape = _shapes2.default[this.identifier];
+		this.state = [];
+	}
+
+	_createClass(Tetromino, [{
+		key: 'add',
+		value: function add() {
+			for (var y = 0; y < 4; y++) {
+				this.state[y] = [];
+				for (var x = 0; x < 4; x++) {
+					if (this.shape[4 * y + x]) {
+						this.state[y][x] = this.randomID + 1;
+					} else {
+						this.state[y][x] = 0;
+					}
+				}
+			}
+			_store2.default.dispatch((0, _activeBlock.setActiveBlock)(this.identifier, this.state));
+		}
+	}]);
+
+	return Tetromino;
+}();
+
+exports.default = Tetromino;
+
+},{"../actions/activeBlock":15,"../constants/shapes":22,"../store":31}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+// Game
 var START_GAME = exports.START_GAME = 'START_GAME';
 var END_GAME = exports.END_GAME = 'END_GAME';
 
+// Active Block
+var SET_ACTIVE_BLOCK = exports.SET_ACTIVE_BLOCK = 'SET_ACTIVE_BLOCK';
+var UPDATE_ACTIVE_BLOCK = exports.UPDATE_ACTIVE_BLOCK = 'UPDATE_ACTIVE_BLOCK';
+
+// Score
 var ADD_SCORE = exports.ADD_SCORE = 'ADD_SCORE';
 
-},{}],19:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var BOARD_COLUMNS = exports.BOARD_COLUMNS = 10;
+var BOARD_ROWS = exports.BOARD_ROWS = 20;
+
+},{}],22:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var SHAPES = {
+	all: ['I', 'O', 'T', 'J', 'L', 'S', 'Z'],
+
+	I: [1, 1, 1, 1],
+	O: [1, 1, 0, 0, 1, 1],
+	T: [0, 1, 0, 0, 1, 1, 1],
+	J: [1, 1, 1, 0, 0, 0, 1],
+	L: [1, 1, 1, 0, 1],
+	S: [0, 1, 1, 0, 1, 1],
+	Z: [1, 1, 0, 0, 0, 1, 1]
+};
+
+exports.default = SHAPES;
+
+},{}],23:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1126,7 +1160,30 @@ Object.defineProperty(exports, "__esModule", {
 var $ = exports.$ = document.querySelector.bind(document);
 var $$ = exports.$$ = document.querySelectorAll.bind(document);
 
-},{}],20:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.getEmptyGrid = getEmptyGrid;
+
+var _game = require('../constants/game');
+
+function getEmptyGrid() {
+	var grid = [];
+
+	for (var i = 0; i < _game.BOARD_ROWS; i++) {
+		grid[i] = [];
+		for (var j = 0; j < _game.BOARD_COLUMNS; j++) {
+			grid[i].push(0);
+		}
+	}
+
+	return grid;
+}
+
+},{"../constants/game":21}],25:[function(require,module,exports){
 'use strict';
 
 var _controls = require('./components/controls');
@@ -1137,9 +1194,7 @@ var _canvas = require('./components/canvas');
 
 var _canvas2 = _interopRequireDefault(_canvas);
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var game = new _canvas2.default('#game');
 var controls = new _controls2.default('.controls-btn');
@@ -1147,34 +1202,85 @@ var controls = new _controls2.default('.controls-btn');
 controls.addEvents();
 game.init();
 
-},{"./components/canvas":16,"./components/controls":17}],21:[function(require,module,exports){
+},{"./components/canvas":17,"./components/controls":18}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.default = Game;
+exports.default = activeBlock;
 
 var _actionTypes = require('../constants/actionTypes');
 
+var type = _interopRequireWildcard(_actionTypes);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 var initialState = {
-	isRunning: false
+	identifier: '',
+	shape: [],
+	column: 3,
+	row: 0
 };
 
-function Game() {
+function activeBlock() {
+	var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
+	var action = arguments[1];
+	var identifier = action.identifier;
+	var shape = action.shape;
+	var column = action.column;
+	var row = action.row;
+
+
+	switch (action.type) {
+		case type.SET_ACTIVE_BLOCK:
+			return Object.assign({}, state, { identifier: identifier, shape: shape });
+		case type.UPDATE_ACTIVE_BLOCK:
+			return Object.assign({}, state, { column: column, row: row });
+		default:
+			return state;
+	}
+}
+
+},{"../constants/actionTypes":20}],27:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = game;
+
+var _actionTypes = require('../constants/actionTypes');
+
+var type = _interopRequireWildcard(_actionTypes);
+
+var _game = require('../constants/game');
+
+var _game2 = require('../helpers/game');
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var initialState = {
+	isRunning: false,
+	columns: _game.BOARD_COLUMNS,
+	rows: _game.BOARD_ROWS,
+	grid: (0, _game2.getEmptyGrid)()
+};
+
+function game() {
 	var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
 	var action = arguments[1];
 
 	switch (action.type) {
-		case _actionTypes.START_GAME:
-		case _actionTypes.END_GAME:
+		case type.START_GAME:
+		case type.END_GAME:
 			return Object.assign({}, state, { isRunning: action.isRunning });
 		default:
 			return state;
 	}
 }
 
-},{"../constants/actionTypes":18}],22:[function(require,module,exports){
+},{"../constants/actionTypes":20,"../constants/game":21,"../helpers/game":24}],28:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1187,42 +1293,36 @@ var _game = require('./game');
 
 var _game2 = _interopRequireDefault(_game);
 
+var _activeBlock = require('./activeBlock');
+
+var _activeBlock2 = _interopRequireDefault(_activeBlock);
+
 var _score = require('./score');
 
 var _score2 = _interopRequireDefault(_score);
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = (0, _redux.combineReducers)({ Game: _game2.default, Score: _score2.default });
+exports.default = (0, _redux.combineReducers)({ game: _game2.default, activeBlock: _activeBlock2.default, score: _score2.default });
 
-},{"./game":21,"./score":23,"redux":11}],23:[function(require,module,exports){
+},{"./activeBlock":26,"./game":27,"./score":29,"redux":10}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.default = Score;
+exports.default = score;
 
 var _actionTypes = require('../constants/actionTypes');
 
-function _toConsumableArray(arr) {
-	if (Array.isArray(arr)) {
-		for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
-			arr2[i] = arr[i];
-		}return arr2;
-	} else {
-		return Array.from(arr);
-	}
-}
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var initialState = {
 	highscore: {},
 	all: []
 };
 
-function Score() {
+function score() {
 	var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
 	var action = arguments[1];
 
@@ -1236,34 +1336,55 @@ function Score() {
 	}
 }
 
-},{"../constants/actionTypes":18}],24:[function(require,module,exports){
+},{"../constants/actionTypes":20}],30:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 exports.isRunning = isRunning;
-exports.getHighScore = getHighScore;
+exports.getColumnsSize = getColumnsSize;
+exports.getRowSize = getRowSize;
+exports.getGrid = getGrid;
+exports.getActiveBlockShape = getActiveBlockShape;
+exports.getActiveBlockPosition = getActiveBlockPosition;
 
 var _ = require('./');
 
 var _2 = _interopRequireDefault(_);
 
-function _interopRequireDefault(obj) {
-	return obj && obj.__esModule ? obj : { default: obj };
-}
-
-console.log(_2.default);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function isRunning() {
-	return _2.default.getState().Game.isRunning;
+	return _2.default.getState().game.isRunning;
 }
 
-function getHighScore() {
-	return _2.default.getState().Score.highscore;
+function getColumnsSize() {
+	return _2.default.getState().game.columns;
 }
 
-},{"./":25}],25:[function(require,module,exports){
+function getRowSize() {
+	return _2.default.getState().game.rows;
+}
+
+function getGrid() {
+	return _2.default.getState().game.grid;
+}
+
+function getActiveBlockShape() {
+	return _2.default.getState().activeBlock.shape;
+}
+
+function getActiveBlockPosition() {
+	var _store$getState$activ = _2.default.getState().activeBlock;
+
+	var column = _store$getState$activ.column;
+	var row = _store$getState$activ.row;
+
+	return { column: column, row: row };
+}
+
+},{"./":31}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1276,9 +1397,7 @@ var _reducers = require('../reducers');
 
 var _reducers2 = _interopRequireDefault(_reducers);
 
-function _interopRequireDefault(obj) {
-	return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _window = window;
 var devToolsExtension = _window.devToolsExtension;
@@ -1286,4 +1405,4 @@ var devToolsExtension = _window.devToolsExtension;
 var store = (0, _redux.createStore)(_reducers2.default, devToolsExtension && devToolsExtension());
 exports.default = store;
 
-},{"../reducers":22,"redux":11}]},{},[20]);
+},{"../reducers":28,"redux":10}]},{},[25]);
