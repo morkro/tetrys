@@ -1,9 +1,9 @@
 import { createStore } from 'redux';
-import reducer from '../reducers';
+import reducers from '../reducers';
 
-const { devToolsExtension } = window;
 const store = createStore(
-	reducer,
-	devToolsExtension && devToolsExtension()
+	reducers,
+	window.devToolsExtension && window.devToolsExtension()
 );
+
 export default store;

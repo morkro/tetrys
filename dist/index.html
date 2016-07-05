@@ -3,12 +3,36 @@
 <head>
 	<meta charset="utf-8">
 	<title>Tetrys</title>
+	<style type="text/css" rel="stylesheet">
+		body {
+			height: 95vh;
+			background: #f1f1f1;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+		}
+		.game-window {
+			width: 280px;
+			height: 500px;
+		}
+		#game {
+			border: 1px solid black;
+		}
+		.tetrys-controls {
+			margin: 0 auto;
+			width: 280px;
+		}
+		.tetrys-controls ul {
+			display: flex;
+			justify-content: center;
+			list-style: none;
+			padding: 0;
+		}
+	</style>
 </head>
 <body>
-	<h1>tetrys</h1>
-	<div class="game-window" style="width:250px;height:500px;">
-		<canvas id="game"></canvas>
-	</div>
+	<div class="game-window"><canvas id="game"></canvas></div>
 	<nav class="tetrys-controls">
 		<ul>
 			<li><button class="controls-btn" data-control="start">

@@ -1,26 +1,28 @@
-import { $$ } from '../helpers/dom';
+import { $ } from '../helpers/dom';
 import store from '../store';
 import { startGame, endGame } from '../actions/game';
 
 export default class Controls {
 	constructor (controls) {
-		this.controls = $$(controls);
+		this.controls = $(controls);
 	}
 
 	addEvents () {
-		[...this.controls].forEach(
-			(btn) => btn.addEventListener('click', this.onClickControls)
-		);
+		this.controls.addEventListener('click', this.onClickControls);
 	}
 
-	onClickControls () {
-		switch (this.getAttribute('data-control')) {
-		case 'start':
-			return store.dispatch(startGame());
-		case 'end':
-			return store.dispatch(endGame());
-		default:
-			return;
+	onClickControls ({ target }) {
+		if (target.nodeName === 'BUTTON') {
+			target.blur();
+
+			switch (target.getAttribute('data-control')) {
+			case 'start':
+				return store.dispatch(startGame());
+			case 'end':
+				return store.dispatch(endGame());
+			default:
+				return;
+			}
 		}
 	}
 }

@@ -16,11 +16,6 @@ export function getGrid () {
 	return store.getState().game.grid;
 }
 
-export function getActiveBlockShape () {
-	return store.getState().activeBlock.shape;
-}
-
-export function getActiveBlockPosition () {
-	const { column, row } = store.getState().activeBlock;
-	return { column, row };
+export function getActiveBlock () {
+	return store.getState().activeBlock;
 }

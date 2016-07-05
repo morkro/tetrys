@@ -1,6 +1,6 @@
 import * as type from '../constants/actionTypes';
 
-export function setActiveBlock (identifier, shape) {
+export function setActiveBlock ({ identifier, shape }) {
 	return {
 		type: type.SET_ACTIVE_BLOCK,
 		identifier,
@@ -8,10 +8,9 @@ export function setActiveBlock (identifier, shape) {
 	};
 }
 
-export function updateActiveBlock (column, row) {
+export function moveActiveBlock (direction) {
 	return {
-		type: type.UPDATE_ACTIVE_BLOCK,
-		column,
-		row
+		type: type.MOVE_ACTIVE_BLOCK,
+		direction
 	};
 }

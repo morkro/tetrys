@@ -1,15 +1,9 @@
 import Stats from 'stats.js';
 import { $ } from '../helpers/dom';
 import store from '../store';
+import * as _ from '../store/connect';
 import Tetromino from '../components/tetromino';
-import {
-	isRunning,
-	getColumnsSize,
-	getRowSize,
-	getGrid,
-	getActiveBlockShape,
-	getActiveBlockPosition
-} from '../store/connect';
+import { setActiveBlock } from '../actions/activeBlock';
 
 const { requestAnimationFrame, cancelAnimationFrame } = window;
 
@@ -20,8 +14,8 @@ export default class Canvas {
 		this.wrapper = this.canvas.parentNode;
 		this.width = this.wrapper.offsetWidth;
 		this.height = this.wrapper.offsetHeight;
-		this.blockWidth = this.width / getColumnsSize();
-		this.blockHeight = this.height / getRowSize();
+		this.blockWidth = this.width / _.getColumnsSize();
+		this.blockHeight = this.height / _.getRowSize();
 		this.animationFrame = null;
 
 		if (process.env.NODE_ENV === 'development') {
@@ -37,21 +31,25 @@ export default class Canvas {
 	setSize () {
 		this.canvas.width = this.width = this.wrapper.offsetWidth;
 		this.canvas.height = this.height = this.wrapper.offsetHeight;
-		this.blockWidth = this.width / getColumnsSize();
-		this.blockHeight = this.height / getRowSize();
+		this.blockWidth = this.width / _.getColumnsSize();
+		this.blockHeight = this.height / _.getRowSize();
 	}
 
 	toggleGameState () {
-		if (isRunning()) this.loop();
+		if (_.isRunning()) this.loop();
 		else this.cancelLoop();
 	}
 
-	setBlockStyle ({ fill, stroke } = {}) {
+	clearBoard () {
+		this.context.clearRect(0, 0, this.width, this.height);
+	}
+
+	setBlockStyle ({ fill, stroke = 'transparent' } = {}) {
 		this.context.fillStyle = fill;
 		this.context.strokeStyle = stroke;
 	}
 
-	drawBlock (x, y) {
+	drawSimpleBlock (x, y) {
 		this.context.fillRect(
 			this.blockWidth * x, this.blockHeight * y,
 			this.blockWidth - 1, this.blockHeight - 1
@@ -62,34 +60,42 @@ export default class Canvas {
 		);
 	}
 
-	loop () {
-		if (process.env.NODE_ENV === 'development') this.stats.begin();
-		this.context.clearRect(0, 0, this.width, this.height);
-		this.setBlockStyle({ fill: '#f1f1f1', stroke: 'white' });
-
-		for (let x = 0; x < getColumnsSize(); x++) {
-			for (let y = 0; y < getRowSize(); y++) {
-				// if (getGrid()[y][x]) {
-				this.drawBlock(x, y);
-				// }
+	drawBackground () {
+		for (let y = 0, grid = _.getGrid(); y < grid.length; y++) {
+			for (let x = 0; x < grid[y].length; x++) {
+				if (grid[y][x] === 1) {
+					this.setBlockStyle({ fill: 'mediumseagreen' });
+				}
+				else {
+					this.setBlockStyle({ fill: 'white' });
+				}
+				this.drawSimpleBlock(x, y);
 			}
 		}
+	}
 
-		this.setBlockStyle({ fill: 'red', stroke: 'white' });
-
-		for (let y = 0; y < 4; y++) {
-			for (let x = 0; x < 4; x++) {
-				if (getActiveBlockShape()[y][x]) {
-					this.drawBlock(
-						getActiveBlockPosition().column + x,
-						getActiveBlockPosition().row + y
-					);
+	drawActiveBlock () {
+		const block = _.getActiveBlock();
+		for (let y = 0; y < block.shape.length; y++) {
+			for (let x = 0; x < block.shape[y].length; x++) {
+				if (block.shape[y][x]) {
+					this.setBlockStyle({ fill: 'red' });
+					this.drawSimpleBlock(block.column + x, block.row + y);
 				}
 			}
 		}
+	}
+
+	loop () {
+		this.animationFrame = requestAnimationFrame(this.loop.bind(this));
+		if (process.env.NODE_ENV === 'development') this.stats.begin();
+
+		this.clearBoard();
+		this.setBlockStyle({ fill: 'white' });
+		this.drawBackground();
+		this.drawActiveBlock();
 
 		if (process.env.NODE_ENV === 'development') this.stats.end();
-		this.animationFrame = requestAnimationFrame(this.loop.bind(this));
 	}
 
 	cancelLoop () {
@@ -97,14 +103,14 @@ export default class Canvas {
 	}
 
 	init () {
-		const block = new Tetromino();
 		if (process.env.NODE_ENV === 'development') {
 			this.appendStats();
 		}
 
 		this.setSize();
-		block.add();
-		this.loop();
+		this.drawBackground();
+
+		store.dispatch(setActiveBlock(new Tetromino()));
 		store.subscribe(this.toggleGameState.bind(this));
 	}
 }
