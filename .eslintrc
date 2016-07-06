@@ -18,7 +18,7 @@
 		"quotes": [2, "single"],
 		"no-console": 0,
 		"linebreak-style": [2, "unix"],
-		"semi": [2, "always"],
+		"semi": [2, "never"],
 		"comma-dangle": [2, "never"],
 		"space-before-function-paren": [
 			2, { "anonymous": "never", "named": "always" }

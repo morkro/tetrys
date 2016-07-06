@@ -1,10 +1,10 @@
-import Controls from './components/controls';
-import Keyboard from './components/keyboard';
-import Canvas from './components/canvas';
+import Controls from './components/controls'
+import Keyboard from './components/keyboard'
+import Canvas from './components/canvas'
 
-const game = new Canvas('#game');
-const controls = new Controls('.tetrys-controls');
+const game = new Canvas('#game')
+const controls = new Controls('.tetrys-controls')
 
-game.init();
-controls.addEvents();
-Keyboard.addEvents();
+game.init()
+controls.addEvents()
+Keyboard.addEvents()

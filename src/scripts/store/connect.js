@@ -1,21 +1,21 @@
-import store from './';
+import store from './'
 
 export function isRunning () {
-	return store.getState().game.isRunning;
+	return store.getState().game.isRunning
 }
 
 export function getColumnsSize () {
-	return store.getState().game.columns;
+	return store.getState().game.columns
 }
 
 export function getRowSize () {
-	return store.getState().game.rows;
+	return store.getState().game.rows
 }
 
 export function getGrid () {
-	return store.getState().game.grid;
+	return store.getState().game.grid
 }
 
 export function getActiveBlock () {
-	return store.getState().activeBlock;
+	return store.getState().activeBlock
 }

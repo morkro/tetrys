@@ -1,14 +1,14 @@
-import { BOARD_COLUMNS, BOARD_ROWS } from '../constants/game';
+import { BOARD_COLUMNS, BOARD_ROWS } from '../constants/game'
 
 export function getEmptyGrid () {
-	const grid = [];
+	const grid = []
 
 	for (let i = 0; i < BOARD_ROWS; i++) {
-		grid[i] = [];
+		grid[i] = []
 		for (let j = 0; j < BOARD_COLUMNS; j++) {
-			grid[i].push(0);
+			grid[i].push(0)
 		}
 	}
 
-	return grid;
+	return grid
 }
