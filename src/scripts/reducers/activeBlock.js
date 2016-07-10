@@ -9,21 +9,22 @@ const initialState = {
 }
 
 export default function activeBlock (state = initialState, action) {
-	const { identifier, shape } = action
-
 	switch (action.type) {
-	case type.SET_ACTIVE_BLOCK:
+	case type.SET_ACTIVE_BLOCK: {
+		const { identifier, shape } = action
 		return Object.assign({}, state, { identifier, shape })
+	}
 	case type.MOVE_ACTIVE_BLOCK: {
-		let { column } = state
-		if (action.direction === 'LEFT') {
-			column = state.column - 1
+		switch (action.direction) {
+		case 'LEFT':
+			return Object.assign({}, state, { column: state.column - 1 })
+		case 'RIGHT':
+			return Object.assign({}, state, { column: state.column + 1 })
+		case 'DOWN':
+			return Object.assign({}, state, { row: state.row + 1 })
+		default:
+			return state
 		}
-		else if (action.direction === 'RIGHT') {
-			column = state.column + 1
-		}
-
-		return Object.assign({}, state, { column })
 	}
 	default:
 		return state

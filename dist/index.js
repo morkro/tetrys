@@ -889,10 +889,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _window = window;
-var requestAnimationFrame = _window.requestAnimationFrame;
-var cancelAnimationFrame = _window.cancelAnimationFrame;
-
 var Canvas = function () {
 	function Canvas(canvas) {
 		_classCallCheck(this, Canvas);
@@ -905,6 +901,8 @@ var Canvas = function () {
 		this.blockWidth = this.width / _.getColumnsSize();
 		this.blockHeight = this.height / _.getRowSize();
 		this.animationFrame = null;
+		this.activeBlockPositionAnimation = null;
+		this.isRunningInternal = false;
 
 		if ("development" === 'development') {
 			this.stats = new _stats2.default();
@@ -928,7 +926,15 @@ var Canvas = function () {
 	}, {
 		key: 'toggleGameState',
 		value: function toggleGameState() {
-			if (_.isRunning()) this.loop();else this.cancelLoop();
+			if (_.isRunning() && !this.isRunningInternal) {
+				this.isRunningInternal = true;
+				this.updateActiveBlockPosition();
+				this.loop();
+			} else if (!_.isRunning() && this.isRunningInternal) {
+				this.isRunningInternal = false;
+				this.cancelActiveBlockPosition();
+				this.cancelLoop();
+			}
 		}
 	}, {
 		key: 'clearBoard',
@@ -981,17 +987,34 @@ var Canvas = function () {
 			}
 		}
 	}, {
+		key: 'updateActiveBlockPosition',
+		value: function updateActiveBlockPosition() {
+			this.activeBlockPositionAnimation = setInterval(function () {
+				_store2.default.dispatch((0, _activeBlock.moveActiveBlock)('DOWN'));
+			}, 2000);
+		}
+	}, {
+		key: 'cancelActiveBlockPosition',
+		value: function cancelActiveBlockPosition() {
+			clearInterval(this.activeBlockPositionAnimation);
+		}
+	}, {
 		key: 'loop',
 		value: function loop() {
 			this.animationFrame = requestAnimationFrame(this.loop.bind(this));
-			if ("development" === 'development') this.stats.begin();
+
+			if ("development" === 'development') {
+				this.stats.begin();
+			}
 
 			this.clearBoard();
 			this.setBlockStyle({ fill: 'white' });
 			this.drawBackground();
 			this.drawActiveBlock();
 
-			if ("development" === 'development') this.stats.end();
+			if ("development" === 'development') {
+				this.stats.end();
+			}
 		}
 	}, {
 		key: 'cancelLoop',
@@ -1238,6 +1261,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 exports.getEmptyGrid = getEmptyGrid;
+exports.throttleAnimationFrames = throttleAnimationFrames;
 
 var _game = require('../constants/game');
 
@@ -1252,6 +1276,29 @@ function getEmptyGrid() {
 	}
 
 	return grid;
+}
+
+function throttleAnimationFrames() {
+	var cb = arguments.length <= 0 || arguments[0] === undefined ? function () {} : arguments[0];
+	var throttle = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+
+	var counter = 0;
+	var animationFrame = null;
+
+	function loop() {
+		if (counter < throttle) {
+			counter++;
+			animationFrame = window.requestAnimationFrame(loop);
+			return;
+		}
+
+		cb();
+		counter = 0;
+		animationFrame = window.requestAnimationFrame(loop);
+	}
+
+	loop();
+	return animationFrame;
 }
 
 },{"../constants/game":22}],27:[function(require,module,exports){
@@ -1304,24 +1351,27 @@ var initialState = {
 function activeBlock() {
 	var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
 	var action = arguments[1];
-	var identifier = action.identifier;
-	var shape = action.shape;
-
 
 	switch (action.type) {
 		case type.SET_ACTIVE_BLOCK:
-			return Object.assign({}, state, { identifier: identifier, shape: shape });
+			{
+				var identifier = action.identifier;
+				var shape = action.shape;
+
+				return Object.assign({}, state, { identifier: identifier, shape: shape });
+			}
 		case type.MOVE_ACTIVE_BLOCK:
 			{
-				var column = state.column;
-
-				if (action.direction === 'LEFT') {
-					column = state.column - 1;
-				} else if (action.direction === 'RIGHT') {
-					column = state.column + 1;
+				switch (action.direction) {
+					case 'LEFT':
+						return Object.assign({}, state, { column: state.column - 1 });
+					case 'RIGHT':
+						return Object.assign({}, state, { column: state.column + 1 });
+					case 'DOWN':
+						return Object.assign({}, state, { row: state.row + 1 });
+					default:
+						return state;
 				}
-
-				return Object.assign({}, state, { column: column });
 			}
 		default:
 			return state;

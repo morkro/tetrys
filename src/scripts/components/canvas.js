@@ -3,13 +3,11 @@ import { $ } from '../helpers/dom'
 import store from '../store'
 import * as _ from '../store/connect'
 import Tetromino from '../components/tetromino'
-import { setActiveBlock } from '../actions/activeBlock'
-
-const { requestAnimationFrame, cancelAnimationFrame } = window
+import { setActiveBlock, moveActiveBlock } from '../actions/activeBlock'
 
 export default class Canvas {
 	constructor (canvas) {
-		this.canvas = $(canvas);
+		this.canvas = $(canvas)
 		this.context = this.canvas.getContext('2d')
 		this.wrapper = this.canvas.parentNode
 		this.width = this.wrapper.offsetWidth
@@ -17,6 +15,8 @@ export default class Canvas {
 		this.blockWidth = this.width / _.getColumnsSize()
 		this.blockHeight = this.height / _.getRowSize()
 		this.animationFrame = null
+		this.activeBlockPositionAnimation = null
+		this.isRunningInternal = false
 
 		if (process.env.NODE_ENV === 'development') {
 			this.stats = new Stats()
@@ -36,8 +36,17 @@ export default class Canvas {
 	}
 
 	toggleGameState () {
-		if (_.isRunning()) this.loop()
-		else this.cancelLoop()
+		if (_.isRunning() && !this.isRunningInternal) {
+			this.isRunningInternal = true
+			this.updateActiveBlockPosition()
+			this.loop()
+		}
+
+		else if (!_.isRunning() && this.isRunningInternal) {
+			this.isRunningInternal = false
+			this.cancelActiveBlockPosition()
+			this.cancelLoop()
+		}
 	}
 
 	clearBoard () {
@@ -86,16 +95,31 @@ export default class Canvas {
 		}
 	}
 
+	updateActiveBlockPosition () {
+		this.activeBlockPositionAnimation = setInterval(() => {
+			store.dispatch(moveActiveBlock('DOWN'))
+		}, 2000)
+	}
+
+	cancelActiveBlockPosition () {
+		clearInterval(this.activeBlockPositionAnimation)
+	}
+
 	loop () {
 		this.animationFrame = requestAnimationFrame(this.loop.bind(this))
-		if (process.env.NODE_ENV === 'development') this.stats.begin()
+
+		if (process.env.NODE_ENV === 'development') {
+			this.stats.begin()
+		}
 
 		this.clearBoard()
 		this.setBlockStyle({ fill: 'white' })
 		this.drawBackground()
 		this.drawActiveBlock()
 
-		if (process.env.NODE_ENV === 'development') this.stats.end()
+		if (process.env.NODE_ENV === 'development') {
+			this.stats.end()
+		}
 	}
 
 	cancelLoop () {
