@@ -89,7 +89,7 @@ export default class Canvas {
 			for (let x = 0; x < block.shape[y].length; x++) {
 				if (block.shape[y][x]) {
 					this.setBlockStyle({ fill: 'red' })
-					this.drawSimpleBlock(block.column + x, block.row + y)
+					this.drawSimpleBlock(block.column + x - 1, block.row + y - 1)
 				}
 			}
 		}

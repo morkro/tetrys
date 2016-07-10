@@ -800,6 +800,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setActiveBlock = setActiveBlock;
 exports.moveActiveBlock = moveActiveBlock;
+exports.rotateActiveBlock = rotateActiveBlock;
 
 var _actionTypes = require('../constants/actionTypes');
 
@@ -822,6 +823,12 @@ function moveActiveBlock(direction) {
 	return {
 		type: type.MOVE_ACTIVE_BLOCK,
 		direction: direction
+	};
+}
+
+function rotateActiveBlock() {
+	return {
+		type: type.ROTATE_ACTIVE_BLOCK
 	};
 }
 
@@ -981,7 +988,7 @@ var Canvas = function () {
 				for (var x = 0; x < block.shape[y].length; x++) {
 					if (block.shape[y][x]) {
 						this.setBlockStyle({ fill: 'red' });
-						this.drawSimpleBlock(block.column + x, block.row + y);
+						this.drawSimpleBlock(block.column + x - 1, block.row + y - 1);
 					}
 				}
 			}
@@ -1058,6 +1065,8 @@ var _store2 = _interopRequireDefault(_store);
 
 var _game = require('../actions/game');
 
+var _activeBlock = require('../actions/activeBlock');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1087,6 +1096,8 @@ var Controls = function () {
 						return _store2.default.dispatch((0, _game.startGame)());
 					case 'end':
 						return _store2.default.dispatch((0, _game.endGame)());
+					case 'rotate':
+						return _store2.default.dispatch((0, _activeBlock.rotateActiveBlock)());
 					default:
 						return;
 				}
@@ -1099,7 +1110,7 @@ var Controls = function () {
 
 exports.default = Controls;
 
-},{"../actions/game":16,"../helpers/dom":25,"../store":33}],19:[function(require,module,exports){
+},{"../actions/activeBlock":15,"../actions/game":16,"../helpers/dom":25,"../store":33}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1149,6 +1160,7 @@ var Keyboard = function () {
 						return _store2.default.dispatch((0, _activeBlock.moveActiveBlock)('RIGHT'));
 					case key.SPACE_BAR:
 					case key.UP_ARROW:
+						return _store2.default.dispatch((0, _activeBlock.rotateActiveBlock)());
 					default:
 						return;
 				}
@@ -1204,6 +1216,7 @@ var END_GAME = exports.END_GAME = 'END_GAME';
 // Active Block
 var SET_ACTIVE_BLOCK = exports.SET_ACTIVE_BLOCK = 'SET_ACTIVE_BLOCK';
 var MOVE_ACTIVE_BLOCK = exports.MOVE_ACTIVE_BLOCK = 'MOVE_ACTIVE_BLOCK';
+var ROTATE_ACTIVE_BLOCK = exports.ROTATE_ACTIVE_BLOCK = 'ROTATE_ACTIVE_BLOCK';
 
 // Score
 var ADD_SCORE = exports.ADD_SCORE = 'ADD_SCORE';
@@ -1236,11 +1249,11 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 var SHAPES = {
-	I: [[1, 1, 1, 1], [0, 0, 0, 0]],
-	O: [[0, 1, 1, 0], [0, 1, 1, 0]],
-	T: [[1, 1, 1, 0], [0, 1, 0, 0]],
-	L: [[1, 1, 1, 0], [1, 0, 0, 0]],
-	Z: [[1, 1, 0, 0], [0, 1, 1, 0]]
+	I: [[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]],
+	O: [[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]],
+	T: [[0, 0, 0, 0], [1, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]],
+	L: [[0, 0, 0, 0], [1, 1, 1, 0], [1, 0, 0, 0], [0, 0, 0, 0]],
+	Z: [[0, 0, 0, 0], [1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]]
 };
 
 exports.default = SHAPES;
@@ -1348,18 +1361,27 @@ var initialState = {
 	row: 0
 };
 
+function rotate(current) {
+	var newCurrent = [];
+	for (var y = 0; y < current.length; y++) {
+		newCurrent[y] = [];
+		for (var x = 0; x < current.length; x++) {
+			newCurrent[y][x] = current[current.length - 1 - x][y];
+		}
+	}
+	return newCurrent;
+}
+
 function activeBlock() {
 	var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
 	var action = arguments[1];
 
 	switch (action.type) {
 		case type.SET_ACTIVE_BLOCK:
-			{
-				var identifier = action.identifier;
-				var shape = action.shape;
-
-				return Object.assign({}, state, { identifier: identifier, shape: shape });
-			}
+			return Object.assign({}, state, {
+				identifier: action.identifier,
+				shape: action.shape
+			});
 		case type.MOVE_ACTIVE_BLOCK:
 			{
 				switch (action.direction) {
@@ -1373,6 +1395,10 @@ function activeBlock() {
 						return state;
 				}
 			}
+		case type.ROTATE_ACTIVE_BLOCK:
+			return Object.assign({}, state, {
+				shape: rotate(state.shape)
+			});
 		default:
 			return state;
 	}
@@ -1420,7 +1446,7 @@ function game() {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
 
 var _redux = require('redux');
@@ -1439,7 +1465,13 @@ var _score2 = _interopRequireDefault(_score);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = (0, _redux.combineReducers)({ game: _game2.default, activeBlock: _activeBlock2.default, score: _score2.default });
+var tetrys = (0, _redux.combineReducers)({
+	game: _game2.default,
+	activeBlock: _activeBlock2.default,
+	score: _score2.default
+});
+
+exports.default = tetrys;
 
 },{"./activeBlock":28,"./game":29,"./score":31,"redux":10}],31:[function(require,module,exports){
 'use strict';

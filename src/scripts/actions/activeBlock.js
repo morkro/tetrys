@@ -14,3 +14,9 @@ export function moveActiveBlock (direction) {
 		direction
 	}
 }
+
+export function rotateActiveBlock () {
+	return {
+		type: type.ROTATE_ACTIVE_BLOCK
+	}
+}

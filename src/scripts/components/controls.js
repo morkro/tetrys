@@ -1,6 +1,7 @@
 import { $ } from '../helpers/dom'
 import store from '../store'
 import { startGame, endGame } from '../actions/game'
+import { rotateActiveBlock } from '../actions/activeBlock'
 
 export default class Controls {
 	constructor (controls) {
@@ -20,6 +21,8 @@ export default class Controls {
 				return store.dispatch(startGame())
 			case 'end':
 				return store.dispatch(endGame())
+			case 'rotate':
+				return store.dispatch(rotateActiveBlock())
 			default:
 				return
 			}
