@@ -11,8 +11,8 @@ const initialState = {
 
 export default function game (state = initialState, action) {
 	switch (action.type) {
-	case type.START_GAME:
-	case type.END_GAME:
+	case type.GAME_START:
+	case type.GAME_END:
 		return Object.assign({}, state, { isRunning: action.isRunning })
 	default:
 		return state

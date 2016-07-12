@@ -12,23 +12,3 @@ export function getEmptyGrid () {
 
 	return grid
 }
-
-export function throttleAnimationFrames (cb = () => {}, throttle = 0) {
-	let counter = 0
-	let animationFrame = null
-
-	function loop () {
-		if (counter < throttle) {
-			counter++
-			animationFrame = window.requestAnimationFrame(loop)
-			return
-		}
-
-		cb()
-		counter = 0
-		animationFrame = window.requestAnimationFrame(loop)
-	}
-
-	loop()
-	return animationFrame
-}

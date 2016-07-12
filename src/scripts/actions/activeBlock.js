@@ -2,7 +2,7 @@ import * as type from '../constants/actionTypes'
 
 export function setActiveBlock ({ identifier, shape }) {
 	return {
-		type: type.SET_ACTIVE_BLOCK,
+		type: type.ACTIVE_BLOCK_SET,
 		identifier,
 		shape
 	}
@@ -10,13 +10,13 @@ export function setActiveBlock ({ identifier, shape }) {
 
 export function moveActiveBlock (direction) {
 	return {
-		type: type.MOVE_ACTIVE_BLOCK,
+		type: type.ACTIVE_BLOCK_MOVE,
 		direction
 	}
 }
 
 export function rotateActiveBlock () {
 	return {
-		type: type.ROTATE_ACTIVE_BLOCK
+		type: type.ACTIVE_BLOCK_ROTATE
 	}
 }

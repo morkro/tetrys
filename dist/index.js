@@ -813,7 +813,7 @@ function setActiveBlock(_ref) {
 	var shape = _ref.shape;
 
 	return {
-		type: type.SET_ACTIVE_BLOCK,
+		type: type.ACTIVE_BLOCK_SET,
 		identifier: identifier,
 		shape: shape
 	};
@@ -821,14 +821,14 @@ function setActiveBlock(_ref) {
 
 function moveActiveBlock(direction) {
 	return {
-		type: type.MOVE_ACTIVE_BLOCK,
+		type: type.ACTIVE_BLOCK_MOVE,
 		direction: direction
 	};
 }
 
 function rotateActiveBlock() {
 	return {
-		type: type.ROTATE_ACTIVE_BLOCK
+		type: type.ACTIVE_BLOCK_ROTATE
 	};
 }
 
@@ -849,14 +849,14 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function startGame() {
 	return {
-		type: type.START_GAME,
+		type: type.GAME_START,
 		isRunning: true
 	};
 }
 
 function endGame() {
 	return {
-		type: type.END_GAME,
+		type: type.GAME_END,
 		isRunning: false
 	};
 }
@@ -880,9 +880,9 @@ var _store = require('../store');
 
 var _store2 = _interopRequireDefault(_store);
 
-var _connect = require('../store/connect');
+var _selectors = require('../selectors');
 
-var _ = _interopRequireWildcard(_connect);
+var _ = _interopRequireWildcard(_selectors);
 
 var _tetromino = require('../components/tetromino');
 
@@ -905,8 +905,8 @@ var Canvas = function () {
 		this.wrapper = this.canvas.parentNode;
 		this.width = this.wrapper.offsetWidth;
 		this.height = this.wrapper.offsetHeight;
-		this.blockWidth = this.width / _.getColumnsSize();
-		this.blockHeight = this.height / _.getRowSize();
+		this.blockWidth = this.width / _.getGameColumns();
+		this.blockHeight = this.height / _.getGameRows();
 		this.animationFrame = null;
 		this.activeBlockPositionAnimation = null;
 		this.isRunningInternal = false;
@@ -927,8 +927,8 @@ var Canvas = function () {
 		value: function setSize() {
 			this.canvas.width = this.width = this.wrapper.offsetWidth;
 			this.canvas.height = this.height = this.wrapper.offsetHeight;
-			this.blockWidth = this.width / _.getColumnsSize();
-			this.blockHeight = this.height / _.getRowSize();
+			this.blockWidth = this.width / _.getGameColumns();
+			this.blockHeight = this.height / _.getGameRows();
 		}
 	}, {
 		key: 'toggleGameState',
@@ -989,6 +989,9 @@ var Canvas = function () {
 					if (block.shape[y][x]) {
 						this.setBlockStyle({ fill: 'red' });
 						this.drawSimpleBlock(block.column + x - 1, block.row + y - 1);
+					} else {
+						this.setBlockStyle({ fill: 'aliceblue' });
+						this.drawSimpleBlock(block.column + x - 1, block.row + y - 1);
 					}
 				}
 			}
@@ -1048,7 +1051,7 @@ var Canvas = function () {
 
 exports.default = Canvas;
 
-},{"../actions/activeBlock":15,"../components/tetromino":20,"../helpers/dom":25,"../store":33,"../store/connect":32,"stats.js":12}],18:[function(require,module,exports){
+},{"../actions/activeBlock":15,"../components/tetromino":20,"../helpers/dom":25,"../selectors":32,"../store":33,"stats.js":12}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1127,7 +1130,7 @@ var _store = require('../store');
 
 var _store2 = _interopRequireDefault(_store);
 
-var _connect = require('../store/connect');
+var _selectors = require('../selectors');
 
 var _activeBlock = require('../actions/activeBlock');
 
@@ -1152,7 +1155,7 @@ var Keyboard = function () {
 		value: function onPressKeydown(_ref) {
 			var keyCode = _ref.keyCode;
 
-			if ((0, _connect.isRunning)()) {
+			if ((0, _selectors.isRunning)()) {
 				switch (keyCode) {
 					case key.LEFT_ARROW:
 						return _store2.default.dispatch((0, _activeBlock.moveActiveBlock)('LEFT'));
@@ -1173,7 +1176,7 @@ var Keyboard = function () {
 
 exports.default = Keyboard;
 
-},{"../actions/activeBlock":15,"../constants/keyCode":23,"../store":33,"../store/connect":32}],20:[function(require,module,exports){
+},{"../actions/activeBlock":15,"../constants/keyCode":23,"../selectors":32,"../store":33}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1210,16 +1213,16 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 // Game
-var START_GAME = exports.START_GAME = 'START_GAME';
-var END_GAME = exports.END_GAME = 'END_GAME';
+var GAME_START = exports.GAME_START = 'GAME_START';
+var GAME_END = exports.GAME_END = 'GAME_END';
 
 // Active Block
-var SET_ACTIVE_BLOCK = exports.SET_ACTIVE_BLOCK = 'SET_ACTIVE_BLOCK';
-var MOVE_ACTIVE_BLOCK = exports.MOVE_ACTIVE_BLOCK = 'MOVE_ACTIVE_BLOCK';
-var ROTATE_ACTIVE_BLOCK = exports.ROTATE_ACTIVE_BLOCK = 'ROTATE_ACTIVE_BLOCK';
+var ACTIVE_BLOCK_SET = exports.ACTIVE_BLOCK_SET = 'ACTIVE_BLOCK_SET';
+var ACTIVE_BLOCK_MOVE = exports.ACTIVE_BLOCK_MOVE = 'ACTIVE_BLOCK_MOVE';
+var ACTIVE_BLOCK_ROTATE = exports.ACTIVE_BLOCK_ROTATE = 'ACTIVE_BLOCK_ROTATE';
 
 // Score
-var ADD_SCORE = exports.ADD_SCORE = 'ADD_SCORE';
+var SCORE_ADD = exports.SCORE_ADD = 'SCORE_ADD';
 
 },{}],22:[function(require,module,exports){
 "use strict";
@@ -1274,7 +1277,6 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 exports.getEmptyGrid = getEmptyGrid;
-exports.throttleAnimationFrames = throttleAnimationFrames;
 
 var _game = require('../constants/game');
 
@@ -1289,29 +1291,6 @@ function getEmptyGrid() {
 	}
 
 	return grid;
-}
-
-function throttleAnimationFrames() {
-	var cb = arguments.length <= 0 || arguments[0] === undefined ? function () {} : arguments[0];
-	var throttle = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-
-	var counter = 0;
-	var animationFrame = null;
-
-	function loop() {
-		if (counter < throttle) {
-			counter++;
-			animationFrame = window.requestAnimationFrame(loop);
-			return;
-		}
-
-		cb();
-		counter = 0;
-		animationFrame = window.requestAnimationFrame(loop);
-	}
-
-	loop();
-	return animationFrame;
 }
 
 },{"../constants/game":22}],27:[function(require,module,exports){
@@ -1352,6 +1331,10 @@ var type = _interopRequireWildcard(_actionTypes);
 
 var _game = require('../constants/game');
 
+var _selectors = require('../selectors');
+
+var _ = _interopRequireWildcard(_selectors);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 var initialState = {
@@ -1361,7 +1344,7 @@ var initialState = {
 	row: 0
 };
 
-function rotate(current) {
+function rotateBlock(current) {
 	var newCurrent = [];
 	for (var y = 0; y < current.length; y++) {
 		newCurrent[y] = [];
@@ -1372,39 +1355,70 @@ function rotate(current) {
 	return newCurrent;
 }
 
+function validBoundaries() {
+	var offsetX = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
+	var offsetY = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+	var tetromino = arguments.length <= 2 || arguments[2] === undefined ? _.getActiveBlock() : arguments[2];
+
+	var newOffsetX = tetromino.column + offsetX;
+	var newOffsetY = tetromino.row + offsetY;
+
+	for (var y = 0; y < tetromino.shape.length; y++) {
+		for (var x = 0; x < tetromino.shape.length; x++) {
+			if (tetromino.shape[y][x] && // shape is present
+			_.getGrid()[y + newOffsetY][x + newOffsetX] || // wall has blocks
+			x + newOffsetX < 0 || // hitting left wall
+			x + newOffsetX >= _.getGameColumns() || y + newOffsetY >= _.getGameRows()) {
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
 function activeBlock() {
 	var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
 	var action = arguments[1];
 
 	switch (action.type) {
-		case type.SET_ACTIVE_BLOCK:
+		case type.ACTIVE_BLOCK_SET:
 			return Object.assign({}, state, {
 				identifier: action.identifier,
 				shape: action.shape
 			});
-		case type.MOVE_ACTIVE_BLOCK:
+		case type.ACTIVE_BLOCK_MOVE:
 			{
 				switch (action.direction) {
 					case 'LEFT':
-						return Object.assign({}, state, { column: state.column - 1 });
+						if (validBoundaries(-1)) {
+							return Object.assign({}, state, { column: state.column - 1 });
+						}
+						return state;
 					case 'RIGHT':
-						return Object.assign({}, state, { column: state.column + 1 });
+						if (validBoundaries(1)) {
+							return Object.assign({}, state, { column: state.column + 1 });
+						}
+						return state;
 					case 'DOWN':
-						return Object.assign({}, state, { row: state.row + 1 });
+						if (validBoundaries(0, 1)) {
+							return Object.assign({}, state, { row: state.row + 1 });
+						}
+						return state;
 					default:
 						return state;
 				}
 			}
-		case type.ROTATE_ACTIVE_BLOCK:
+		case type.ACTIVE_BLOCK_ROTATE:
 			return Object.assign({}, state, {
-				shape: rotate(state.shape)
+				shape: rotateBlock(state.shape)
 			});
 		default:
 			return state;
 	}
 }
 
-},{"../constants/actionTypes":21,"../constants/game":22}],29:[function(require,module,exports){
+},{"../constants/actionTypes":21,"../constants/game":22,"../selectors":32}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1434,8 +1448,8 @@ function game() {
 	var action = arguments[1];
 
 	switch (action.type) {
-		case type.START_GAME:
-		case type.END_GAME:
+		case type.GAME_START:
+		case type.GAME_END:
 			return Object.assign({}, state, { isRunning: action.isRunning });
 		default:
 			return state;
@@ -1495,7 +1509,7 @@ function score() {
 	var action = arguments[1];
 
 	switch (action.type) {
-		case _actionTypes.ADD_SCORE:
+		case _actionTypes.SCORE_ADD:
 			return Object.assign({}, state, {
 				all: [].concat(_toConsumableArray(state.all), [action.score])
 			});
@@ -1510,39 +1524,39 @@ function score() {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+exports.getGameColumns = getGameColumns;
+exports.getGameRows = getGameRows;
 exports.isRunning = isRunning;
-exports.getColumnsSize = getColumnsSize;
-exports.getRowSize = getRowSize;
 exports.getGrid = getGrid;
 exports.getActiveBlock = getActiveBlock;
 
-var _ = require('./');
+var _store = require('../store');
 
-var _2 = _interopRequireDefault(_);
+var _store2 = _interopRequireDefault(_store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function getGameColumns() {
+	return _store2.default.getState().game.columns;
+}
+
+function getGameRows() {
+	return _store2.default.getState().game.rows;
+}
+
 function isRunning() {
-	return _2.default.getState().game.isRunning;
-}
-
-function getColumnsSize() {
-	return _2.default.getState().game.columns;
-}
-
-function getRowSize() {
-	return _2.default.getState().game.rows;
+	return _store2.default.getState().game.isRunning;
 }
 
 function getGrid() {
-	return _2.default.getState().game.grid;
+	return _store2.default.getState().game.grid;
 }
 
 function getActiveBlock() {
-	return _2.default.getState().activeBlock;
+	return _store2.default.getState().activeBlock;
 }
 
-},{"./":33}],33:[function(require,module,exports){
+},{"../store":33}],33:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

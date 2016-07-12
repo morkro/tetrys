@@ -1,5 +1,6 @@
 import * as type from '../constants/actionTypes'
 import { BOARD_COLUMNS } from '../constants/game'
+import * as _ from '../selectors'
 
 const initialState = {
 	identifier: '',
@@ -8,7 +9,7 @@ const initialState = {
 	row: 0
 }
 
-function rotate (current) {
+function rotateBlock (current) {
 	const newCurrent = []
 	for (let y = 0; y < current.length; y++) {
 		newCurrent[y] = []
@@ -19,28 +20,62 @@ function rotate (current) {
 	return newCurrent
 }
 
+function validBoundaries (
+	offsetX = 0,
+	offsetY = 0,
+	tetromino = _.getActiveBlock()
+) {
+	const newOffsetX = tetromino.column + offsetX
+	const newOffsetY = tetromino.row + offsetY
+
+	for (let y = 0; y < tetromino.shape.length; y++) {
+		for (let x = 0; x < tetromino.shape.length; x++) {
+			if (
+				tetromino.shape[y][x] && // shape is present
+				_.getGrid()[y + newOffsetY][x + newOffsetX] || // wall has blocks
+				x + newOffsetX < 0 || // hitting left wall
+				x + newOffsetX >= _.getGameColumns() ||
+				y + newOffsetY >= _.getGameRows()
+			) {
+				return false
+			}
+		}
+	}
+
+	return true
+}
+
 export default function activeBlock (state = initialState, action) {
 	switch (action.type) {
-	case type.SET_ACTIVE_BLOCK:
+	case type.ACTIVE_BLOCK_SET:
 		return Object.assign({}, state, {
 			identifier: action.identifier,
 			shape: action.shape
 		})
-	case type.MOVE_ACTIVE_BLOCK: {
+	case type.ACTIVE_BLOCK_MOVE: {
 		switch (action.direction) {
 		case 'LEFT':
-			return Object.assign({}, state, { column: state.column - 1 })
+			if (validBoundaries(-1)) {
+				return Object.assign({}, state, { column: state.column - 1 })
+			}
+			return state
 		case 'RIGHT':
-			return Object.assign({}, state, { column: state.column + 1 })
+			if (validBoundaries(1)) {
+				return Object.assign({}, state, { column: state.column + 1 })
+			}
+			return state
 		case 'DOWN':
-			return Object.assign({}, state, { row: state.row + 1 })
+			if (validBoundaries(0, 1)) {
+				return Object.assign({}, state, { row: state.row + 1 })
+			}
+			return state
 		default:
 			return state
 		}
 	}
-	case type.ROTATE_ACTIVE_BLOCK:
+	case type.ACTIVE_BLOCK_ROTATE:
 		return Object.assign({}, state, {
-			shape: rotate(state.shape)
+			shape: rotateBlock(state.shape)
 		})
 	default:
 		return state

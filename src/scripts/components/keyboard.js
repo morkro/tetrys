@@ -1,6 +1,6 @@
 import * as key from '../constants/keyCode'
 import store from '../store'
-import { isRunning } from '../store/connect'
+import { isRunning } from '../selectors'
 import { moveActiveBlock, rotateActiveBlock } from '../actions/activeBlock'
 
 export default class Keyboard {

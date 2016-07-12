@@ -1,11 +1,11 @@
 // Game
-export const START_GAME = 'START_GAME'
-export const END_GAME = 'END_GAME'
+export const GAME_START = 'GAME_START'
+export const GAME_END = 'GAME_END'
 
 // Active Block
-export const SET_ACTIVE_BLOCK = 'SET_ACTIVE_BLOCK'
-export const MOVE_ACTIVE_BLOCK = 'MOVE_ACTIVE_BLOCK'
-export const ROTATE_ACTIVE_BLOCK = 'ROTATE_ACTIVE_BLOCK'
+export const ACTIVE_BLOCK_SET = 'ACTIVE_BLOCK_SET'
+export const ACTIVE_BLOCK_MOVE = 'ACTIVE_BLOCK_MOVE'
+export const ACTIVE_BLOCK_ROTATE = 'ACTIVE_BLOCK_ROTATE'
 
 // Score
-export const ADD_SCORE = 'ADD_SCORE'
+export const SCORE_ADD = 'SCORE_ADD'

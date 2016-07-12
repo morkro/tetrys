@@ -1,7 +1,7 @@
 import Stats from 'stats.js'
 import { $ } from '../helpers/dom'
 import store from '../store'
-import * as _ from '../store/connect'
+import * as _ from '../selectors'
 import Tetromino from '../components/tetromino'
 import { setActiveBlock, moveActiveBlock } from '../actions/activeBlock'
 
@@ -12,8 +12,8 @@ export default class Canvas {
 		this.wrapper = this.canvas.parentNode
 		this.width = this.wrapper.offsetWidth
 		this.height = this.wrapper.offsetHeight
-		this.blockWidth = this.width / _.getColumnsSize()
-		this.blockHeight = this.height / _.getRowSize()
+		this.blockWidth = this.width / _.getGameColumns()
+		this.blockHeight = this.height / _.getGameRows()
 		this.animationFrame = null
 		this.activeBlockPositionAnimation = null
 		this.isRunningInternal = false
@@ -31,8 +31,8 @@ export default class Canvas {
 	setSize () {
 		this.canvas.width = this.width = this.wrapper.offsetWidth
 		this.canvas.height = this.height = this.wrapper.offsetHeight
-		this.blockWidth = this.width / _.getColumnsSize()
-		this.blockHeight = this.height / _.getRowSize()
+		this.blockWidth = this.width / _.getGameColumns()
+		this.blockHeight = this.height / _.getGameRows()
 	}
 
 	toggleGameState () {
@@ -89,6 +89,10 @@ export default class Canvas {
 			for (let x = 0; x < block.shape[y].length; x++) {
 				if (block.shape[y][x]) {
 					this.setBlockStyle({ fill: 'red' })
+					this.drawSimpleBlock(block.column + x - 1, block.row + y - 1)
+				}
+				else {
+					this.setBlockStyle({ fill: 'aliceblue' })
 					this.drawSimpleBlock(block.column + x - 1, block.row + y - 1)
 				}
 			}

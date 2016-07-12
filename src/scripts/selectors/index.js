@@ -1,15 +1,15 @@
-import store from './'
+import store from '../store'
 
-export function isRunning () {
-	return store.getState().game.isRunning
-}
-
-export function getColumnsSize () {
+export function getGameColumns () {
 	return store.getState().game.columns
 }
 
-export function getRowSize () {
+export function getGameRows () {
 	return store.getState().game.rows
+}
+
+export function isRunning () {
+	return store.getState().game.isRunning
 }
 
 export function getGrid () {
