@@ -1,4 +1,4 @@
-import { $ } from '../helpers/dom'
+import { $ } from '../utils/dom'
 import store from '../store'
 import { startGame, endGame } from '../actions/game'
 import { rotateActiveBlock, moveActiveBlock } from '../actions/activeBlock'

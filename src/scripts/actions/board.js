@@ -1,6 +1,6 @@
 import * as action from '../constants/actionTypes'
 
-export function freezeBoard ({ shape }) {
+export function freezeBoard (shape) {
 	return {
 		type: action.BOARD_FREEZE,
 		shape

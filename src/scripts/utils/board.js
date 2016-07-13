@@ -1,6 +1,20 @@
-import * as _ from '../../selectors'
+import { BOARD_COLUMNS, BOARD_ROWS } from '../constants/board'
+import * as _ from '../selectors'
 
-export default function validBoundaries (
+export function getEmptyGrid () {
+	const grid = []
+
+	for (let i = 0; i < BOARD_ROWS; i++) {
+		grid[i] = []
+		for (let j = 0; j < BOARD_COLUMNS; j++) {
+			grid[i].push(0)
+		}
+	}
+
+	return grid
+}
+
+export function validBoundaries (
 	offsetX = 0,
 	offsetY = 0,
 	tetromino = []
