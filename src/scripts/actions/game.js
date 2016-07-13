@@ -1,15 +1,15 @@
-import * as type from '../constants/actionTypes'
+import * as action from '../constants/actionTypes'
 
 export function startGame () {
 	return {
-		type: type.GAME_START,
+		type: action.GAME_START,
 		isRunning: true
 	}
 }
 
 export function endGame () {
 	return {
-		type: type.GAME_END,
+		type: action.GAME_END,
 		isRunning: false
 	}
 }

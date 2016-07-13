@@ -3,7 +3,7 @@ import reducers from '../reducers'
 
 const store = createStore(
 	reducers,
-	window.devToolsExtension ? window.devToolsExtension() : f => f
+	window.devToolsExtension && window.devToolsExtension()
 )
 
 export default store

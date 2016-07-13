@@ -1,7 +1,7 @@
 import Stats from 'stats.js'
 import { $ } from '../helpers/dom'
-import * as _ from '../selectors'
 import store from '../store'
+import * as _ from '../selectors'
 import Tetromino from '../components/tetromino'
 import { setActiveBlock, moveActiveBlock } from '../actions/activeBlock'
 
@@ -12,8 +12,8 @@ export default class Canvas {
 		this.wrapper = this.canvas.parentNode
 		this.width = this.wrapper.offsetWidth
 		this.height = this.wrapper.offsetHeight
-		this.blockWidth = this.width / _.getGameColumns()
-		this.blockHeight = this.height / _.getGameRows()
+		this.blockWidth = this.width / _.getBoardColumns()
+		this.blockHeight = this.height / _.getBoardRows()
 		this.animationFrame = null
 		this.activeBlockPositionAnimation = null
 		this.isRunningInternal = false
@@ -31,8 +31,8 @@ export default class Canvas {
 	setSize () {
 		this.canvas.width = this.width = this.wrapper.offsetWidth
 		this.canvas.height = this.height = this.wrapper.offsetHeight
-		this.blockWidth = this.width / _.getGameColumns()
-		this.blockHeight = this.height / _.getGameRows()
+		this.blockWidth = this.width / _.getBoardColumns()
+		this.blockHeight = this.height / _.getBoardRows()
 	}
 
 	toggleGameState () {

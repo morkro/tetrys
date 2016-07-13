@@ -1,4 +1,4 @@
-import { BOARD_COLUMNS, BOARD_ROWS } from '../constants/game'
+import { BOARD_COLUMNS, BOARD_ROWS } from '../constants/board'
 
 export function getEmptyGrid () {
 	const grid = []

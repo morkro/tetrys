@@ -1,15 +1,10 @@
 import * as type from '../constants/actionTypes'
-import { BOARD_COLUMNS, BOARD_ROWS } from '../constants/game'
-import { getEmptyGrid } from '../helpers/game'
 
 const initialState = {
-	isRunning: false,
-	columns: BOARD_COLUMNS,
-	rows: BOARD_ROWS,
-	grid: getEmptyGrid()
+	isRunning: false
 }
 
-export default function game (state = initialState, action) {
+export default function Game (state = initialState, action) {
 	switch (action.type) {
 	case type.GAME_START:
 	case type.GAME_END:
