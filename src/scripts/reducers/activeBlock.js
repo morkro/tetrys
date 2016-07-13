@@ -1,5 +1,5 @@
-import * as type from '../constants/actionTypes'
-import { BOARD_COLUMNS } from '../constants/game'
+import * as type from '../constants/ActionTypes'
+import { BOARD_COLUMNS } from '../constants/Game'
 import * as _ from '../selectors'
 
 const initialState = {

@@ -1,4 +1,4 @@
-import * as type from '../constants/actionTypes'
+import * as type from '../constants/ActionTypes'
 
 export function startGame () {
 	return {

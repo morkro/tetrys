@@ -1,7 +1,7 @@
-import * as key from '../constants/keyCode'
-import store from '../store'
+import * as key from '../constants/KeyCode'
 import { isRunning } from '../selectors'
-import { moveActiveBlock, rotateActiveBlock } from '../actions/activeBlock'
+import store from '../store'
+import { moveActiveBlock, rotateActiveBlock } from '../actions/ActiveBlock'
 
 export default class Keyboard {
 	static addEvents () {

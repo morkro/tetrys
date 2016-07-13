@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
-import game from './game'
-import activeBlock from './activeBlock'
-import score from './score'
+import game from './Game'
+import activeBlock from './ActiveBlock'
+import score from './Score'
 
 const tetrys = combineReducers({
 	game,

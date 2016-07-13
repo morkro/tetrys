@@ -1,4 +1,4 @@
-import { SCORE_ADD } from '../constants/actionTypes'
+import { SCORE_ADD } from '../constants/ActionTypes'
 
 const initialState = {
 	highscore: {},

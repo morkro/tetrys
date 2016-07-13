@@ -1,7 +1,7 @@
-import { $ } from '../helpers/dom'
+import { $ } from '../helpers/Dom'
 import store from '../store'
-import { startGame, endGame } from '../actions/game'
-import { rotateActiveBlock } from '../actions/activeBlock'
+import { startGame, endGame } from '../actions/Game'
+import { rotateActiveBlock } from '../actions/ActiveBlock'
 
 export default class Controls {
 	constructor (controls) {

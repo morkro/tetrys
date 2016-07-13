@@ -1,6 +1,6 @@
-import * as type from '../constants/actionTypes'
-import { BOARD_COLUMNS, BOARD_ROWS } from '../constants/game'
-import { getEmptyGrid } from '../helpers/game'
+import * as type from '../constants/ActionTypes'
+import { BOARD_COLUMNS, BOARD_ROWS } from '../constants/Game'
+import { getEmptyGrid } from '../helpers/Game'
 
 const initialState = {
 	isRunning: false,
