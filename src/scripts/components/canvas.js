@@ -1,9 +1,9 @@
 import Stats from 'stats.js'
-import { $ } from '../helpers/Dom'
+import { $ } from '../helpers/dom'
 import * as _ from '../selectors'
 import store from '../store'
-import Tetromino from '../components/Tetromino'
-import { setActiveBlock, moveActiveBlock } from '../actions/ActiveBlock'
+import Tetromino from '../components/tetromino'
+import { setActiveBlock, moveActiveBlock } from '../actions/activeBlock'
 
 export default class Canvas {
 	constructor (canvas) {

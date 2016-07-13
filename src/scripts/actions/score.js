@@ -1,4 +1,4 @@
-import * as type from '../constants/ActionTypes'
+import * as type from '../constants/actionTypes'
 
 export function addScore (score) {
 	return {

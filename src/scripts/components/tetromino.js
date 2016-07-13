@@ -1,4 +1,4 @@
-import SHAPES from '../constants/Shapes'
+import SHAPES from '../constants/shapes'
 
 export default class Tetromino {
 	constructor () {
