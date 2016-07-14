@@ -1,11 +1,11 @@
 import Stats from 'stats.js'
 import { $ } from '../utils/dom'
-import { validBoundaries } from '../utils/board'
+import { validBoardBoundary } from '../utils/board'
 import store from '../store'
 import * as _ from '../selectors'
-import Tetromino from '../components/tetromino'
 import { setActiveBlock, moveActiveBlock } from '../actions/activeBlock'
 import { freezeBoard } from '../actions/board'
+import Tetromino from '../components/tetromino'
 
 export default class Canvas {
 	constructor (canvas) {
@@ -19,7 +19,7 @@ export default class Canvas {
 		this.animationFrame = null
 		this.activeBlockPositionAnimation = null
 		this.isRunningInternal = false
-		this.initialSpeed = 100
+		this.initialSpeed = 500
 
 		if (process.env.NODE_ENV === 'development') {
 			this.stats = new Stats()
@@ -94,23 +94,19 @@ export default class Canvas {
 					this.setBlockStyle({ fill: 'red' })
 					this.drawSimpleBlock(block.column + x - 1, block.row + y - 1)
 				}
-				// else {
-				// 	this.setBlockStyle({ fill: 'aliceblue' })
-				// 	this.drawSimpleBlock(block.column + x - 1, block.row + y - 1)
-				// }
 			}
 		}
 	}
 
 	updateActiveBlockPosition () {
 		this.activeBlockPositionAnimation = setInterval(() => {
-			if (validBoundaries(0, 0)) {
+			if (validBoardBoundary()) {
 				store.dispatch(moveActiveBlock('DOWN'))
 			}
-			else {
-				store.dispatch(freezeBoard(_.getActiveBlock().shape))
-				store.dispatch(setActiveBlock(new Tetromino()))
-			}
+			// else {
+			// 	store.dispatch(freezeBoard(_.getActiveBlock().shape))
+			// 	store.dispatch(setActiveBlock(new Tetromino()))
+			// }
 		}, this.initialSpeed)
 	}
 
@@ -147,7 +143,6 @@ export default class Canvas {
 		this.setSize()
 		this.drawBackground()
 
-		store.dispatch(setActiveBlock(new Tetromino()))
 		store.subscribe(this.toggleGameState.bind(this))
 	}
 }

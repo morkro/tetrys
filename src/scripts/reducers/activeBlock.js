@@ -1,19 +1,18 @@
-import { BOARD_COLUMNS } from '../constants/board'
 import * as type from '../constants/actionTypes'
-import { validBoundaries } from '../utils/board'
+import { validBoardBoundary } from '../utils/board'
 
 const initialState = {
 	identifier: '',
 	shape: [],
-	column: Math.floor(BOARD_COLUMNS / 2),
+	column: 0,
 	row: 0
 }
 
 function rotateBlock (current) {
 	const newCurrent = []
-	for (let y = 0; y < current.length; y++) {
+	for (let y = 0; y < current.length; ++y) {
 		newCurrent[y] = []
-		for (let x = 0; x < current.length; x++) {
+		for (let x = 0; x < current.length; ++x) {
 			newCurrent[y][x] = current[(current.length - 1) - x][y]
 		}
 	}
@@ -26,23 +25,23 @@ export default function ActiveBlock (state = initialState, action) {
 		return Object.assign({}, state, {
 			identifier: action.identifier,
 			shape: action.shape,
-			colum: initialState.column,
-			row: initialState.row
+			column: action.column,
+			row: action.row
 		})
 	case type.ACTIVE_BLOCK_MOVE: {
 		switch (action.direction) {
 		case 'LEFT':
-			if (validBoundaries(-2)) {
+			if (validBoardBoundary({ offsetX: -2 })) {
 				return Object.assign({}, state, { column: state.column - 1 })
 			}
 			return state
 		case 'RIGHT':
-			if (validBoundaries(0)) {
+			if (validBoardBoundary()) {
 				return Object.assign({}, state, { column: state.column + 1 })
 			}
 			return state
 		case 'DOWN':
-			if (validBoundaries(0, 0)) {
+			if (validBoardBoundary({ offsetY: -1 })) {
 				return Object.assign({}, state, { row: state.row + 1 })
 			}
 			return state
@@ -51,9 +50,9 @@ export default function ActiveBlock (state = initialState, action) {
 		}
 	}
 	case type.ACTIVE_BLOCK_ROTATE: {
-		const rotated = rotateBlock(state.shape)
-		if (validBoundaries(0, 0, rotated)) {
-			return Object.assign({}, state, { shape: rotated })
+		const tetromino = rotateBlock(state.shape)
+		if (validBoardBoundary({ tetromino })) {
+			return Object.assign({}, state, { shape: tetromino })
 		}
 		return state
 	}

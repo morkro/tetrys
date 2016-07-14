@@ -1,7 +1,8 @@
 import { $ } from '../utils/dom'
 import store from '../store'
+import Tetromino from '../components/tetromino'
 import { startGame, endGame } from '../actions/game'
-import { rotateActiveBlock, moveActiveBlock } from '../actions/activeBlock'
+import { setActiveBlock, moveActiveBlock } from '../actions/activeBlock'
 
 export default class Controls {
 	constructor (controls) {
@@ -19,11 +20,11 @@ export default class Controls {
 
 			switch (attr) {
 			case 'start':
-				return store.dispatch(startGame())
+				store.dispatch(startGame())
+				store.dispatch(setActiveBlock(new Tetromino()))
+				return
 			case 'end':
 				return store.dispatch(endGame())
-			case 'rotate':
-				return store.dispatch(rotateActiveBlock())
 			case 'left':
 			case 'right':
 				return store.dispatch(moveActiveBlock(attr.toUpperCase()))

@@ -14,11 +14,11 @@ export function getEmptyGrid () {
 	return grid
 }
 
-export function validBoundaries (
+export function validBoardBoundary ({
 	offsetX = 0,
 	offsetY = 0,
 	tetromino = []
-) {
+} = {}) {
 	const activeBlock = _.getActiveBlock()
 	const newOffsetX = activeBlock.column + offsetX
 	const newOffsetY = activeBlock.row + offsetY
@@ -28,16 +28,20 @@ export function validBoundaries (
 		shape = activeBlock.shape
 	}
 
-	for (let y = 0; y < shape.length; y++) {
-		for (let x = 0; x < shape.length; x++) {
-			if (
-				shape[y][x] && // shape is present
-				_.getGrid()[y + newOffsetY][x + newOffsetX] || // wall has blocks
-				x + newOffsetX < 0 || // hitting left wall
-				x + newOffsetX >= _.getBoardColumns() ||
-				y + newOffsetY >= _.getBoardRows()
-			) {
-				return false
+	for (let y = 0; y < shape.length; ++y) {
+		for (let x = 0; x < shape.length; ++x) {
+			if (shape[y][x]) {
+				const grid = _.getGrid()
+				if (
+					typeof grid[y + newOffsetY] === 'undefined' ||
+					typeof grid[y + newOffsetY][x + newOffsetX] === 'undefined' ||
+					grid[y + newOffsetY][x + newOffsetX] ||
+					x + newOffsetX < 0 ||
+					x + newOffsetX >= _.getBoardColumns() ||
+					y + newOffsetY >= _.getBoardRows()
+				) {
+					return false
+				}
 			}
 		}
 	}
