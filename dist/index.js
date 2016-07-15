@@ -1039,8 +1039,8 @@ var Canvas = function () {
 	}, {
 		key: 'drawBackground',
 		value: function drawBackground() {
-			for (var y = 0, grid = _.getGrid(); y < grid.length; y++) {
-				for (var x = 0; x < grid[y].length; x++) {
+			for (var y = 0, grid = _.getGrid(); y < grid.length; ++y) {
+				for (var x = 0; x < grid[y].length; ++x) {
 					if (grid[y][x] === 1) {
 						this.setBlockStyle({ fill: 'mediumseagreen' });
 					} else {
@@ -1054,11 +1054,11 @@ var Canvas = function () {
 		key: 'drawActiveBlock',
 		value: function drawActiveBlock() {
 			var block = _.getActiveBlock();
-			for (var y = 0; y < block.shape.length; y++) {
-				for (var x = 0; x < block.shape[y].length; x++) {
+			for (var y = 0; y < block.shape.length; ++y) {
+				for (var x = 0; x < block.shape.length; ++x) {
 					if (block.shape[y][x]) {
 						this.setBlockStyle({ fill: 'red' });
-						this.drawSimpleBlock(block.column + x - 1, block.row + y - 1);
+						this.drawSimpleBlock(block.column + x, block.row + y);
 					}
 				}
 			}
@@ -1071,6 +1071,8 @@ var Canvas = function () {
 					_store2.default.dispatch((0, _activeBlock.moveActiveBlock)('DOWN'));
 				}
 				// else {
+				// 	console.log('reached end')
+				// }
 				// 	store.dispatch(freezeBoard(_.getActiveBlock().shape))
 				// 	store.dispatch(setActiveBlock(new Tetromino()))
 				// }
@@ -1287,7 +1289,7 @@ var Tetromino = function Tetromino() {
 		identifier: this.identifier,
 		shape: this.shape,
 		column: this.column,
-		row: 0
+		row: -1
 	};
 };
 
@@ -1426,18 +1428,18 @@ function ActiveBlock() {
 			{
 				switch (action.direction) {
 					case 'LEFT':
-						if ((0, _board.validBoardBoundary)({ offsetX: -2 })) {
-							return Object.assign({}, state, { column: state.column - 1 });
+						if ((0, _board.validBoardBoundary)({ offsetX: -1 })) {
+							return Object.assign({}, state, { column: --state.column });
 						}
 						return state;
 					case 'RIGHT':
-						if ((0, _board.validBoardBoundary)()) {
-							return Object.assign({}, state, { column: state.column + 1 });
+						if ((0, _board.validBoardBoundary)({ offsetX: 1 })) {
+							return Object.assign({}, state, { column: ++state.column });
 						}
 						return state;
 					case 'DOWN':
-						if ((0, _board.validBoardBoundary)({ offsetY: -1 })) {
-							return Object.assign({}, state, { row: state.row + 1 });
+						if ((0, _board.validBoardBoundary)({ offsetY: 1 })) {
+							return Object.assign({}, state, { row: ++state.row });
 						}
 						return state;
 					default:
@@ -1733,7 +1735,20 @@ function validBoardBoundary() {
 		for (var x = 0; x < shape.length; ++x) {
 			if (shape[y][x]) {
 				var grid = _.getGrid();
-				if (typeof grid[y + newOffsetY] === 'undefined' || typeof grid[y + newOffsetY][x + newOffsetX] === 'undefined' || grid[y + newOffsetY][x + newOffsetX] || x + newOffsetX < 0 || x + newOffsetX >= _.getBoardColumns() || y + newOffsetY >= _.getBoardRows()) {
+				if (typeof grid[y + newOffsetY] === 'undefined' || typeof grid[y + newOffsetY][x + newOffsetX] === 'undefined' || grid[y + newOffsetY][x + newOffsetX] || x + newOffsetX < 0 || y + newOffsetY >= _.getBoardRows() || x + newOffsetX >= _.getBoardColumns()) {
+					if (x + newOffsetX >= _.getBoardColumns() || y + newOffsetY >= _.getBoardRows()) {
+						console.group();
+						console.log('x =>', x);
+						console.log('newOffsetX =>', newOffsetX);
+						console.log('x + newOffsetX', x + newOffsetX);
+						console.log('_.getBoardColumns()', _.getBoardColumns());
+						console.log('y =>', y);
+						console.log('newOffsetY =>', newOffsetY);
+						console.log('y + newOffsetY', y + newOffsetY);
+						console.log('_.getBoardRows()', _.getBoardRows());
+						console.groupEnd();
+					}
+
 					return false;
 				}
 			}

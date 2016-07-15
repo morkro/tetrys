@@ -6,5 +6,12 @@ This application _requires_ Node.js `>=6.0.0` to run locally and the [Redux DevT
 
 To get started, `npm install` all dependencies. To run the application in **development** mode, use the `npm run dev` command. A **production** build can be created with `npm run build`.
 
+## Tools, Resources and Credits :heart:
+This project couldn't have been build without the awesome open source tools from the community, free online tutorials, articles, and other resources. Credits goes to:
+
+- [Implementing Tetris](http://gamedevelopment.tutsplus.com/series/implementing-tetris--gamedev-12717) by [Michael James Williams](http://tutsplus.com/authors/mjw)
+- [@dionyziz/canvas-tetris](https://github.com/dionyziz/canvas-tetris) _(This project helped me a lot understanding a Tetris implementation in JavaScript. I used and modified parts of his codebase.)_
+- Various StackOverflow answers
+
 ## License :copyright:
 [Apache License, Version 2.0](LICENSE.md)

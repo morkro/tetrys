@@ -73,8 +73,8 @@ export default class Canvas {
 	}
 
 	drawBackground () {
-		for (let y = 0, grid = _.getGrid(); y < grid.length; y++) {
-			for (let x = 0; x < grid[y].length; x++) {
+		for (let y = 0, grid = _.getGrid(); y < grid.length; ++y) {
+			for (let x = 0; x < grid[y].length; ++x) {
 				if (grid[y][x] === 1) {
 					this.setBlockStyle({ fill: 'mediumseagreen' })
 				}
@@ -88,11 +88,11 @@ export default class Canvas {
 
 	drawActiveBlock () {
 		const block = _.getActiveBlock()
-		for (let y = 0; y < block.shape.length; y++) {
-			for (let x = 0; x < block.shape[y].length; x++) {
+		for (let y = 0; y < block.shape.length; ++y) {
+			for (let x = 0; x < block.shape.length; ++x) {
 				if (block.shape[y][x]) {
 					this.setBlockStyle({ fill: 'red' })
-					this.drawSimpleBlock(block.column + x - 1, block.row + y - 1)
+					this.drawSimpleBlock(block.column + x, block.row + y)
 				}
 			}
 		}
@@ -104,6 +104,8 @@ export default class Canvas {
 				store.dispatch(moveActiveBlock('DOWN'))
 			}
 			// else {
+			// 	console.log('reached end')
+			// }
 			// 	store.dispatch(freezeBoard(_.getActiveBlock().shape))
 			// 	store.dispatch(setActiveBlock(new Tetromino()))
 			// }

@@ -31,18 +31,18 @@ export default function ActiveBlock (state = initialState, action) {
 	case type.ACTIVE_BLOCK_MOVE: {
 		switch (action.direction) {
 		case 'LEFT':
-			if (validBoardBoundary({ offsetX: -2 })) {
-				return Object.assign({}, state, { column: state.column - 1 })
+			if (validBoardBoundary({ offsetX: -1 })) {
+				return Object.assign({}, state, { column: --state.column })
 			}
 			return state
 		case 'RIGHT':
-			if (validBoardBoundary()) {
-				return Object.assign({}, state, { column: state.column + 1 })
+			if (validBoardBoundary({ offsetX: 1 })) {
+				return Object.assign({}, state, { column: ++state.column })
 			}
 			return state
 		case 'DOWN':
-			if (validBoardBoundary({ offsetY: -1 })) {
-				return Object.assign({}, state, { row: state.row + 1 })
+			if (validBoardBoundary({ offsetY: 1 })) {
+				return Object.assign({}, state, { row: ++state.row })
 			}
 			return state
 		default:

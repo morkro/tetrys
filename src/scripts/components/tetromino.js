@@ -15,7 +15,7 @@ export default class Tetromino {
 			identifier: this.identifier,
 			shape: this.shape,
 			column: this.column,
-			row: 0
+			row: -1
 		}
 	}
 }
