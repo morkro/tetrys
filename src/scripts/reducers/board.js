@@ -23,7 +23,25 @@ function freeze ({ shape, grid }) {
 }
 
 function removeLine (grid) {
-	return grid
+	const newGrid = grid
+	for (let y = BOARD_ROWS - 1; y >= 0; --y) {
+		let filledRow = true
+		for (let x = 0; x < BOARD_COLUMNS; ++x) {
+			if (grid[y][x] === 0) {
+				filledRow = false
+				break
+			}
+		}
+		if (filledRow) {
+			for (let yy = y; yy > 0; --yy) {
+				for (let x = 0; x < BOARD_COLUMNS; ++x) {
+					newGrid[yy][x] = grid[yy - 1][x]
+				}
+			}
+			++y
+		}
+	}
+	return newGrid
 }
 
 export default function Board (state = initialState, action) {
@@ -33,10 +51,9 @@ export default function Board (state = initialState, action) {
 			grid: freeze({ shape: action.shape, grid: state.grid })
 		})
 	case type.BOARD_LINE_REMOVE:
-		return state
-		// return Object.assign({}, state, {
-		// 	grid: removeLine(state.grid)
-		// })
+		return Object.assign({}, state, {
+			grid: removeLine(state.grid)
+		})
 	default:
 		return state
 	}

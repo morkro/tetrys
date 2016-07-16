@@ -4,7 +4,7 @@ import { validBoardBoundary } from '../utils/board'
 import store from '../store'
 import * as _ from '../selectors'
 import { setActiveBlock, moveActiveBlock } from '../actions/activeBlock'
-import { freezeBoard } from '../actions/board'
+import { freezeBoard, removeLineFromBoard } from '../actions/board'
 import Tetromino from '../components/tetromino'
 
 export default class Canvas {
@@ -91,7 +91,7 @@ export default class Canvas {
 		for (let y = 0; y < block.shape.length; ++y) {
 			for (let x = 0; x < block.shape.length; ++x) {
 				if (block.shape[y][x]) {
-					this.setBlockStyle({ fill: 'red' })
+					this.setBlockStyle({ fill: 'cornflowerblue' })
 					this.drawSimpleBlock(block.column + x, block.row + y)
 				}
 			}
@@ -100,15 +100,14 @@ export default class Canvas {
 
 	updateActiveBlockPosition () {
 		this.activeBlockPositionAnimation = setInterval(() => {
-			if (validBoardBoundary()) {
+			if (validBoardBoundary({ offsetY: 1 })) {
 				store.dispatch(moveActiveBlock('DOWN'))
 			}
-			// else {
-			// 	console.log('reached end')
-			// }
-			// 	store.dispatch(freezeBoard(_.getActiveBlock().shape))
-			// 	store.dispatch(setActiveBlock(new Tetromino()))
-			// }
+			else {
+				store.dispatch(freezeBoard(_.getActiveBlock().shape))
+				store.dispatch(removeLineFromBoard())
+				store.dispatch(setActiveBlock(new Tetromino()))
+			}
 		}, this.initialSpeed)
 	}
 

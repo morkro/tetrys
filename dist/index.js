@@ -1057,7 +1057,7 @@ var Canvas = function () {
 			for (var y = 0; y < block.shape.length; ++y) {
 				for (var x = 0; x < block.shape.length; ++x) {
 					if (block.shape[y][x]) {
-						this.setBlockStyle({ fill: 'red' });
+						this.setBlockStyle({ fill: 'cornflowerblue' });
 						this.drawSimpleBlock(block.column + x, block.row + y);
 					}
 				}
@@ -1067,15 +1067,13 @@ var Canvas = function () {
 		key: 'updateActiveBlockPosition',
 		value: function updateActiveBlockPosition() {
 			this.activeBlockPositionAnimation = setInterval(function () {
-				if ((0, _board.validBoardBoundary)()) {
+				if ((0, _board.validBoardBoundary)({ offsetY: 1 })) {
 					_store2.default.dispatch((0, _activeBlock.moveActiveBlock)('DOWN'));
+				} else {
+					_store2.default.dispatch((0, _board2.freezeBoard)(_.getActiveBlock().shape));
+					_store2.default.dispatch((0, _board2.removeLineFromBoard)());
+					_store2.default.dispatch((0, _activeBlock.setActiveBlock)(new _tetromino2.default()));
 				}
-				// else {
-				// 	console.log('reached end')
-				// }
-				// 	store.dispatch(freezeBoard(_.getActiveBlock().shape))
-				// 	store.dispatch(setActiveBlock(new Tetromino()))
-				// }
 			}, this.initialSpeed);
 		}
 	}, {
@@ -1345,11 +1343,11 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 var SHAPES = {
-	I: [[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]],
-	O: [[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]],
-	T: [[0, 0, 0, 0], [1, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]],
-	L: [[0, 0, 0, 0], [1, 1, 1, 0], [1, 0, 0, 0], [0, 0, 0, 0]],
-	Z: [[0, 0, 0, 0], [1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]]
+	I: [[1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]],
+	O: [[0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]],
+	T: [[1, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]],
+	L: [[1, 1, 1, 0], [1, 0, 0, 0], [0, 0, 0, 0]],
+	Z: [[1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]]
 };
 
 exports.default = SHAPES;
@@ -1504,7 +1502,25 @@ function freeze(_ref) {
 }
 
 function removeLine(grid) {
-	return grid;
+	var newGrid = grid;
+	for (var y = _board.BOARD_ROWS - 1; y >= 0; --y) {
+		var filledRow = true;
+		for (var x = 0; x < _board.BOARD_COLUMNS; ++x) {
+			if (grid[y][x] === 0) {
+				filledRow = false;
+				break;
+			}
+		}
+		if (filledRow) {
+			for (var yy = y; yy > 0; --yy) {
+				for (var _x = 0; _x < _board.BOARD_COLUMNS; ++_x) {
+					newGrid[yy][_x] = grid[yy - 1][_x];
+				}
+			}
+			++y;
+		}
+	}
+	return newGrid;
 }
 
 function Board() {
@@ -1517,10 +1533,9 @@ function Board() {
 				grid: freeze({ shape: action.shape, grid: state.grid })
 			});
 		case type.BOARD_LINE_REMOVE:
-			return state;
-		// return Object.assign({}, state, {
-		// 	grid: removeLine(state.grid)
-		// })
+			return Object.assign({}, state, {
+				grid: removeLine(state.grid)
+			});
 		default:
 			return state;
 	}
@@ -1736,18 +1751,19 @@ function validBoardBoundary() {
 			if (shape[y][x]) {
 				var grid = _.getGrid();
 				if (typeof grid[y + newOffsetY] === 'undefined' || typeof grid[y + newOffsetY][x + newOffsetX] === 'undefined' || grid[y + newOffsetY][x + newOffsetX] || x + newOffsetX < 0 || y + newOffsetY >= _.getBoardRows() || x + newOffsetX >= _.getBoardColumns()) {
-					if (x + newOffsetX >= _.getBoardColumns() || y + newOffsetY >= _.getBoardRows()) {
-						console.group();
-						console.log('x =>', x);
-						console.log('newOffsetX =>', newOffsetX);
-						console.log('x + newOffsetX', x + newOffsetX);
-						console.log('_.getBoardColumns()', _.getBoardColumns());
-						console.log('y =>', y);
-						console.log('newOffsetY =>', newOffsetY);
-						console.log('y + newOffsetY', y + newOffsetY);
-						console.log('_.getBoardRows()', _.getBoardRows());
-						console.groupEnd();
-					}
+					// if (x + newOffsetX >= _.getBoardColumns() ||
+					// y + newOffsetY >= _.getBoardRows()) {
+					// 	console.group()
+					// 	console.log('x =>', x)
+					// 	console.log('newOffsetX =>', newOffsetX)
+					// 	console.log('x + newOffsetX', x + newOffsetX)
+					// 	console.log('_.getBoardColumns()', _.getBoardColumns())
+					// 	console.log('y =>', y)
+					// 	console.log('newOffsetY =>', newOffsetY)
+					// 	console.log('y + newOffsetY', y + newOffsetY)
+					// 	console.log('_.getBoardRows()', _.getBoardRows())
+					// 	console.groupEnd()
+					// }
 
 					return false;
 				}

@@ -40,19 +40,19 @@ export function validBoardBoundary ({
 					y + newOffsetY >= _.getBoardRows() ||
 					x + newOffsetX >= _.getBoardColumns()
 				) {
-					if (x + newOffsetX >= _.getBoardColumns() ||
-					y + newOffsetY >= _.getBoardRows()) {
-						console.group()
-						console.log('x =>', x)
-						console.log('newOffsetX =>', newOffsetX)
-						console.log('x + newOffsetX', x + newOffsetX)
-						console.log('_.getBoardColumns()', _.getBoardColumns())
-						console.log('y =>', y)
-						console.log('newOffsetY =>', newOffsetY)
-						console.log('y + newOffsetY', y + newOffsetY)
-						console.log('_.getBoardRows()', _.getBoardRows())
-						console.groupEnd()
-					}
+					// if (x + newOffsetX >= _.getBoardColumns() ||
+					// y + newOffsetY >= _.getBoardRows()) {
+					// 	console.group()
+					// 	console.log('x =>', x)
+					// 	console.log('newOffsetX =>', newOffsetX)
+					// 	console.log('x + newOffsetX', x + newOffsetX)
+					// 	console.log('_.getBoardColumns()', _.getBoardColumns())
+					// 	console.log('y =>', y)
+					// 	console.log('newOffsetY =>', newOffsetY)
+					// 	console.log('y + newOffsetY', y + newOffsetY)
+					// 	console.log('_.getBoardRows()', _.getBoardRows())
+					// 	console.groupEnd()
+					// }
 
 					return false
 				}
