@@ -20,3 +20,8 @@ export function getGrid () {
 export function getActiveBlock () {
 	return store.getState().activeBlock
 }
+
+// Score
+export function getCurrentScore () {
+	return store.getState().score.current
+}

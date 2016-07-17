@@ -5,6 +5,7 @@ import store from '../store'
 import * as _ from '../selectors'
 import { setActiveBlock, moveActiveBlock } from '../actions/activeBlock'
 import { freezeBoard, removeLineFromBoard } from '../actions/board'
+import { updateCurrentScore } from '../actions/score'
 import Tetromino from '../components/tetromino'
 
 export default class Canvas {
@@ -19,7 +20,7 @@ export default class Canvas {
 		this.animationFrame = null
 		this.activeBlockPositionAnimation = null
 		this.isRunningInternal = false
-		this.initialSpeed = 500
+		this.initialSpeed = 350
 
 		if (process.env.NODE_ENV === 'development') {
 			this.stats = new Stats()
@@ -102,6 +103,7 @@ export default class Canvas {
 		this.activeBlockPositionAnimation = setInterval(() => {
 			if (validBoardBoundary({ offsetY: 1 })) {
 				store.dispatch(moveActiveBlock('DOWN'))
+				store.dispatch(updateCurrentScore(10))
 			}
 			else {
 				store.dispatch(freezeBoard(_.getActiveBlock().shape))

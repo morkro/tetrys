@@ -1,14 +1,14 @@
-import * as action from '../constants/actionTypes'
+import { BOARD_FREEZE, BOARD_LINE_REMOVE } from '../constants/board'
 
 export function freezeBoard (shape) {
 	return {
-		type: action.BOARD_FREEZE,
+		type: BOARD_FREEZE,
 		shape
 	}
 }
 
 export function removeLineFromBoard () {
 	return {
-		type: action.BOARD_LINE_REMOVE
+		type: BOARD_LINE_REMOVE
 	}
 }

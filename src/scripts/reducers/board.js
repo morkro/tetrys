@@ -1,7 +1,11 @@
-import * as type from '../constants/actionTypes'
-import { BOARD_COLUMNS, BOARD_ROWS } from '../constants/board'
+import {
+	BOARD_FREEZE,
+	BOARD_LINE_REMOVE,
+	BOARD_COLUMNS,
+	BOARD_ROWS
+} from '../constants/board'
 import { getEmptyGrid } from '../utils/board'
-import * as _ from '../selectors'
+import { getActiveBlock } from '../selectors'
 
 const initialState = {
 	columns: BOARD_COLUMNS,
@@ -10,7 +14,7 @@ const initialState = {
 }
 
 function freeze ({ shape, grid }) {
-	const block = _.getActiveBlock()
+	const block = getActiveBlock()
 	const newGrid = grid
 	for (let y = 0; y < shape.length; ++y) {
 		for (let x = 0; x < shape.length; ++x) {
@@ -46,11 +50,11 @@ function removeLine (grid) {
 
 export default function Board (state = initialState, action) {
 	switch (action.type) {
-	case type.BOARD_FREEZE:
+	case BOARD_FREEZE:
 		return Object.assign({}, state, {
 			grid: freeze({ shape: action.shape, grid: state.grid })
 		})
-	case type.BOARD_LINE_REMOVE:
+	case BOARD_LINE_REMOVE:
 		return Object.assign({}, state, {
 			grid: removeLine(state.grid)
 		})

@@ -1,4 +1,8 @@
-import * as type from '../constants/actionTypes'
+import {
+	ACTIVE_BLOCK_SET,
+	ACTIVE_BLOCK_MOVE,
+	ACTIVE_BLOCK_ROTATE
+} from '../constants/activeBlock'
 import { validBoardBoundary } from '../utils/board'
 
 const initialState = {
@@ -21,14 +25,14 @@ function rotateBlock (current) {
 
 export default function ActiveBlock (state = initialState, action) {
 	switch (action.type) {
-	case type.ACTIVE_BLOCK_SET:
+	case ACTIVE_BLOCK_SET:
 		return Object.assign({}, state, {
 			identifier: action.identifier,
 			shape: action.shape,
 			column: action.column,
 			row: action.row
 		})
-	case type.ACTIVE_BLOCK_MOVE: {
+	case ACTIVE_BLOCK_MOVE: {
 		switch (action.direction) {
 		case 'LEFT':
 			if (validBoardBoundary({ offsetX: -1 })) {
@@ -49,7 +53,7 @@ export default function ActiveBlock (state = initialState, action) {
 			return state
 		}
 	}
-	case type.ACTIVE_BLOCK_ROTATE: {
+	case ACTIVE_BLOCK_ROTATE: {
 		const tetromino = rotateBlock(state.shape)
 		if (validBoardBoundary({ tetromino })) {
 			return Object.assign({}, state, { shape: tetromino })

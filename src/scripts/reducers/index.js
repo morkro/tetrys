@@ -4,11 +4,9 @@ import board from './board'
 import activeBlock from './activeBlock'
 import score from './score'
 
-const tetrys = combineReducers({
+export default combineReducers({
 	score,
 	game,
 	board,
 	activeBlock
 })
-
-export default tetrys
