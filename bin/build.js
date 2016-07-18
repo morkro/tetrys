@@ -16,8 +16,14 @@ module.exports = {
 	scripts () {
 		debug('build javascript')
 		browserify('./src/scripts/index.js')
-			.transform('babelify', { presets: ['es2015'] })
-			.transform('envify', { _: 'purge', NODE_ENV: process.env.NODE_ENV })
+			.transform('babelify', {
+				plugins: ['lodash'],
+				presets: ['es2015']
+			})
+			.transform('envify', {
+				_: 'purge',
+				NODE_ENV: process.env.NODE_ENV
+			})
 			.bundle()
 			.pipe(fs.createWriteStream('./dist/index.js'))
 	},

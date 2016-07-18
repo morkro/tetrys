@@ -20,7 +20,7 @@ export default class Canvas {
 		this.animationFrame = null
 		this.activeBlockPositionAnimation = null
 		this.isRunningInternal = false
-		this.initialSpeed = 350
+		this.initialSpeed = 500
 
 		if (process.env.NODE_ENV === 'development') {
 			this.stats = new Stats()

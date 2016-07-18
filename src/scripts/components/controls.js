@@ -28,6 +28,7 @@ export default class Controls {
 			case 'left':
 			case 'right':
 				return store.dispatch(moveActiveBlock(attr.toUpperCase()))
+			case 'scoreboard':
 			default:
 				return
 			}
