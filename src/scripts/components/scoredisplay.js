@@ -1,6 +1,6 @@
 import { $ } from '../utils/dom'
 import store from '../store'
-import * as _ from '../selectors'
+import { isRunning, getCurrentScore } from '../selectors'
 
 export default class ScoreDisplay {
 	constructor (element) {
@@ -10,9 +10,9 @@ export default class ScoreDisplay {
 
 	updateScoreCount () {
 		const count = parseInt(this.scoreCount.innerText, 10)
-		const currentScore = _.getCurrentScore()
+		const currentScore = getCurrentScore()
 
-		if (_.isRunning() && count !== currentScore) {
+		if (isRunning() && count !== currentScore) {
 			this.scoreCount.innerText = currentScore
 		}
 	}

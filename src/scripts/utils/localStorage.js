@@ -1,6 +1,8 @@
+import { TETRYS_STATE } from '../constants/tetrys'
+
 export function loadState () {
 	try {
-		const serialized = localStorage.getItem('TETRYS_STATE')
+		const serialized = localStorage.getItem(TETRYS_STATE)
 		if (serialized === null) {
 			return undefined
 		}
@@ -14,7 +16,7 @@ export function loadState () {
 export function saveState (state) {
 	try {
 		const serialized = JSON.stringify(state)
-		localStorage.setItem('TETRYS_STATE', serialized)
+		localStorage.setItem(TETRYS_STATE, serialized)
 	}
 	catch (error) {
 		console.error(error)

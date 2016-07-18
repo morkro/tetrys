@@ -1,0 +1,10 @@
+{
+	"name": "Tetrys",
+	"short_name": "Tetrys",
+	"display": "fullscreen",
+	"orientation": "portrait",
+	"start_url": "/index.html",
+	"background": "white",
+	"theme_color": "aliceblue",
+	"icons": []
+}

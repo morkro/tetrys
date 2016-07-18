@@ -7,12 +7,17 @@ watch('./src/index.html', { recursive: true }, () => {
 	build.html()
 })
 
+watch('./src/manifest.json', { recursive: true }, () => {
+	debug('rebuild manifest')
+	build.manifest()
+})
+
 watch('./src/scripts', { recursive: true }, () => {
 	debug('rebuild scripts')
 	build.scripts()
 })
 
 watch('./src/styles', { recursive: true }, () => {
-	debug('rebuild styles')
+	debug('rebuild css')
 	build.css()
 })

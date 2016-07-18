@@ -1,46 +1,11 @@
 <!doctype html>
 <html lang="en">
 <head>
+	<base href="/">
 	<meta charset="utf-8">
 	<title>Tetrys</title>
-	<style type="text/css" rel="stylesheet">
-		* {
-			box-sizing: border-box;
-			text-rendering: optimizeSpeed;
-		}
-		body {
-			height: 95vh;
-			background: #f1f1f1;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex-direction: column;
-		}
-		.tetrys-score {
-			width: 280px;
-			text-align: right;
-		}
-		.game-window {
-			width: 280px;
-			height: 500px;
-		}
-		#game {
-			border: 1px solid black;
-		}
-		.tetrys-controls {
-			margin: 0 auto;
-			width: 280px;
-		}
-		.tetrys-controls ul {
-			display: flex;
-			justify-content: center;
-			list-style: none;
-			padding: 0;
-		}
-		.tetrys-modal {
-			display: none;
-		}
-	</style>
+	<link rel="manifest" href="manifest.json">
+	<link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
 	<div class="tetrys-score"><strong>Score:</strong> <span>0</span></div>

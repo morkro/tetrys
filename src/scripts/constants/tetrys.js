@@ -1,0 +1,1 @@
+export const TETRYS_STATE = 'TETRYS_STATE'
