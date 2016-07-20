@@ -2,6 +2,9 @@ const fs = require('fs-extra')
 const mustache = require('mustache')
 const browserify = require('browserify')
 const sass = require('node-sass')
+const postcss = require('postcss')
+const autoprefixer = require('autoprefixer')
+const cssnano = require('cssnano')
 const debug = require('debug')('tetrys:build')
 const { NODE_ENV } = process.env
 
@@ -10,6 +13,14 @@ function defineSassOutput () {
 		return 'compressed'
 	}
 	return 'nested'
+}
+
+function definePostCssPlugins () {
+	const prefixed = autoprefixer({ browsers: ['last 2 versions'] })
+	if (NODE_ENV === 'production') {
+		return [prefixed, cssnano]
+	}
+	return [prefixed]
 }
 
 module.exports = {
@@ -31,7 +42,7 @@ module.exports = {
 		)
 	},
 
-	manifest () {
+	assets () {
 		debug('move manifest')
 		fs.copy('./src/manifest.json', './dist/manifest.json',
 			{ clobber: true },
@@ -39,6 +50,23 @@ module.exports = {
 				if (error) return debug(`Error moving manifest.json: ${error}`)
 			}
 		)
+
+		debug('move and update humans.txt')
+		fs.readFile('./src/humans.txt', 'utf8', (error, result) => {
+			if (error) return debug(error)
+
+			const date = new Date()
+			const year = date.getFullYear()
+			let month = date.getMonth()
+			let day = date.getDay()
+
+			if (month < 10) month = `0${month}`
+			if (day < 10) day = `0${day}`
+
+			fs.outputFile('./dist/humans.txt',
+				result.replace('YYYY/MM/DD', `${year}/${month}/${day}`)
+			)
+		})
 	},
 
 	scripts () {
@@ -62,16 +90,20 @@ module.exports = {
 			file: './src/styles/main.scss',
 			outFile: './dist/main.css',
 			outputStyle: defineSassOutput()
-		}, (sassError, result) => {
-			if (sassError) {
-				debug(sassError.status)
-				debug(sassError.column)
-				debug(sassError.message)
-				debug(sassError.line)
+		}, (error, compiled) => {
+			if (error) {
+				debug(error.status)
+				debug(error.column)
+				debug(error.message)
+				debug(error.line)
 				return
 			}
-			fs.outputFile('./dist/main.css', result.css, (fsError) => {
-				if (fsError) debug(fsError)
+
+			postcss(definePostCssPlugins()).process(compiled.css).then((result) => {
+				result.warnings().forEach(warn => debug(warn.toString()))
+				fs.outputFile('./dist/main.css', result.css, (fsError) => {
+					if (fsError) debug(fsError)
+				})
 			})
 		})
 	}

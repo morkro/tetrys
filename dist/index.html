@@ -2,19 +2,50 @@
 <html lang="en">
 <head>
 <base href="/">
-<meta charset="utf-8">
 <title>Tetrys</title>
+<meta name="description" content="Tetris Progressive Web Application">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Web Application Manifest -->
 <link rel="manifest" href="manifest.json">
+
+ <!-- Add to homescreen for Chrome on Android -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="Web Starter Kit">
+<link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
+
+<!-- Add to homescreen for Safari on iOS -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Tetrys">
+<link rel="apple-touch-icon" href="images/touch/apple-touch-icon.png">
+
+<!-- Tile icon for Win8 (144x144 + tile color) -->
+<meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+<meta name="msapplication-TileColor" content="#2F3BA2">
+
+<!-- Color the status bar on mobile devices -->
+<meta name="theme-color" content="#2F3BA2">
+
+<!-- Stylesheets -->
 <link rel="stylesheet" type="text/css" href="main.css"></head>
 <body>
-<div class="tetrys-entry">
-	<button type="button">Start game</button>
-	<button type="button">Scoreboard</button>
-</div><div class="tetrys-scoreboard">
+<section class="tetrys-view view-menu">
+	<ul class="tetrys-controls">
+		<li><button type="button" class="controls-btn" data-menu="start">
+			Start game
+		</button></li>
+		<li><button type="button" class="controls-btn" data-menu="scoreboard">
+			Scoreboard
+		</button></li>
+	</ul>
+</section><section class="tetrys-view view-scoreboard is-hidden">
 	<h2>Scoreboard</h2>
 	<span>Highscore: <strong>0</strong></span>
 	<ol></ol>
-</div><div class="tetrys-game">
+</section><section class="tetrys-view view-game is-hidden">
 	<section class="tetrys-score">
 		<strong>Score:</strong> <span>0</span>
 	</section>
@@ -23,9 +54,6 @@
 	</section>
 	<nav class="tetrys-controls">
 		<ul>
-			<li><button class="controls-btn" data-control="start">
-				Start
-			</button></li>
 			<li><button class="controls-btn" data-control="left">
 				Left
 			</button></li>
@@ -40,6 +68,6 @@
 			</button></li>
 		</ul>
 	</nav>
-</div>	<script src="index.js"></script>
+</section>	<script src="index.js"></script>
 </body>
 </html>

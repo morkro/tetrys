@@ -7,9 +7,9 @@ watch(['./src/index.html', './src/views'], { recursive: true }, () => {
 	build.html()
 })
 
-watch('./src/manifest.json', { recursive: true }, () => {
-	debug('rebuild manifest')
-	build.manifest()
+watch(['./src/manifest.json', './src/humans.txt'], { recursive: true }, () => {
+	debug('rebuild assets')
+	build.assets()
 })
 
 watch('./src/scripts', { recursive: true }, () => {

@@ -1,0 +1,34 @@
+.tetrys-view {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.view-score {
+	width: 280px;
+	text-align: right;
+}
+
+.tetrys-window {
+	width: 280px;
+	height: 500px;
+}
+
+#game {
+	border: 1px solid black;
+}
+
+.tetrys-controls {
+	margin: 0 auto;
+	width: 280px;
+
+	ul {
+		display: flex;
+		justify-content: center;
+		list-style: none;
+		padding: 0;
+	}
+}

@@ -3,6 +3,6 @@ const debug = require('debug')('tetrys:build')
 
 debug('start production build')
 build.html()
-build.manifest()
+build.assets()
 build.scripts()
 build.css()

@@ -31,11 +31,13 @@
     "build": "NODE_ENV=production DEBUG=tetrys:* node bin/build-prod.js"
   },
   "devDependencies": {
+    "autoprefixer": "^6.3.7",
     "babel": "^6.5.2",
     "babel-plugin-lodash": "^3.2.4",
     "babel-preset-es2015": "^6.9.0",
     "babelify": "^7.3.0",
     "browserify": "^13.0.1",
+    "cssnano": "^3.7.3",
     "envify": "^3.4.1",
     "eslint": "^3.0.1",
     "eslint-config-airbnb": "^9.0.1",
@@ -43,6 +45,7 @@
     "mustache": "^2.2.1",
     "node-sass": "^3.8.0",
     "node-watch": "^0.3.5",
+    "postcss": "^5.1.0",
     "redux-devtools": "^3.3.1",
     "stats.js": "^0.16.0",
     "tap-spec": "^4.1.1",

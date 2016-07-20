@@ -1,43 +1,11 @@
-* {
-	box-sizing: border-box;
-	text-rendering: optimizeSpeed;
-}
+@charset 'UTF-8';
 
-body {
-	height: 95vh;
-	background: #f1f1f1;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-}
+@import
+	'vendors/normalize';
 
-.tetrys-score {
-	width: 280px;
-	text-align: right;
-}
+@import
+	'base/base',
+	'base/helpers';
 
-.game-window {
-	width: 280px;
-	height: 500px;
-}
-
-#game {
-	border: 1px solid black;
-}
-
-.tetrys-controls {
-	margin: 0 auto;
-	width: 280px;
-
-	ul {
-		display: flex;
-		justify-content: center;
-		list-style: none;
-		padding: 0;
-	}
-}
-
-.tetrys-modal {
-	display: none;
-}
+@import
+	'layout/view';
