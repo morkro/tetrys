@@ -1,39 +1,12 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<base href="/">
-	<meta charset="utf-8">
-	<title>Tetrys</title>
-	<link rel="manifest" href="manifest.json">
-	<link rel="stylesheet" type="text/css" href="main.css">
+	{{> meta }}
 </head>
 <body>
-	<div class="tetrys-score"><strong>Score:</strong> <span>0</span></div>
-	<div class="game-window"><canvas id="game"></canvas></div>
-	<nav class="tetrys-controls">
-		<ul>
-			<li><button class="controls-btn" data-control="start">
-				Start
-			</button></li>
-			<li><button class="controls-btn" data-control="left">
-				Left
-			</button></li>
-			<li><button class="controls-btn" data-control="right">
-				Right
-			</button></li>
-			<li><button class="controls-btn" data-control="end">
-				End
-			</button></li>
-			<li><button class="controls-btn" data-control="scoreboard">
-				Scoreboard
-			</button></li>
-		</ul>
-	</nav>
-	<section class="tetrys-modal">
-		<h2>Scoreboard</h2>
-		<span>Highscore: <strong>0</strong></span>
-		<ol></ol>
-	</section>
+	{{> menu }}
+	{{> score }}
+	{{> game }}
 	<script src="index.js"></script>
 </body>
 </html>

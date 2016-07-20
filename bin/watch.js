@@ -2,7 +2,7 @@ const watch = require('node-watch')
 const debug = require('debug')('tetrys:watcher')
 const build = require('./build.js')
 
-watch('./src/index.html', { recursive: true }, () => {
+watch(['./src/index.html', './src/views'], { recursive: true }, () => {
 	debug('rebuild html')
 	build.html()
 })

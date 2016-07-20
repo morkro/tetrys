@@ -1,10 +1,12 @@
 const fs = require('fs-extra')
+const mustache = require('mustache')
 const browserify = require('browserify')
 const sass = require('node-sass')
 const debug = require('debug')('tetrys:build')
+const { NODE_ENV } = process.env
 
 function defineSassOutput () {
-	if (process.env.NODE_ENV === 'production') {
+	if (NODE_ENV === 'production') {
 		return 'compressed'
 	}
 	return 'nested'
@@ -13,10 +15,18 @@ function defineSassOutput () {
 module.exports = {
 	html () {
 		debug('build html files')
-		fs.copy('./src/index.html', './dist/index.html',
-			{ clobber: true },
-			(error) => {
-				if (error) return debug(`Error building HTML: ${error}`)
+
+		const template = fs.readFileSync('./src/index.html').toString()
+		const meta = fs.readFileSync('./src/views/meta.html').toString()
+		const menu = fs.readFileSync('./src/views/menu.html').toString()
+		const game = fs.readFileSync('./src/views/game.html').toString()
+		const score = fs.readFileSync('./src/views/score.html').toString()
+
+		fs.outputFile(
+			'./dist/index.html',
+			mustache.render(template, {}, { meta, menu, game, score }),
+			(fsError) => {
+				if (fsError) debug(fsError)
 			}
 		)
 	},
@@ -40,7 +50,7 @@ module.exports = {
 			})
 			.transform('envify', {
 				_: 'purge',
-				NODE_ENV: process.env.NODE_ENV
+				NODE_ENV
 			})
 			.bundle()
 			.pipe(fs.createWriteStream('./dist/index.js'))
