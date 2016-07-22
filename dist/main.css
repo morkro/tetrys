@@ -411,12 +411,13 @@ body {
   background: #f1f1f1;
   width: 100vw;
   height: 100vh;
-  overflow: hidden; }
-
-.is-hidden {
-  display: none; }
+  overflow: hidden;
+  position: relative; }
 
 .tetrys-view {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
   display: -ms-flexbox;
@@ -426,7 +427,10 @@ body {
   -ms-flex-pack: center;
       justify-content: center;
   -ms-flex-direction: column;
-      flex-direction: column; }
+      flex-direction: column;
+  transform: translateX(0); }
+  .tetrys-view.is-hidden {
+    transform: translateX(-110%); }
 
 .view-score {
   width: 280px;

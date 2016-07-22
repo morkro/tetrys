@@ -1,13 +1,11 @@
-import Controls from './components/controls'
+import Menu from './components/menu'
 import Keyboard from './components/keyboard'
 import Canvas from './components/canvas'
-import ScoreDisplay from './components/scoredisplay'
+// import ScoreBoard from './components/scoreboard'
 
-const score = new ScoreDisplay('.tetrys-score')
 const game = new Canvas('#game')
-const controls = new Controls('.tetrys-controls')
 
-score.init()
-game.init()
-controls.addEvents()
 Keyboard.addEvents()
+Menu.addEvents()
+game.init()
+// ScoreBoard.init()

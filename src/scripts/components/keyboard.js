@@ -1,26 +1,33 @@
-import * as key from '../constants/keyCode'
 import store from '../store'
 import { isRunning } from '../selectors'
 import { moveActiveBlock, rotateActiveBlock } from '../actions/activeBlock'
+import {
+	LEFT_ARROW,
+	RIGHT_ARROW,
+	UP_ARROW,
+	SPACE_BAR
+} from '../constants/keyCode'
 
-export default class Keyboard {
-	static addEvents () {
-		window.addEventListener('keydown', this.onPressKeydown)
+function onPressKeydown ({ keyCode }) {
+	if (!isRunning()) {
+		return
 	}
 
-	static onPressKeydown ({ keyCode }) {
-		if (isRunning()) {
-			switch (keyCode) {
-			case key.LEFT_ARROW:
-				return store.dispatch(moveActiveBlock('LEFT'))
-			case key.RIGHT_ARROW:
-				return store.dispatch(moveActiveBlock('RIGHT'))
-			case key.SPACE_BAR:
-			case key.UP_ARROW:
-				return store.dispatch(rotateActiveBlock())
-			default:
-				return
-			}
-		}
+	switch (keyCode) {
+	case LEFT_ARROW:
+		return store.dispatch(moveActiveBlock('LEFT'))
+	case RIGHT_ARROW:
+		return store.dispatch(moveActiveBlock('RIGHT'))
+	case SPACE_BAR:
+	case UP_ARROW:
+		return store.dispatch(rotateActiveBlock())
+	default:
+		return
 	}
 }
+
+function addEvents () {
+	window.addEventListener('keydown', onPressKeydown)
+}
+
+export default { addEvents }

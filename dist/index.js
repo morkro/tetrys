@@ -1293,7 +1293,7 @@ function rotateActiveBlock() {
 	};
 }
 
-},{"../constants/activeBlock":31}],23:[function(require,module,exports){
+},{"../constants/activeBlock":30}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1317,7 +1317,7 @@ function removeLineFromBoard() {
 	};
 }
 
-},{"../constants/board":32}],24:[function(require,module,exports){
+},{"../constants/board":31}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1349,7 +1349,7 @@ function updateGameLevel() {
 	};
 }
 
-},{"../constants/game":33}],25:[function(require,module,exports){
+},{"../constants/game":32}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1382,7 +1382,7 @@ function addScore(score) {
 	};
 }
 
-},{"../constants/score":35}],26:[function(require,module,exports){
+},{"../constants/score":34}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1582,20 +1582,65 @@ var Canvas = function () {
 
 exports.default = Canvas;
 
-},{"../actions/activeBlock":22,"../actions/board":23,"../actions/score":25,"../components/tetromino":30,"../selectors":44,"../store":45,"../utils/board":46,"../utils/dom":47,"stats.js":19}],27:[function(require,module,exports){
+},{"../actions/activeBlock":22,"../actions/board":23,"../actions/score":25,"../components/tetromino":29,"../selectors":43,"../store":44,"../utils/board":45,"../utils/dom":46,"stats.js":19}],27:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _store = require('../store');
+
+var _store2 = _interopRequireDefault(_store);
+
+var _selectors = require('../selectors');
+
+var _activeBlock = require('../actions/activeBlock');
+
+var _keyCode = require('../constants/keyCode');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function onPressKeydown(_ref) {
+	var keyCode = _ref.keyCode;
+
+	if (!(0, _selectors.isRunning)()) {
+		return;
+	}
+
+	switch (keyCode) {
+		case _keyCode.LEFT_ARROW:
+			return _store2.default.dispatch((0, _activeBlock.moveActiveBlock)('LEFT'));
+		case _keyCode.RIGHT_ARROW:
+			return _store2.default.dispatch((0, _activeBlock.moveActiveBlock)('RIGHT'));
+		case _keyCode.SPACE_BAR:
+		case _keyCode.UP_ARROW:
+			return _store2.default.dispatch((0, _activeBlock.rotateActiveBlock)());
+		default:
+			return;
+	}
+}
+
+function addEvents() {
+	window.addEventListener('keydown', onPressKeydown);
+}
+
+exports.default = { addEvents: addEvents };
+
+},{"../actions/activeBlock":22,"../constants/keyCode":33,"../selectors":43,"../store":44}],28:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
 var _dom = require('../utils/dom');
 
 var _store = require('../store');
 
 var _store2 = _interopRequireDefault(_store);
+
+var _selectors = require('../selectors');
 
 var _tetromino = require('../components/tetromino');
 
@@ -1607,167 +1652,77 @@ var _activeBlock = require('../actions/activeBlock');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-var Controls = function () {
-	function Controls(controls) {
-		_classCallCheck(this, Controls);
+var $menus = [].concat(_toConsumableArray((0, _dom.$$)('.tetrys-controls')));
+var $views = [].concat(_toConsumableArray((0, _dom.$$)('.tetrys-view')));
+var $menuView = (0, _dom.$)('.tetrys-view.view-menu');
+var $gameView = (0, _dom.$)('.tetrys-view.view-game');
+var $scoreView = (0, _dom.$)('.tetrys-view.view-scoreboard');
 
-		this.controls = (0, _dom.$)(controls);
+function showView(view) {
+	$views.forEach(function (section) {
+		if (section === view) {
+			section.classList.remove('is-hidden');
+			return;
+		}
+		section.classList.add('is-hidden');
+	});
+}
+
+function onStartGame() {
+	showView($gameView);
+	_store2.default.dispatch((0, _game.startGame)());
+	_store2.default.dispatch((0, _activeBlock.setActiveBlock)(new _tetromino2.default()));
+}
+
+function onButtonScoreboard() {
+	showView($scoreView);
+	if ((0, _selectors.isRunning)()) {
+		_store2.default.dispatch((0, _game.endGame)());
+	}
+}
+
+function onButtonBack() {
+	showView($menuView);
+}
+
+function onClickMenu(_ref) {
+	var target = _ref.target;
+
+	if (target.nodeName !== 'BUTTON') {
+		return;
 	}
 
-	_createClass(Controls, [{
-		key: 'addEvents',
-		value: function addEvents() {
-			this.controls.addEventListener('click', this.onClickControls);
-		}
-	}, {
-		key: 'onClickControls',
-		value: function onClickControls(_ref) {
-			var target = _ref.target;
+	var attr = target.getAttribute('data-action');
+	target.blur();
 
-			if (target.nodeName === 'BUTTON') {
-				var attr = target.getAttribute('data-control');
-				target.blur();
-
-				switch (attr) {
-					case 'start':
-						_store2.default.dispatch((0, _game.startGame)());
-						_store2.default.dispatch((0, _activeBlock.setActiveBlock)(new _tetromino2.default()));
-						return;
-					case 'end':
-						return _store2.default.dispatch((0, _game.endGame)());
-					case 'left':
-					case 'right':
-						return _store2.default.dispatch((0, _activeBlock.moveActiveBlock)(attr.toUpperCase()));
-					case 'scoreboard':
-					default:
-						return;
-				}
-			}
-		}
-	}]);
-
-	return Controls;
-}();
-
-exports.default = Controls;
-
-},{"../actions/activeBlock":22,"../actions/game":24,"../components/tetromino":30,"../store":45,"../utils/dom":47}],28:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _keyCode = require('../constants/keyCode');
-
-var key = _interopRequireWildcard(_keyCode);
-
-var _store = require('../store');
-
-var _store2 = _interopRequireDefault(_store);
-
-var _selectors = require('../selectors');
-
-var _activeBlock = require('../actions/activeBlock');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Keyboard = function () {
-	function Keyboard() {
-		_classCallCheck(this, Keyboard);
+	switch (attr) {
+		case 'startGame':
+			return onStartGame();
+		case 'endGame':
+			return _store2.default.dispatch((0, _game.endGame)());
+		case 'moveLeft':
+		case 'moveRight':
+			return _store2.default.dispatch((0, _activeBlock.moveActiveBlock)(attr.toUpperCase()));
+		case 'openScoreBoard':
+			return onButtonScoreboard();
+		case 'openMenu':
+			return onButtonBack();
+		default:
+			return;
 	}
+}
 
-	_createClass(Keyboard, null, [{
-		key: 'addEvents',
-		value: function addEvents() {
-			window.addEventListener('keydown', this.onPressKeydown);
-		}
-	}, {
-		key: 'onPressKeydown',
-		value: function onPressKeydown(_ref) {
-			var keyCode = _ref.keyCode;
+function addEvents() {
+	$menus.forEach(function ($menu) {
+		return $menu.addEventListener('click', onClickMenu);
+	});
+}
 
-			if ((0, _selectors.isRunning)()) {
-				switch (keyCode) {
-					case key.LEFT_ARROW:
-						return _store2.default.dispatch((0, _activeBlock.moveActiveBlock)('LEFT'));
-					case key.RIGHT_ARROW:
-						return _store2.default.dispatch((0, _activeBlock.moveActiveBlock)('RIGHT'));
-					case key.SPACE_BAR:
-					case key.UP_ARROW:
-						return _store2.default.dispatch((0, _activeBlock.rotateActiveBlock)());
-					default:
-						return;
-				}
-			}
-		}
-	}]);
+exports.default = { addEvents: addEvents };
 
-	return Keyboard;
-}();
-
-exports.default = Keyboard;
-
-},{"../actions/activeBlock":22,"../constants/keyCode":34,"../selectors":44,"../store":45}],29:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _dom = require('../utils/dom');
-
-var _store = require('../store');
-
-var _store2 = _interopRequireDefault(_store);
-
-var _selectors = require('../selectors');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ScoreDisplay = function () {
-	function ScoreDisplay(element) {
-		_classCallCheck(this, ScoreDisplay);
-
-		this.element = (0, _dom.$)(element);
-		this.scoreCount = this.element.querySelector('span');
-	}
-
-	_createClass(ScoreDisplay, [{
-		key: 'updateScoreCount',
-		value: function updateScoreCount() {
-			var count = parseInt(this.scoreCount.innerText, 10);
-			var currentScore = (0, _selectors.getCurrentScore)();
-
-			if ((0, _selectors.isRunning)() && count !== currentScore) {
-				this.scoreCount.innerText = currentScore;
-			}
-		}
-	}, {
-		key: 'init',
-		value: function init() {
-			_store2.default.subscribe(this.updateScoreCount.bind(this));
-		}
-	}]);
-
-	return ScoreDisplay;
-}();
-
-exports.default = ScoreDisplay;
-
-},{"../selectors":44,"../store":45,"../utils/dom":47}],30:[function(require,module,exports){
+},{"../actions/activeBlock":22,"../actions/game":24,"../components/tetromino":29,"../selectors":43,"../store":44,"../utils/dom":46}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1804,7 +1759,7 @@ var Tetromino = function Tetromino() {
 
 exports.default = Tetromino;
 
-},{"../constants/shapes":36}],31:[function(require,module,exports){
+},{"../constants/shapes":35}],30:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1814,7 +1769,7 @@ var ACTIVE_BLOCK_SET = exports.ACTIVE_BLOCK_SET = 'ACTIVE_BLOCK_SET';
 var ACTIVE_BLOCK_MOVE = exports.ACTIVE_BLOCK_MOVE = 'ACTIVE_BLOCK_MOVE';
 var ACTIVE_BLOCK_ROTATE = exports.ACTIVE_BLOCK_ROTATE = 'ACTIVE_BLOCK_ROTATE';
 
-},{}],32:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1825,7 +1780,7 @@ var BOARD_LINE_REMOVE = exports.BOARD_LINE_REMOVE = 'BOARD_LINE_REMOVE';
 var BOARD_COLUMNS = exports.BOARD_COLUMNS = 10;
 var BOARD_ROWS = exports.BOARD_ROWS = 20;
 
-},{}],33:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1835,7 +1790,7 @@ var GAME_START = exports.GAME_START = 'GAME_START';
 var GAME_END = exports.GAME_END = 'GAME_END';
 var GAME_LEVEL_UPDATE = exports.GAME_LEVEL_UPDATE = 'GAME_LEVEL_UPDATE';
 
-},{}],34:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1847,7 +1802,7 @@ var LEFT_ARROW = exports.LEFT_ARROW = 37;
 var RIGHT_ARROW = exports.RIGHT_ARROW = 39;
 var DOWN_ARROW = exports.DOWN_ARROW = 40;
 
-},{}],35:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1857,7 +1812,7 @@ var SCORE_CURRENT_UPDATE = exports.SCORE_CURRENT_UPDATE = 'SCORE_CURRENT_UPDATE'
 var SCORE_HIGHSCORE_SET = exports.SCORE_HIGHSCORE_SET = 'SCORE_HIGHSCORE_SET';
 var SCORE_ADD = exports.SCORE_ADD = 'SCORE_ADD';
 
-},{}],36:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1873,7 +1828,7 @@ var SHAPES = {
 
 exports.default = SHAPES;
 
-},{}],37:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1881,12 +1836,12 @@ Object.defineProperty(exports, "__esModule", {
 });
 var TETRYS_STATE = exports.TETRYS_STATE = 'TETRYS_STATE';
 
-},{}],38:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 'use strict';
 
-var _controls = require('./components/controls');
+var _menu = require('./components/menu');
 
-var _controls2 = _interopRequireDefault(_controls);
+var _menu2 = _interopRequireDefault(_menu);
 
 var _keyboard = require('./components/keyboard');
 
@@ -1896,22 +1851,18 @@ var _canvas = require('./components/canvas');
 
 var _canvas2 = _interopRequireDefault(_canvas);
 
-var _scoredisplay = require('./components/scoredisplay');
-
-var _scoredisplay2 = _interopRequireDefault(_scoredisplay);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var score = new _scoredisplay2.default('.tetrys-score');
+// import ScoreBoard from './components/scoreboard'
+
 var game = new _canvas2.default('#game');
-var controls = new _controls2.default('.tetrys-controls');
 
-score.init();
-game.init();
-controls.addEvents();
 _keyboard2.default.addEvents();
+_menu2.default.addEvents();
+game.init();
+// ScoreBoard.init()
 
-},{"./components/canvas":26,"./components/controls":27,"./components/keyboard":28,"./components/scoredisplay":29}],39:[function(require,module,exports){
+},{"./components/canvas":26,"./components/keyboard":27,"./components/menu":28}],38:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1988,7 +1939,7 @@ function ActiveBlock() {
 	}
 }
 
-},{"../constants/activeBlock":31,"../utils/board":46}],40:[function(require,module,exports){
+},{"../constants/activeBlock":30,"../utils/board":45}],39:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2064,7 +2015,7 @@ function Board() {
 	}
 }
 
-},{"../constants/board":32,"../selectors":44,"../utils/board":46}],41:[function(require,module,exports){
+},{"../constants/board":31,"../selectors":43,"../utils/board":45}],40:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2098,7 +2049,7 @@ function Game() {
 	}
 }
 
-},{"../constants/game":33}],42:[function(require,module,exports){
+},{"../constants/game":32}],41:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2132,7 +2083,7 @@ exports.default = (0, _redux.combineReducers)({
 	activeBlock: _activeBlock2.default
 });
 
-},{"./activeBlock":39,"./board":40,"./game":41,"./score":43,"redux":17}],43:[function(require,module,exports){
+},{"./activeBlock":38,"./board":39,"./game":40,"./score":42,"redux":17}],42:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2172,7 +2123,7 @@ function Score() {
 	}
 }
 
-},{"../constants/score":35}],44:[function(require,module,exports){
+},{"../constants/score":34}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2217,7 +2168,7 @@ function getCurrentScore() {
 	return _store2.default.getState().score.current;
 }
 
-},{"../store":45}],45:[function(require,module,exports){
+},{"../store":44}],44:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2249,7 +2200,7 @@ store.subscribe((0, _throttle2.default)(function () {
 
 exports.default = store;
 
-},{"../reducers":42,"../utils/localStorage":48,"lodash/throttle":10,"redux":17}],46:[function(require,module,exports){
+},{"../reducers":41,"../utils/localStorage":47,"lodash/throttle":10,"redux":17}],45:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2326,7 +2277,7 @@ function validBoardBoundary() {
 	return true;
 }
 
-},{"../constants/board":32,"../selectors":44}],47:[function(require,module,exports){
+},{"../constants/board":31,"../selectors":43}],46:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2335,7 +2286,7 @@ Object.defineProperty(exports, "__esModule", {
 var $ = exports.$ = document.querySelector.bind(document);
 var $$ = exports.$$ = document.querySelectorAll.bind(document);
 
-},{}],48:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2368,4 +2319,4 @@ function saveState(state) {
 	}
 }
 
-},{"../constants/tetrys":37}]},{},[38]);
+},{"../constants/tetrys":36}]},{},[37]);
