@@ -432,24 +432,30 @@ body {
   .tetrys-view.is-hidden {
     transform: translateX(-110%); }
 
-.view-score {
-  width: 280px;
-  text-align: right; }
-
-.tetrys-window {
-  width: 280px;
-  height: 500px; }
-
-#game {
-  border: 1px solid black; }
+button {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer; }
 
 .tetrys-controls {
-  margin: 0 auto;
-  width: 280px; }
-  .tetrys-controls ul {
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-pack: center;
-        justify-content: center;
-    list-style: none;
-    padding: 0; }
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+      justify-content: center;
+  list-style: none;
+  padding: 0; }
+
+.tetrys-game {
+  width: 55vw;
+  max-width: 363px;
+  height: 100vw;
+  max-height: 660px;
+  outline: 1px solid black;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center; }

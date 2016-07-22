@@ -1,11 +1,12 @@
-import Menu from './components/menu'
 import Keyboard from './components/keyboard'
+import Controls from './components/controls'
 import Canvas from './components/canvas'
-// import ScoreBoard from './components/scoreboard'
+import { installServiceWorker } from './utils/serviceWorker'
 
+installServiceWorker()
+
+// Initialise UI
 const game = new Canvas('#game')
-
 Keyboard.addEvents()
-Menu.addEvents()
+Controls.addEvents()
 game.init()
-// ScoreBoard.init()

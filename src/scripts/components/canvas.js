@@ -1,4 +1,5 @@
 import Stats from 'stats.js'
+import throttle from 'lodash/throttle'
 import { $ } from '../utils/dom'
 import { validBoardBoundary } from '../utils/board'
 import store from '../store'
@@ -138,11 +139,16 @@ export default class Canvas {
 		cancelAnimationFrame(this.animationFrame)
 	}
 
+	addEvents () {
+		window.addEventListener('resize', throttle(this.setSize, 100).bind(this))
+	}
+
 	init () {
 		if (process.env.NODE_ENV === 'development') {
 			this.appendStats()
 		}
 
+		this.addEvents()
 		this.setSize()
 		this.drawBackground()
 

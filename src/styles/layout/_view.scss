@@ -14,29 +14,3 @@
 		transform: translateX(-110%);
 	}
 }
-
-.view-score {
-	width: 280px;
-	text-align: right;
-}
-
-.tetrys-window {
-	width: 280px;
-	height: 500px;
-}
-
-#game {
-	border: 1px solid black;
-}
-
-.tetrys-controls {
-	margin: 0 auto;
-	width: 280px;
-
-	ul {
-		display: flex;
-		justify-content: center;
-		list-style: none;
-		padding: 0;
-	}
-}

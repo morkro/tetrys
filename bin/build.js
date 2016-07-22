@@ -1,5 +1,6 @@
 const fs = require('fs-extra')
 const mustache = require('mustache')
+const babel = require('babel-core')
 const browserify = require('browserify')
 const sass = require('node-sass')
 const postcss = require('postcss')
@@ -70,7 +71,7 @@ module.exports = {
 	},
 
 	scripts () {
-		debug('build javascript')
+		debug('transpile javascript')
 		browserify('./src/scripts/index.js')
 			.transform('babelify', {
 				plugins: ['lodash'],
@@ -82,6 +83,14 @@ module.exports = {
 			})
 			.bundle()
 			.pipe(fs.createWriteStream('./dist/index.js'))
+
+		debug('move serviceworker')
+		const worker = babel.transformFileSync('./src/scripts/worker.js', {
+			presets: ['es2015']
+		})
+		fs.outputFile('./dist/worker.js', worker.code, (fsError) => {
+			if (fsError) debug(fsError)
+		})
 	},
 
 	css () {
