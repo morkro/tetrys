@@ -9,6 +9,8 @@ import { freezeBoard, removeLineFromBoard } from '../actions/board'
 import { updateCurrentScore } from '../actions/score'
 import Tetromino from '../components/tetromino'
 
+const { NODE_ENV } = process.env
+
 export default class Canvas {
 	constructor (canvas) {
 		this.canvas = $(canvas)
@@ -23,7 +25,7 @@ export default class Canvas {
 		this.isRunningInternal = false
 		this.initialSpeed = 500
 
-		if (process.env.NODE_ENV === 'development') {
+		if (NODE_ENV === 'development') {
 			this.stats = new Stats()
 		}
 	}
@@ -144,7 +146,7 @@ export default class Canvas {
 	}
 
 	init () {
-		if (process.env.NODE_ENV === 'development') {
+		if (NODE_ENV === 'development') {
 			this.appendStats()
 		}
 

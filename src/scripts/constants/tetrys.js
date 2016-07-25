@@ -1,1 +1,2 @@
 export const TETRYS_STATE = 'TETRYS_STATE'
+export const TETRYS_CACHE = 'TETRYS_CACHE'

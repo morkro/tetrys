@@ -14,6 +14,7 @@ const $views = [...$$('.tetrys-view')]
 const $menuView = $views.find($v => $v.classList.contains('view-menu'))
 const $gameView = $views.find($v => $v.classList.contains('view-game'))
 const $scoreView = $views.find($v => $v.classList.contains('view-scoreboard'))
+const $aboutView = $views.find($v => $v.classList.contains('view-about'))
 
 function showView (view) {
 	$views.forEach(section => {
@@ -40,6 +41,13 @@ function onButtonScoreboard () {
 
 function onButtonBack () {
 	showView($menuView)
+	if (isRunning()) {
+		store.dispatch(endGame())
+	}
+}
+
+function onButtonAbout () {
+	showView($aboutView)
 }
 
 function onClickMenu ({ target }) {
@@ -65,6 +73,8 @@ function onClickMenu ({ target }) {
 		return onButtonScoreboard()
 	case 'openMenu':
 		return onButtonBack()
+	case 'openAbout':
+		return onButtonAbout()
 	default:
 		return
 	}

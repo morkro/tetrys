@@ -1427,6 +1427,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var NODE_ENV = "development";
+
 var Canvas = function () {
 	function Canvas(canvas) {
 		_classCallCheck(this, Canvas);
@@ -1443,7 +1445,7 @@ var Canvas = function () {
 		this.isRunningInternal = false;
 		this.initialSpeed = 500;
 
-		if ("development" === 'development') {
+		if (NODE_ENV === 'development') {
 			this.stats = new _stats2.default();
 		}
 	}
@@ -1575,7 +1577,7 @@ var Canvas = function () {
 	}, {
 		key: 'init',
 		value: function init() {
-			if ("development" === 'development') {
+			if (NODE_ENV === 'development') {
 				this.appendStats();
 			}
 
@@ -1630,6 +1632,9 @@ var $gameView = $views.find(function ($v) {
 var $scoreView = $views.find(function ($v) {
 	return $v.classList.contains('view-scoreboard');
 });
+var $aboutView = $views.find(function ($v) {
+	return $v.classList.contains('view-about');
+});
 
 function showView(view) {
 	$views.forEach(function (section) {
@@ -1656,6 +1661,13 @@ function onButtonScoreboard() {
 
 function onButtonBack() {
 	showView($menuView);
+	if ((0, _selectors.isRunning)()) {
+		_store2.default.dispatch((0, _game.endGame)());
+	}
+}
+
+function onButtonAbout() {
+	showView($aboutView);
 }
 
 function onClickMenu(_ref) {
@@ -1683,6 +1695,8 @@ function onClickMenu(_ref) {
 			return onButtonScoreboard();
 		case 'openMenu':
 			return onButtonBack();
+		case 'openAbout':
+			return onButtonAbout();
 		default:
 			return;
 	}
@@ -1854,6 +1868,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var TETRYS_STATE = exports.TETRYS_STATE = 'TETRYS_STATE';
+var TETRYS_CACHE = exports.TETRYS_CACHE = 'TETRYS_CACHE';
 
 },{}],37:[function(require,module,exports){
 'use strict';

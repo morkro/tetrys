@@ -1,13 +1,12 @@
 const fs = require('fs-extra')
 const mustache = require('mustache')
-const babel = require('babel-core')
 const browserify = require('browserify')
 const sass = require('node-sass')
 const postcss = require('postcss')
 const autoprefixer = require('autoprefixer')
 const cssnano = require('cssnano')
 const debug = require('debug')('tetrys:build')
-const { NODE_ENV } = process.env
+const { NODE_ENV, npm_package_version: PACKAGE_VERSION } = process.env
 
 function defineSassOutput () {
 	if (NODE_ENV === 'production') {
@@ -33,10 +32,11 @@ module.exports = {
 		const menu = fs.readFileSync('./src/views/menu.html').toString()
 		const game = fs.readFileSync('./src/views/game.html').toString()
 		const score = fs.readFileSync('./src/views/score.html').toString()
+		const about = fs.readFileSync('./src/views/about.html').toString()
 
 		fs.outputFile(
 			'./dist/index.html',
-			mustache.render(template, {}, { meta, menu, game, score }),
+			mustache.render(template, {}, { meta, menu, game, score, about }),
 			(fsError) => {
 				if (fsError) debug(fsError)
 			}
@@ -70,27 +70,24 @@ module.exports = {
 		})
 	},
 
-	scripts () {
-		debug('transpile javascript')
-		browserify('./src/scripts/index.js')
-			.transform('babelify', {
-				plugins: ['lodash'],
-				presets: ['es2015']
-			})
-			.transform('envify', {
-				_: 'purge',
-				NODE_ENV
-			})
-			.bundle()
-			.pipe(fs.createWriteStream('./dist/index.js'))
+	scripts ({ main, worker } = {}) {
+		if (!arguments.length || main) {
+			debug('create main.js')
+			browserify('./src/scripts/index.js')
+				.transform('babelify', { plugins: ['lodash'], presets: ['es2015'] })
+				.transform('envify', { _: 'purge', NODE_ENV })
+				.bundle()
+				.pipe(fs.createWriteStream('./dist/main.js'))
+		}
 
-		debug('move serviceworker')
-		const worker = babel.transformFileSync('./src/scripts/worker.js', {
-			presets: ['es2015']
-		})
-		fs.outputFile('./dist/worker.js', worker.code, (fsError) => {
-			if (fsError) debug(fsError)
-		})
+		if (!arguments.length || worker) {
+			debug('create serviceworker')
+			browserify('./src/scripts/worker.js')
+				.transform('babelify', { presets: ['es2015'] })
+				.transform('envify', { _: 'purge', PACKAGE_VERSION })
+				.bundle()
+				.pipe(fs.createWriteStream('./dist/worker.js'))
+		}
 	},
 
 	css () {
