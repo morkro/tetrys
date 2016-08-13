@@ -26,6 +26,7 @@
 		"brace-style": [2, "stroustrup"],
 		"prefer-rest-params": 0,
 		"consistent-return": 0,
+		"no-global-assign": 2,
 		"no-param-reassign": [2, { "props": false }],
 		"valid-jsdoc": [2, {
 			"requireReturn": true,

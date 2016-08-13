@@ -1324,6 +1324,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 exports.startGame = startGame;
+exports.pauseGame = pauseGame;
 exports.endGame = endGame;
 exports.updateGameLevel = updateGameLevel;
 
@@ -1333,6 +1334,13 @@ function startGame() {
 	return {
 		type: _game.GAME_START,
 		isRunning: true
+	};
+}
+
+function pauseGame() {
+	return {
+		type: _game.GAME_PAUSED,
+		isRunning: false
 	};
 }
 
@@ -1820,6 +1828,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var GAME_START = exports.GAME_START = 'GAME_START';
+var GAME_PAUSED = exports.GAME_PAUSED = 'GAME_PAUSED';
 var GAME_END = exports.GAME_END = 'GAME_END';
 var GAME_LEVEL_UPDATE = exports.GAME_LEVEL_UPDATE = 'GAME_LEVEL_UPDATE';
 
@@ -2071,6 +2080,7 @@ function Game() {
 
 	switch (action.type) {
 		case _game.GAME_START:
+		case _game.GAME_PAUSED:
 		case _game.GAME_END:
 			return Object.assign({}, state, {
 				isRunning: action.isRunning

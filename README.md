@@ -1,10 +1,16 @@
 # Tetrys
-Tetris as Progressive Web Application
+Tetris as Progressive Web Application.
 
 ## Development :wrench:
 This application _requires_ Node.js `>=6.0.0` to run locally and the [Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en) for debugging Redux applications.
 
 To get started, `npm install` all dependencies. To run the application in **development** mode, use the `npm run dev` command. A **production** build can be created with `npm run build`.
+
+### Updating service worker version
+The service worker version is tied to the `package.json` version. To bump the applications and service worker versions, use [`npm version`](https://docs.npmjs.com/cli/version) command:
+```
+npm version [ major | minor | patch ]
+```
 
 ### Architecture
 Tetrys uses [Redux](http://redux.js.org/) as state container, and no view library. The Sass architecture follows the [7-1 Pattern](http://sass-guidelin.es/#architecture) from Sass-Guidelines.

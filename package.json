@@ -31,6 +31,19 @@
     "build": "NODE_ENV=production DEBUG=tetrys:* node bin/build-prod.js"
   },
   "devDependencies": {
+    "envify": "^3.4.1",
+    "eslint": "^3.0.1",
+    "eslint-config-airbnb": "^10.0.0",
+    "eslint-plugin-import": "^1.9.2",
+    "node-watch": "^0.4.0",
+    "package-json-versionify": "^1.0.2",
+    "redux-devtools": "^3.3.1",
+    "stats.js": "^0.16.0",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.6.0",
+    "uglify-js": "^2.6.4"
+  },
+  "dependencies": {
     "autoprefixer": "^6.3.7",
     "babel": "^6.5.2",
     "babel-core": "^6.11.4",
@@ -39,28 +52,15 @@
     "babelify": "^7.3.0",
     "browserify": "^13.0.1",
     "cssnano": "^3.7.3",
-    "envify": "^3.4.1",
-    "eslint": "^3.0.1",
-    "eslint-config-airbnb": "^9.0.1",
-    "eslint-plugin-import": "^1.9.2",
-    "mustache": "^2.2.1",
-    "node-sass": "^3.8.0",
-    "node-watch": "^0.3.5",
-    "package-json-versionify": "^1.0.2",
-    "postcss": "^5.1.0",
-    "redux-devtools": "^3.3.1",
-    "stats.js": "^0.16.0",
-    "tap-spec": "^4.1.1",
-    "tape": "^4.6.0",
-    "uglify-js": "^2.6.4"
-  },
-  "dependencies": {
     "debug": "^2.2.0",
     "express": "^4.14.0",
     "fs-extra": "^0.30.0",
     "lodash": "^4.13.1",
     "mkdirp": "^0.5.1",
+    "mustache": "^2.2.1",
+    "node-sass": "^3.8.0",
     "redux": "^3.5.2",
-    "rimraf": "^2.5.2"
+    "rimraf": "^2.5.2",
+    "postcss": "^5.1.0",
   }
 }

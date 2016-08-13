@@ -1,6 +1,9 @@
 @charset 'UTF-8';
 
 @import
+	'abstracts/variables';
+
+@import
 	'vendors/normalize';
 
 @import
@@ -15,4 +18,5 @@
 	'components/controls';
 
 @import
+	'pages/menu',
 	'pages/game';

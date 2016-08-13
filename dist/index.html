@@ -33,7 +33,10 @@
 <link rel="stylesheet" type="text/css" href="main.css"></head>
 <body>
 <section class="tetrys-view view-menu">
-	<h1>Tetrys</h1>
+	<header>
+		<h1>Tetrys</h1>
+	</header>
+
 	<ul class="tetrys-controls">
 		<li><button type="button" data-action="startGame">
 			Start game
@@ -45,32 +48,41 @@
 			About
 		</button></li>
 	</ul>
-	<span>Works offline!</span>
+
+	<footer>
+		<span>Works offline!</span>
+		<span>Add to homescreen</span>
+	</footer>
 </section><section class="tetrys-view view-scoreboard is-hidden">
-	<ul class="tetrys-controls">
-		<li><button type="button" data-action="openMenu">
-			Back
-		</button></li>
-	</ul>
-	<h1>Scoreboard</h1>
+	<header>
+		<ul class="tetrys-controls">
+			<li><button type="button" data-action="openMenu">
+				Back
+			</button></li>
+		</ul>
+		<h1>Scoreboard</h1>
+	</header>
+
 	<span>Highscore: <strong>0</strong></span>
 	<ol></ol>
 </section><section class="tetrys-view view-game is-hidden">
-	<section class="tetrys-score">
+	<header class="tetrys-score">
 		<strong>Score:</strong> <span>0</span>
 		<ul class="tetrys-controls">
 			<li><button type="button" data-action="openMenu">
 				Back
 			</button></li>
-			<li><button role="button" data-action="endGame">
-				End
+			<li><button role="button" data-action="pauseGame">
+				Pause
 			</button></li>
 		</ul>
-	</section>
+	</header>
+
 	<section class="tetrys-game">
 		<canvas id="game"></canvas>
 	</section>
-	<nav>
+
+	<footer>
 		<ul class="tetrys-controls">
 			<li><button role="button" data-action="moveBlockLeft">
 				<svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -88,17 +100,21 @@
 				</svg>
 			</button></li>
 		</ul>
-	</nav>
+	</footer>
 </section><section class="tetrys-view view-about is-hidden">
-	<ul class="tetrys-controls">
-		<li><button type="button" data-action="openMenu">
-			Back
-		</button></li>
-	</ul>
-	<h1>About</h1>
+	<header>
+		<ul class="tetrys-controls">
+			<li><button type="button" data-action="openMenu">
+				Back
+			</button></li>
+		</ul>
+		<h1>About</h1>
+	</header>
+
 	<a href="https://github.com/morkro/tetrys" target="_blank">
 		Tetrys on GitHub
 	</a>
-</section>	<script src="main.js"></script>
+</section>	<!-- Coming later -->
+	<script src="main.js"></script>
 </body>
 </html>

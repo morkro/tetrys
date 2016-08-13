@@ -6,41 +6,47 @@ const postcss = require('postcss')
 const autoprefixer = require('autoprefixer')
 const cssnano = require('cssnano')
 const debug = require('debug')('tetrys:build')
+
 const { NODE_ENV, npm_package_version: PACKAGE_VERSION } = process.env
 
-function defineSassOutput () {
+function defineNodeEnvOutput ({ prod = '', dev = '' } = {}) {
 	if (NODE_ENV === 'production') {
-		return 'compressed'
+		return prod
 	}
-	return 'nested'
+	return dev
 }
 
 function definePostCssPlugins () {
 	const prefixed = autoprefixer({ browsers: ['last 2 versions'] })
-	if (NODE_ENV === 'production') {
-		return [prefixed, cssnano]
+	return defineNodeEnvOutput({
+		prod: [prefixed, cssnano],
+		dev: [prefixed]
+	})
+}
+
+function getFileString (file = 'index') {
+	if (file === 'index') {
+		return fs.readFileSync(`./src/${file}.html`).toString()
 	}
-	return [prefixed]
+	return fs.readFileSync(`./src/views/${file}.html`).toString()
 }
 
 module.exports = {
 	html () {
 		debug('build html files')
 
-		const template = fs.readFileSync('./src/index.html').toString()
-		const meta = fs.readFileSync('./src/views/meta.html').toString()
-		const menu = fs.readFileSync('./src/views/menu.html').toString()
-		const game = fs.readFileSync('./src/views/game.html').toString()
-		const score = fs.readFileSync('./src/views/score.html').toString()
-		const about = fs.readFileSync('./src/views/about.html').toString()
+		const output = mustache.render(getFileString('index'), {}, {
+			meta: getFileString('meta'),
+			menu: getFileString('menu'),
+			game: getFileString('game'),
+			score: getFileString('score'),
+			about: getFileString('about')
+			// settings: getFileString('settings')
+		})
 
-		fs.outputFile(
-			'./dist/index.html',
-			mustache.render(template, {}, { meta, menu, game, score, about }),
-			(fsError) => {
-				if (fsError) debug(fsError)
-			}
-		)
+		fs.outputFile('./dist/index.html', output, (fsError) => {
+			if (fsError) debug(fsError)
+		})
 	},
 
 	assets () {
@@ -74,6 +80,7 @@ module.exports = {
 		if (!arguments.length || main) {
 			debug('create main.js')
 			browserify('./src/scripts/index.js')
+				.ignore(defineNodeEnvOutput({ prod: 'stats.js', dev: '' }))
 				.transform('babelify', { plugins: ['lodash'], presets: ['es2015'] })
 				.transform('envify', { _: 'purge', NODE_ENV })
 				.bundle()
@@ -95,7 +102,10 @@ module.exports = {
 		sass.render({
 			file: './src/styles/main.scss',
 			outFile: './dist/main.css',
-			outputStyle: defineSassOutput()
+			outputStyle: defineNodeEnvOutput({
+				prod: 'compressed',
+				dev: 'nested'
+			})
 		}, (error, compiled) => {
 			if (error) {
 				debug(error.status)

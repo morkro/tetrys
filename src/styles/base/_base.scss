@@ -4,9 +4,10 @@
 }
 
 body {
-	background: #f1f1f1;
+	background: $app-background;
 	width: 100vw;
 	height: 100vh;
 	overflow: hidden;
 	position: relative;
+	font-family: $text-font-stack;
 }
