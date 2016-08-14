@@ -14,8 +14,6 @@ server
 		res.sendFile(`${folder}/index.html`)
 	})
 	.listen(server.get('port'), (error) => {
-		if (error) {
-			return debug(error)
-		}
+		if (error) return debug(error)
 		debug(`application is running at localhost:${server.get('port')}`)
 	})
