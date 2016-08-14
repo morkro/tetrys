@@ -35,7 +35,6 @@
     "eslint": "^3.0.1",
     "eslint-config-airbnb": "^10.0.0",
     "eslint-plugin-import": "^1.9.2",
-    "node-watch": "^0.4.0",
     "package-json-versionify": "^1.0.2",
     "redux-devtools": "^3.3.1",
     "stats.js": "^0.16.0",
@@ -59,6 +58,7 @@
     "mkdirp": "^0.5.1",
     "mustache": "^2.2.1",
     "node-sass": "^3.8.0",
+    "node-watch": "^0.4.0",
     "postcss": "^5.1.0",
     "redux": "^3.5.2",
     "rimraf": "^2.5.2"

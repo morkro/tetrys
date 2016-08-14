@@ -8,7 +8,10 @@ $blue: #69D2E7;
 $green: #8A9B0F;
 $brown: #49281F;
 
-$app-background: $azure;
+$app-background: linear-gradient(#cbe1fe, #dcfcfc);
 
 // Assets
 $base-url: '/assets/';
+
+// Easings
+$ease-out-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
