@@ -10,4 +10,11 @@ body {
 	overflow: hidden;
 	position: relative;
 	font-family: $text-font-stack;
+	display: flex;
+	flex-direction: column;
+}
+
+main {
+	height: 95vh;
+	position: relative;
 }

@@ -1,4 +1,4 @@
-import Stats from 'stats.js'
+// import Stats from 'stats.js'
 import throttle from 'lodash/throttle'
 import { $ } from '../utils/dom'
 import { validBoardBoundary } from '../utils/board'
@@ -9,7 +9,7 @@ import { freezeBoard, removeLineFromBoard } from '../actions/board'
 import { updateCurrentScore } from '../actions/score'
 import Tetromino from '../components/tetromino'
 
-const { NODE_ENV } = process.env
+// const { NODE_ENV } = process.env
 
 export default class Canvas {
 	constructor (canvas) {
@@ -25,9 +25,9 @@ export default class Canvas {
 		this.isRunningInternal = false
 		this.initialSpeed = 500
 
-		if (NODE_ENV === 'development') {
-			this.stats = new Stats()
-		}
+		// if (NODE_ENV === 'development') {
+		// 	this.stats = new Stats()
+		// }
 	}
 
 	appendStats () {
@@ -123,18 +123,18 @@ export default class Canvas {
 	loop () {
 		this.animationFrame = requestAnimationFrame(this.loop.bind(this))
 
-		if (process.env.NODE_ENV === 'development') {
-			this.stats.begin()
-		}
+		// if (process.env.NODE_ENV === 'development') {
+		// 	this.stats.begin()
+		// }
 
 		this.clearBoard()
 		this.setBlockStyle({ fill: 'white' })
 		this.drawBackground()
 		this.drawActiveBlock()
 
-		if (process.env.NODE_ENV === 'development') {
-			this.stats.end()
-		}
+		// if (process.env.NODE_ENV === 'development') {
+		// 	this.stats.end()
+		// }
 	}
 
 	cancelLoop () {
@@ -146,9 +146,9 @@ export default class Canvas {
 	}
 
 	init () {
-		if (NODE_ENV === 'development') {
-			this.appendStats()
-		}
+		// if (NODE_ENV === 'development') {
+		// 	this.appendStats()
+		// }
 
 		this.addEvents()
 		this.setSize()

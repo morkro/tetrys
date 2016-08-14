@@ -9,7 +9,7 @@ import {
 	rotateActiveBlock
 } from '../actions/activeBlock'
 
-const $menus = [...$$('.tetrys-controls')]
+const $buttons = [...$$('[data-action]')]
 const $views = [...$$('.tetrys-view')]
 const $menuView = $views.find($v => $v.classList.contains('view-menu'))
 const $gameView = $views.find($v => $v.classList.contains('view-game'))
@@ -81,7 +81,7 @@ function onClickMenu ({ target }) {
 }
 
 function addEvents () {
-	$menus.forEach($menu => $menu.addEventListener('click', onClickMenu))
+	$buttons.forEach($button => $button.addEventListener('click', onClickMenu))
 }
 
 export default { addEvents }

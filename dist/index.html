@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<base href="/">
+	<base href="/">
 <title>Tetrys</title>
 <meta name="description" content="Tetris Progressive Web Application">
 <meta charset="utf-8">
@@ -30,10 +30,14 @@
 <meta name="theme-color" content="#2F3BA2">
 
 <!-- Stylesheets -->
-<link rel="stylesheet" type="text/css" href="main.css"></head>
+<link rel="stylesheet" type="text/css" href="main.css">
+</head>
 <body>
+	<header>
+	<button type="button" data-action="openMenu">Back</button>
+</header>
 	<main role="main">
-<section class="tetrys-view view-menu">
+		<section class="tetrys-view view-menu">
 	<header>
 		<h1>Tetrys</h1>
 	</header>
@@ -54,25 +58,19 @@
 		<span>Works offline!</span>
 		<span>Add to homescreen</span>
 	</footer>
-</section><section class="tetrys-view view-scoreboard is-hidden">
+</section>
+		<section class="tetrys-view view-scoreboard is-hidden">
 	<header>
-		<ul class="tetrys-controls">
-			<li><button type="button" data-action="openMenu">
-				Back
-			</button></li>
-		</ul>
 		<h1>Scoreboard</h1>
 	</header>
 
 	<span>Highscore: <strong>0</strong></span>
 	<ol></ol>
-</section><section class="tetrys-view view-game is-hidden">
+</section>
+		<section class="tetrys-view view-game is-hidden">
 	<header class="tetrys-score">
 		<strong>Score:</strong> <span>0</span>
 		<ul class="tetrys-controls">
-			<li><button type="button" data-action="openMenu">
-				Back
-			</button></li>
 			<li><button role="button" data-action="pauseGame">
 				Pause
 			</button></li>
@@ -102,13 +100,9 @@
 			</button></li>
 		</ul>
 	</footer>
-</section><section class="tetrys-view view-about is-hidden">
+</section>
+		<section class="tetrys-view view-about is-hidden">
 	<header>
-		<ul class="tetrys-controls">
-			<li><button type="button" data-action="openMenu">
-				Back
-			</button></li>
-		</ul>
 		<h1>About</h1>
 	</header>
 
@@ -118,8 +112,8 @@
 	<p>
 		Tetrys is an open source project; all code and documentation can be found on <a href="https://github.com/morkro/tetrys" target="_blank">GitHub</a>.
 	</p>
-</section>	</main>
-	<!-- Coming later -->
+</section>
+	</main>
 	<script src="main.js"></script>
 </body>
 </html>

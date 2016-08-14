@@ -413,14 +413,25 @@ body {
   height: 100vh;
   overflow: hidden;
   position: relative;
-  font-family: "Open Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif; }
+  font-family: "Open Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column; }
+
+main {
+  height: 95vh;
+  position: relative; }
+
+body > header {
+  height: 5vh; }
 
 .tetrys-view {
   position: absolute;
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;

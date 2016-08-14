@@ -1,4 +1,4 @@
-const mustache = require('mustache')
+const nunjucks = require('nunjucks')
 const browserify = require('browserify')
 const sass = require('node-sass')
 const postcss = require('postcss')
@@ -8,7 +8,6 @@ const debug = require('debug')('tetrys:build')
 const {
 	outputFile,
 	readFile,
-	readFileSync,
 	copy,
 	createWriteStream
 } = require('fs-promise')
@@ -41,13 +40,17 @@ function definePostCssPlugins () {
 }
 
 /**
- * Returns the path to the HTML view.
- * @param {String} fileName
+ * Renders the HTML views via nunjucks.
+ * @param {String} path
  * @return {Promise}
  */
-function getFileString (fileName = 'index') {
-	const path = (fileName === 'index') ? fileName : `views/${fileName}`
-	return readFileSync(`./src/${path}.html`, 'utf8').toString()
+function renderHTML (path = '') {
+	return new Promise((resolve, reject) => {
+		nunjucks.render(path, (error, response) => {
+			if (error) reject(error)
+			resolve(response)
+		})
+	})
 }
 
 /**
@@ -125,17 +128,11 @@ function transpileJS ({
 module.exports = {
 	html () {
 		debug('build html files')
+		nunjucks.configure('./src/views')
 
-		const output = mustache.render(getFileString('index'), {}, {
-			meta: getFileString('meta'),
-			menu: getFileString('menu'),
-			game: getFileString('game'),
-			score: getFileString('score'),
-			about: getFileString('about')
-			// settings: getFileString('settings')re
-		})
-
-		return outputFile('./dist/index.html', output)
+		renderHTML('./index.html')
+			.then(file => outputFile('./dist/index.html', file))
+			.catch(debug)
 	},
 
 	assets () {
