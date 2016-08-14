@@ -54,13 +54,13 @@
     "cssnano": "^3.7.3",
     "debug": "^2.2.0",
     "express": "^4.14.0",
-    "fs-extra": "^0.30.0",
+    "fs-promise": "^0.5.0",
     "lodash": "^4.13.1",
     "mkdirp": "^0.5.1",
     "mustache": "^2.2.1",
     "node-sass": "^3.8.0",
-    "redux": "^3.5.2",
-    "rimraf": "^2.5.2",
     "postcss": "^5.1.0",
+    "redux": "^3.5.2",
+    "rimraf": "^2.5.2"
   }
 }
