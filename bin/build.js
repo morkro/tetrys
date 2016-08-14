@@ -97,11 +97,22 @@ function applyPostCSS ({ css }) {
 		.then(result => outputFile('./dist/main.css', result.css))
 }
 
+function transpileJS ({
+	fileName,
+	outputFileName = fileName,
+	ignoreFile = '',
+	plugins = [],
+	params = {}
+} = {}) {
+	browserify(`./src/scripts/${fileName}.js`)
+		.ignore(ignoreFile)
+		.transform('babelify', { plugins, presets: ['es2015'] })
+		.transform('envify', Object.assign({ _: 'purge' }, params))
+		.bundle()
+		.pipe(createWriteStream(`./dist/${outputFileName}.js`))
+}
+
 module.exports = {
-	/**
-	 * Creates the HTML view using Mustache.js and re
-	 * @return {Promise}
-	 */
 	html () {
 		debug('build html files')
 
@@ -111,11 +122,10 @@ module.exports = {
 			game: getFileString('game'),
 			score: getFileString('score'),
 			about: getFileString('about')
-			// settings: getFileString('settings')
+			// settings: getFileString('settings')re
 		})
 
 		return outputFile('./dist/index.html', output)
-			.catch(debug)
 	},
 
 	assets () {
@@ -133,21 +143,18 @@ module.exports = {
 	scripts ({ main, worker } = {}) {
 		if (!arguments.length || main) {
 			debug('create main.js')
-			browserify('./src/scripts/index.js')
-				.ignore(defineNodeEnvOutput({ prod: 'stats.js', dev: '' }))
-				.transform('babelify', { plugins: ['lodash'], presets: ['es2015'] })
-				.transform('envify', { _: 'purge', NODE_ENV })
-				.bundle()
-				.pipe(createWriteStream('./dist/main.js'))
+			transpileJS({
+				fileName: 'index',
+				outputFileName: 'main',
+				ignoreFile: defineNodeEnvOutput({ prod: 'stats.js', dev: '' }),
+				plugins: ['lodash'],
+				params: { NODE_ENV }
+			})
 		}
 
 		if (!arguments.length || worker) {
 			debug('create serviceworker')
-			browserify('./src/scripts/worker.js')
-				.transform('babelify', { presets: ['es2015'] })
-				.transform('envify', { _: 'purge', PACKAGE_VERSION })
-				.bundle()
-				.pipe(createWriteStream('./dist/worker.js'))
+			transpileJS({ fileName: 'worker', params: { PACKAGE_VERSION } })
 		}
 	},
 
