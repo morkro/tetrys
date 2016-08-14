@@ -8,6 +8,7 @@ const debug = require('debug')('tetrys:build')
 const {
 	outputFile,
 	readFile,
+	readFileSync,
 	copy,
 	createWriteStream
 } = require('fs-promise')
@@ -46,7 +47,7 @@ function definePostCssPlugins () {
  */
 function getFileString (fileName = 'index') {
 	const path = (fileName === 'index') ? fileName : `views/${fileName}`
-	return readFile(`./src/${path}.html`).toString()
+	return readFileSync(`./src/${path}.html`, 'utf8').toString()
 }
 
 /**
@@ -97,8 +98,17 @@ function applyPostCSS ({ css }) {
 		.then(result => outputFile('./dist/main.css', result.css))
 }
 
+/**
+ * Transpiles JavaScript using Browserify, Babelify, and Envify.
+ * @param {String} fileName
+ * @param {String} outputFileName
+ * @param {String} ignoreFile
+ * @param {Array}  plugins
+ * @param {Object} params
+ * @return {WriteStream}
+ */
 function transpileJS ({
-	fileName,
+	fileName = '',
 	outputFileName = fileName,
 	ignoreFile = '',
 	plugins = [],
