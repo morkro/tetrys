@@ -2,7 +2,7 @@ const { outputFile } = require('fs-promise')
 const nunjucks = require('nunjucks')
 const debug = require('debug')('tetrys:build:html')
 
-nunjucks.configure('./src/views')
+nunjucks.configure('./src/views', { watch: true })
 
 /**
  * Renders the HTML views via nunjucks.
@@ -21,6 +21,6 @@ function renderHTML (path = '') {
 module.exports = () => {
 	debug('build html files')
 	return renderHTML('./index.html')
-		.then(file => outputFile('./dist/index.html', file))
+		.then(file => outputFile('./dist/index.html', file, 'utf8'))
 		.catch(debug)
 }

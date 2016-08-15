@@ -8,7 +8,7 @@ const debug = require('debug')('tetrys:watcher')
 module.exports = () => {
 	debug('start watching files')
 
-	watch(['./src/index.html', './src/views'], () => {
+	watch('./src/views', () => {
 		debug('rebuild html')
 		createHTML()
 	})
