@@ -1,28 +1,35 @@
+const createHTML = require('./build-html')
+const createCSS = require('./build-css')
+const moveAssets = require('./build-assets')
+const createJS = require('./build-js')
 const watch = require('node-watch')
 const debug = require('debug')('tetrys:watcher')
-const build = require('./build.js')
 
-watch(['./src/index.html', './src/views'], () => {
-	debug('rebuild html')
-	build.html()
-})
+module.exports = () => {
+	debug('start watching files')
 
-watch(['./src/manifest.json', './src/humans.txt'], () => {
-	debug('rebuild assets')
-	build.assets()
-})
+	watch(['./src/index.html', './src/views'], () => {
+		debug('rebuild html')
+		createHTML()
+	})
 
-watch('./src/scripts', () => {
-	debug('rebuild scripts')
-	build.scripts()
-})
+	watch('./src/meta', () => {
+		debug('rebuild assets')
+		moveAssets()
+	})
 
-watch('./package.json', () => {
-	debug('rebuild service worker')
-	build.scripts({ main: false, worker: true })
-})
+	watch('./src/scripts', () => {
+		debug('rebuild scripts')
+		Promise.all([createJS.main(), createJS.worker()])
+	})
 
-watch('./src/styles', () => {
-	debug('rebuild css')
-	build.css()
-})
+	watch('./package.json', () => {
+		debug('rebuild service worker')
+		createJS.worker()
+	})
+
+	watch('./src/styles', () => {
+		debug('rebuild css')
+		createCSS()
+	})
+}

@@ -27,8 +27,8 @@
     "clean": "rimraf ./dist && mkdirp ./dist",
     "lint": "eslint -f tap src/scripts",
     "test": "tape tests/**/*.js | tap-spec",
-    "dev": "NODE_ENV=development DEBUG=tetrys:* node bin/build-dev.js",
-    "build": "NODE_ENV=production DEBUG=tetrys:* node bin/build-prod.js"
+    "dev": "NODE_ENV=development DEBUG=tetrys:* node bin/build.js",
+    "build": "NODE_ENV=production DEBUG=tetrys:* node bin/build.js"
   },
   "devDependencies": {
     "envify": "^3.4.1",
