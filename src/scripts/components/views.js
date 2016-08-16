@@ -5,7 +5,7 @@ const $body = document.body
 
 function updateBodyClass () {
 	$body.className = $body.className.replace(
-		/page-(.*)/g, `page-${getRoute().route}`
+		/page-(.*)/g, `page-${getRoute()}`
 	)
 }
 

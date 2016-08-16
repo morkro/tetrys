@@ -28,5 +28,5 @@ export function getCurrentScore () {
 
 // Route
 export function getRoute () {
-	return store.getState().route
+	return store.getState().route.route
 }

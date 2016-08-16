@@ -12,7 +12,6 @@ function onClickButton ({ target }) {
 		store.dispatch(changeRoute(dataRoute))
 	}
 
-	target.focus()
 	target.blur()
 }
 
