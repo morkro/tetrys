@@ -1278,7 +1278,7 @@ function rotateActiveBlock() {
 	};
 }
 
-},{"../constants/activeBlock":31}],24:[function(require,module,exports){
+},{"../constants/activeBlock":32}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1302,47 +1302,28 @@ function removeLineFromBoard() {
 	};
 }
 
-},{"../constants/board":32}],25:[function(require,module,exports){
+},{"../constants/board":33}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.startGame = startGame;
-exports.pauseGame = pauseGame;
-exports.endGame = endGame;
-exports.updateGameLevel = updateGameLevel;
+exports.default = changeRoute;
 
-var _game = require('../constants/game');
+var _route = require('../constants/route');
 
-function startGame() {
+var _route2 = _interopRequireDefault(_route);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function changeRoute(route) {
 	return {
-		type: _game.GAME_START,
-		isRunning: true
+		type: _route2.default,
+		route: route
 	};
 }
 
-function pauseGame() {
-	return {
-		type: _game.GAME_PAUSED,
-		isRunning: false
-	};
-}
-
-function endGame() {
-	return {
-		type: _game.GAME_END,
-		isRunning: false
-	};
-}
-
-function updateGameLevel() {
-	return {
-		type: _game.GAME_LEVEL_UPDATE
-	};
-}
-
-},{"../constants/game":33}],26:[function(require,module,exports){
+},{"../constants/route":36}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1375,7 +1356,52 @@ function addScore(score) {
 	};
 }
 
-},{"../constants/score":35}],27:[function(require,module,exports){
+},{"../constants/score":37}],27:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _dom = require('../utils/dom');
+
+var _store = require('../store');
+
+var _store2 = _interopRequireDefault(_store);
+
+var _route = require('../actions/route');
+
+var _route2 = _interopRequireDefault(_route);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+var $buttons = [].concat(_toConsumableArray((0, _dom.$$)('button')));
+
+function onClickButton(_ref) {
+	var target = _ref.target;
+
+	if (target.nodeName !== 'BUTTON') return;
+	var dataRoute = target.getAttribute('data-route');
+
+	if (dataRoute) {
+		_store2.default.dispatch((0, _route2.default)(dataRoute));
+	}
+
+	target.focus();
+	target.blur();
+}
+
+function addEvents() {
+	$buttons.forEach(function ($btn) {
+		return $btn.addEventListener('click', onClickButton);
+	});
+}
+
+exports.default = { addEvents: addEvents };
+
+},{"../actions/route":25,"../store":48,"../utils/dom":50}],28:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1584,123 +1610,7 @@ var Canvas = function () {
 
 exports.default = Canvas;
 
-},{"../actions/activeBlock":23,"../actions/board":24,"../actions/score":26,"../components/tetromino":30,"../selectors":44,"../store":45,"../utils/board":46,"../utils/dom":47,"lodash/throttle":12}],28:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _dom = require('../utils/dom');
-
-var _store = require('../store');
-
-var _store2 = _interopRequireDefault(_store);
-
-var _selectors = require('../selectors');
-
-var _tetromino = require('../components/tetromino');
-
-var _tetromino2 = _interopRequireDefault(_tetromino);
-
-var _game = require('../actions/game');
-
-var _activeBlock = require('../actions/activeBlock');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-var $buttons = [].concat(_toConsumableArray((0, _dom.$$)('[data-action]')));
-var $views = [].concat(_toConsumableArray((0, _dom.$$)('.tetrys-view')));
-var $menuView = $views.find(function ($v) {
-	return $v.classList.contains('view-menu');
-});
-var $gameView = $views.find(function ($v) {
-	return $v.classList.contains('view-game');
-});
-var $scoreView = $views.find(function ($v) {
-	return $v.classList.contains('view-scoreboard');
-});
-var $aboutView = $views.find(function ($v) {
-	return $v.classList.contains('view-about');
-});
-
-function showView(view) {
-	$views.forEach(function (section) {
-		if (section === view) {
-			section.classList.remove('is-hidden');
-			return;
-		}
-		section.classList.add('is-hidden');
-	});
-}
-
-function onStartGame() {
-	showView($gameView);
-	_store2.default.dispatch((0, _game.startGame)());
-	_store2.default.dispatch((0, _activeBlock.setActiveBlock)(new _tetromino2.default()));
-}
-
-function onButtonScoreboard() {
-	showView($scoreView);
-	if ((0, _selectors.isRunning)()) {
-		_store2.default.dispatch((0, _game.endGame)());
-	}
-}
-
-function onButtonBack() {
-	showView($menuView);
-	if ((0, _selectors.isRunning)()) {
-		_store2.default.dispatch((0, _game.endGame)());
-	}
-}
-
-function onButtonAbout() {
-	showView($aboutView);
-}
-
-function onClickMenu(_ref) {
-	var target = _ref.target;
-
-	if (target.nodeName !== 'BUTTON') {
-		return;
-	}
-
-	var attr = target.getAttribute('data-action');
-	target.blur();
-
-	switch (attr) {
-		case 'startGame':
-			return onStartGame();
-		case 'endGame':
-			return _store2.default.dispatch((0, _game.endGame)());
-		case 'moveBlockLeft':
-			return _store2.default.dispatch((0, _activeBlock.moveActiveBlock)('LEFT'));
-		case 'moveBlockRight':
-			return _store2.default.dispatch((0, _activeBlock.moveActiveBlock)('RIGHT'));
-		case 'rotateBlock':
-			return _store2.default.dispatch((0, _activeBlock.rotateActiveBlock)());
-		case 'openScoreBoard':
-			return onButtonScoreboard();
-		case 'openMenu':
-			return onButtonBack();
-		case 'openAbout':
-			return onButtonAbout();
-		default:
-			return;
-	}
-}
-
-function addEvents() {
-	$buttons.forEach(function ($button) {
-		return $button.addEventListener('click', onClickMenu);
-	});
-}
-
-exports.default = { addEvents: addEvents };
-
-},{"../actions/activeBlock":23,"../actions/game":25,"../components/tetromino":30,"../selectors":44,"../store":45,"../utils/dom":47}],29:[function(require,module,exports){
+},{"../actions/activeBlock":23,"../actions/board":24,"../actions/score":26,"../components/tetromino":30,"../selectors":47,"../store":48,"../utils/board":49,"../utils/dom":50,"lodash/throttle":12}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1745,7 +1655,7 @@ function addEvents() {
 
 exports.default = { addEvents: addEvents };
 
-},{"../actions/activeBlock":23,"../constants/keyCode":34,"../selectors":44,"../store":45}],30:[function(require,module,exports){
+},{"../actions/activeBlock":23,"../constants/keyCode":35,"../selectors":47,"../store":48}],30:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1782,7 +1692,34 @@ var Tetromino = function Tetromino() {
 
 exports.default = Tetromino;
 
-},{"../constants/shapes":36}],31:[function(require,module,exports){
+},{"../constants/shapes":38}],31:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _store = require('../store');
+
+var _store2 = _interopRequireDefault(_store);
+
+var _selectors = require('../selectors');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var $body = document.body;
+
+function updateBodyClass() {
+	$body.className = $body.className.replace(/page-(.*)/g, 'page-' + (0, _selectors.getRoute)().route);
+}
+
+function addEvents() {
+	_store2.default.subscribe(updateBodyClass);
+}
+
+exports.default = { addEvents: addEvents };
+
+},{"../selectors":47,"../store":48}],32:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1792,7 +1729,7 @@ var ACTIVE_BLOCK_SET = exports.ACTIVE_BLOCK_SET = 'ACTIVE_BLOCK_SET';
 var ACTIVE_BLOCK_MOVE = exports.ACTIVE_BLOCK_MOVE = 'ACTIVE_BLOCK_MOVE';
 var ACTIVE_BLOCK_ROTATE = exports.ACTIVE_BLOCK_ROTATE = 'ACTIVE_BLOCK_ROTATE';
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1803,7 +1740,7 @@ var BOARD_LINE_REMOVE = exports.BOARD_LINE_REMOVE = 'BOARD_LINE_REMOVE';
 var BOARD_COLUMNS = exports.BOARD_COLUMNS = 10;
 var BOARD_ROWS = exports.BOARD_ROWS = 20;
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1814,7 +1751,7 @@ var GAME_PAUSED = exports.GAME_PAUSED = 'GAME_PAUSED';
 var GAME_END = exports.GAME_END = 'GAME_END';
 var GAME_LEVEL_UPDATE = exports.GAME_LEVEL_UPDATE = 'GAME_LEVEL_UPDATE';
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1826,7 +1763,16 @@ var LEFT_ARROW = exports.LEFT_ARROW = 37;
 var RIGHT_ARROW = exports.RIGHT_ARROW = 39;
 var DOWN_ARROW = exports.DOWN_ARROW = 40;
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var ROUTE_CHANGE = 'ROUTE_CHANGE';
+exports.default = ROUTE_CHANGE;
+
+},{}],37:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1836,7 +1782,7 @@ var SCORE_CURRENT_UPDATE = exports.SCORE_CURRENT_UPDATE = 'SCORE_CURRENT_UPDATE'
 var SCORE_HIGHSCORE_SET = exports.SCORE_HIGHSCORE_SET = 'SCORE_HIGHSCORE_SET';
 var SCORE_ADD = exports.SCORE_ADD = 'SCORE_ADD';
 
-},{}],36:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1852,7 +1798,7 @@ var SHAPES = {
 
 exports.default = SHAPES;
 
-},{}],37:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1861,16 +1807,20 @@ Object.defineProperty(exports, "__esModule", {
 var TETRYS_STATE = exports.TETRYS_STATE = 'TETRYS_STATE';
 var TETRYS_CACHE = exports.TETRYS_CACHE = 'TETRYS_CACHE';
 
-},{}],38:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 var _keyboard = require('./components/keyboard');
 
 var _keyboard2 = _interopRequireDefault(_keyboard);
 
-var _controls = require('./components/controls');
+var _buttons = require('./components/buttons');
 
-var _controls2 = _interopRequireDefault(_controls);
+var _buttons2 = _interopRequireDefault(_buttons);
+
+var _views = require('./components/views');
+
+var _views2 = _interopRequireDefault(_views);
 
 var _canvas = require('./components/canvas');
 
@@ -1885,10 +1835,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // Initialise UI
 var game = new _canvas2.default('#game');
 _keyboard2.default.addEvents();
-_controls2.default.addEvents();
+_buttons2.default.addEvents();
+_views2.default.addEvents();
 game.init();
 
-},{"./components/canvas":27,"./components/controls":28,"./components/keyboard":29,"./utils/serviceWorker":49}],39:[function(require,module,exports){
+},{"./components/buttons":27,"./components/canvas":28,"./components/keyboard":29,"./components/views":31,"./utils/serviceWorker":52}],41:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1965,7 +1916,7 @@ function ActiveBlock() {
 	}
 }
 
-},{"../constants/activeBlock":31,"../utils/board":46}],40:[function(require,module,exports){
+},{"../constants/activeBlock":32,"../utils/board":49}],42:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2041,7 +1992,7 @@ function Board() {
 	}
 }
 
-},{"../constants/board":32,"../selectors":44,"../utils/board":46}],41:[function(require,module,exports){
+},{"../constants/board":33,"../selectors":47,"../utils/board":49}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2076,7 +2027,7 @@ function Game() {
 	}
 }
 
-},{"../constants/game":33}],42:[function(require,module,exports){
+},{"../constants/game":34}],44:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2101,16 +2052,53 @@ var _score = require('./score');
 
 var _score2 = _interopRequireDefault(_score);
 
+var _route = require('./route');
+
+var _route2 = _interopRequireDefault(_route);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = (0, _redux.combineReducers)({
 	score: _score2.default,
 	game: _game2.default,
 	board: _board2.default,
-	activeBlock: _activeBlock2.default
+	activeBlock: _activeBlock2.default,
+	route: _route2.default
 });
 
-},{"./activeBlock":39,"./board":40,"./game":41,"./score":43,"redux":19}],43:[function(require,module,exports){
+},{"./activeBlock":41,"./board":42,"./game":43,"./route":45,"./score":46,"redux":19}],45:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = Route;
+
+var _route = require('../constants/route');
+
+var _route2 = _interopRequireDefault(_route);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var initialState = {
+	route: 'menu'
+};
+
+function Route() {
+	var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
+	var action = arguments[1];
+
+	switch (action.type) {
+		case _route2.default:
+			return Object.assign({}, state, {
+				route: action.route
+			});
+		default:
+			return state;
+	}
+}
+
+},{"../constants/route":36}],46:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2150,7 +2138,7 @@ function Score() {
 	}
 }
 
-},{"../constants/score":35}],44:[function(require,module,exports){
+},{"../constants/score":37}],47:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2162,6 +2150,7 @@ exports.getBoardRows = getBoardRows;
 exports.getGrid = getGrid;
 exports.getActiveBlock = getActiveBlock;
 exports.getCurrentScore = getCurrentScore;
+exports.getRoute = getRoute;
 
 var _store = require('../store');
 
@@ -2195,7 +2184,12 @@ function getCurrentScore() {
 	return _store2.default.getState().score.current;
 }
 
-},{"../store":45}],45:[function(require,module,exports){
+// Route
+function getRoute() {
+	return _store2.default.getState().route;
+}
+
+},{"../store":48}],48:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2227,7 +2221,7 @@ store.subscribe((0, _throttle2.default)(function () {
 
 exports.default = store;
 
-},{"../reducers":42,"../utils/localStorage":48,"lodash/throttle":12,"redux":19}],46:[function(require,module,exports){
+},{"../reducers":44,"../utils/localStorage":51,"lodash/throttle":12,"redux":19}],49:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2304,7 +2298,7 @@ function validBoardBoundary() {
 	return true;
 }
 
-},{"../constants/board":32,"../selectors":44}],47:[function(require,module,exports){
+},{"../constants/board":33,"../selectors":47}],50:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2313,7 +2307,7 @@ Object.defineProperty(exports, "__esModule", {
 var $ = exports.$ = document.querySelector.bind(document);
 var $$ = exports.$$ = document.querySelectorAll.bind(document);
 
-},{}],48:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2346,7 +2340,7 @@ function saveState(state) {
 	}
 }
 
-},{"../constants/tetrys":37}],49:[function(require,module,exports){
+},{"../constants/tetrys":39}],52:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2365,4 +2359,4 @@ function installServiceWorker() {
 	});
 }
 
-},{}]},{},[38]);
+},{}]},{},[40]);

@@ -1,3 +1,5 @@
+$pages: ("menu", "about", "scoreboard", "game");
+
 .tetrys-view {
 	position: absolute;
 	top: 0;
@@ -8,10 +10,12 @@
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	transform: translateX(0);
+	transform: translateX(-110%);
 
-	&.is-hidden {
-		transform: translateX(-110%);
+	@each $page in $pages {
+		.page-#{$page} &.view-#{$page} {
+			transform: translateX(0);
+		}
 	}
 }
 

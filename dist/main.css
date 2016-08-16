@@ -440,9 +440,15 @@ body > header {
       justify-content: center;
   -ms-flex-direction: column;
       flex-direction: column;
-  transform: translateX(0); }
-  .tetrys-view.is-hidden {
-    transform: translateX(-110%); }
+  transform: translateX(-110%); }
+  .page-menu .tetrys-view.view-menu {
+    transform: translateX(0); }
+  .page-about .tetrys-view.view-about {
+    transform: translateX(0); }
+  .page-scoreboard .tetrys-view.view-scoreboard {
+    transform: translateX(0); }
+  .page-game .tetrys-view.view-game {
+    transform: translateX(0); }
 
 .tetrys-view header {
   width: 100vw;

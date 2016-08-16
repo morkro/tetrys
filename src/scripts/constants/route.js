@@ -1,0 +1,2 @@
+const ROUTE_CHANGE = 'ROUTE_CHANGE'
+export default ROUTE_CHANGE
