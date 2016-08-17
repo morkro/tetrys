@@ -467,8 +467,15 @@ p {
 .tetrys-view footer {
   width: 100vw;
   border-top: 2px solid black;
-  padding: 3vw 4vw;
-  text-align: center; }
+  padding: 0vw 4vw;
+  height: 20vw;
+  text-align: center;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-pack: center;
+      justify-content: center; }
 
 button {
   font-weight: 700;
@@ -504,6 +511,9 @@ button {
       align-items: center; }
   .view-menu .tetrys-controls li {
     margin-bottom: 20px; }
+
+.view-game footer .tetrys-controls {
+  margin: 0; }
 
 .tetrys-game {
   width: 70vw;

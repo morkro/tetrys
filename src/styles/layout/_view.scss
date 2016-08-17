@@ -28,6 +28,10 @@ $pages: ("menu", "about", "scoreboard", "game");
 .tetrys-view footer {
 	width: 100vw;
 	border-top: 2px solid black;
-	padding: 3vw 4vw;
+	padding: 0vw 4vw;
+	height: 20vw;
 	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }

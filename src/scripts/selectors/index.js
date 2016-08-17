@@ -16,9 +16,9 @@ export function getGrid () {
 	return store.getState().board.grid
 }
 
-// Active block
-export function getActiveBlock () {
-	return store.getState().activeBlock
+// Tetromino
+export function getTetromino () {
+	return store.getState().tetromino
 }
 
 // Score

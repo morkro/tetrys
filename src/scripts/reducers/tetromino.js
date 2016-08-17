@@ -1,8 +1,4 @@
-import {
-	ACTIVE_BLOCK_SET,
-	ACTIVE_BLOCK_MOVE,
-	ACTIVE_BLOCK_ROTATE
-} from '../constants/activeBlock'
+import { TETROMINO_ADD, TETROMINO_MOVE, TETROMINO_ROTATE } from '../constants/tetromino'
 import { validBoardBoundary } from '../utils/board'
 
 const initialState = {
@@ -12,7 +8,7 @@ const initialState = {
 	row: 0
 }
 
-function rotateBlock (current) {
+function rotateTetromino (current) {
 	const newCurrent = []
 	for (let y = 0; y < current.length; ++y) {
 		newCurrent[y] = []
@@ -23,16 +19,16 @@ function rotateBlock (current) {
 	return newCurrent
 }
 
-export default function ActiveBlock (state = initialState, action) {
+export default function Tetromino (state = initialState, action) {
 	switch (action.type) {
-	case ACTIVE_BLOCK_SET:
+	case TETROMINO_ADD:
 		return Object.assign({}, state, {
 			identifier: action.identifier,
 			shape: action.shape,
 			column: action.column,
 			row: action.row
 		})
-	case ACTIVE_BLOCK_MOVE: {
+	case TETROMINO_MOVE: {
 		switch (action.direction) {
 		case 'LEFT':
 			if (validBoardBoundary({ offsetX: -1 })) {
@@ -53,8 +49,8 @@ export default function ActiveBlock (state = initialState, action) {
 			return state
 		}
 	}
-	case ACTIVE_BLOCK_ROTATE: {
-		const tetromino = rotateBlock(state.shape)
+	case TETROMINO_ROTATE: {
+		const tetromino = rotateTetromino(state.shape)
 		if (validBoardBoundary({ tetromino })) {
 			return Object.assign({}, state, { shape: tetromino })
 		}

@@ -1245,45 +1245,6 @@ module.exports = function symbolObservablePonyfill(root) {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.setActiveBlock = setActiveBlock;
-exports.moveActiveBlock = moveActiveBlock;
-exports.rotateActiveBlock = rotateActiveBlock;
-
-var _activeBlock = require('../constants/activeBlock');
-
-function setActiveBlock(_ref) {
-	var identifier = _ref.identifier;
-	var shape = _ref.shape;
-	var column = _ref.column;
-
-	return {
-		type: _activeBlock.ACTIVE_BLOCK_SET,
-		identifier: identifier,
-		shape: shape,
-		column: column,
-		row: 0
-	};
-}
-
-function moveActiveBlock(direction) {
-	return {
-		type: _activeBlock.ACTIVE_BLOCK_MOVE,
-		direction: direction
-	};
-}
-
-function rotateActiveBlock() {
-	return {
-		type: _activeBlock.ACTIVE_BLOCK_ROTATE
-	};
-}
-
-},{"../constants/activeBlock":32}],24:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
 exports.freezeBoard = freezeBoard;
 exports.removeLineFromBoard = removeLineFromBoard;
 
@@ -1302,7 +1263,47 @@ function removeLineFromBoard() {
 	};
 }
 
-},{"../constants/board":33}],25:[function(require,module,exports){
+},{"../constants/board":33}],24:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.startGame = startGame;
+exports.pauseGame = pauseGame;
+exports.endGame = endGame;
+exports.updateGameLevel = updateGameLevel;
+
+var _game = require('../constants/game');
+
+function startGame() {
+	return {
+		type: _game.GAME_START,
+		isRunning: true
+	};
+}
+
+function pauseGame() {
+	return {
+		type: _game.GAME_PAUSED,
+		isRunning: false
+	};
+}
+
+function endGame() {
+	return {
+		type: _game.GAME_END,
+		isRunning: false
+	};
+}
+
+function updateGameLevel() {
+	return {
+		type: _game.GAME_LEVEL_UPDATE
+	};
+}
+
+},{"../constants/game":34}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1362,6 +1363,45 @@ function addScore(score) {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+exports.addTetromino = addTetromino;
+exports.moveTetromino = moveTetromino;
+exports.rotateTetromino = rotateTetromino;
+
+var _tetromino = require('../constants/tetromino');
+
+function addTetromino(_ref) {
+	var identifier = _ref.identifier;
+	var shape = _ref.shape;
+	var column = _ref.column;
+
+	return {
+		type: _tetromino.TETROMINO_ADD,
+		identifier: identifier,
+		shape: shape,
+		column: column,
+		row: 0
+	};
+}
+
+function moveTetromino(direction) {
+	return {
+		type: _tetromino.TETROMINO_MOVE,
+		direction: direction
+	};
+}
+
+function rotateTetromino() {
+	return {
+		type: _tetromino.TETROMINO_ROTATE
+	};
+}
+
+},{"../constants/tetromino":39}],28:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
 var _dom = require('../utils/dom');
 
@@ -1373,23 +1413,59 @@ var _route = require('../actions/route');
 
 var _route2 = _interopRequireDefault(_route);
 
+var _game = require('../actions/game');
+
+var _tetromino = require('../actions/tetromino');
+
+var _tetromino2 = require('./tetromino');
+
+var _tetromino3 = _interopRequireDefault(_tetromino2);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var $buttons = [].concat(_toConsumableArray((0, _dom.$$)('button')));
 
+function onButtonAction(action) {
+	switch (action) {
+		case 'startGame':
+			_store2.default.dispatch((0, _tetromino.addTetromino)(new _tetromino3.default()));
+			_store2.default.dispatch((0, _game.startGame)());
+			break;
+		case 'pauseGame':
+			_store2.default.dispatch((0, _game.endGame)());
+			break;
+		case 'moveTetrominoLeft':
+			_store2.default.dispatch((0, _tetromino.moveTetromino)('LEFT'));
+			break;
+		case 'moveTetrominoRight':
+			_store2.default.dispatch((0, _tetromino.moveTetromino)('RIGHT'));
+			break;
+		case 'rotateBlock':
+			_store2.default.dispatch((0, _tetromino.rotateTetromino)());
+			break;
+		default:
+			break;
+	}
+}
+
 function onClickButton(_ref) {
 	var target = _ref.target;
 
 	if (target.nodeName !== 'BUTTON') return;
 	var dataRoute = target.getAttribute('data-route');
+	var dataAction = target.getAttribute('data-action');
 
 	if (dataRoute) {
 		_store2.default.dispatch((0, _route2.default)(dataRoute));
 	}
 
-	target.blur();
+	if (dataAction) {
+		onButtonAction(dataAction);
+	}
+
+	return target.blur();
 }
 
 function addEvents() {
@@ -1400,7 +1476,7 @@ function addEvents() {
 
 exports.default = { addEvents: addEvents };
 
-},{"../actions/route":25,"../store":48,"../utils/dom":50}],28:[function(require,module,exports){
+},{"../actions/game":24,"../actions/route":25,"../actions/tetromino":27,"../store":49,"../utils/dom":51,"./tetromino":31}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1426,15 +1502,15 @@ var _selectors = require('../selectors');
 
 var _ = _interopRequireWildcard(_selectors);
 
-var _activeBlock = require('../actions/activeBlock');
+var _tetromino = require('../actions/tetromino');
 
 var _board2 = require('../actions/board');
 
 var _score = require('../actions/score');
 
-var _tetromino = require('../components/tetromino');
+var _tetromino2 = require('../components/tetromino');
 
-var _tetromino2 = _interopRequireDefault(_tetromino);
+var _tetromino3 = _interopRequireDefault(_tetromino2);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -1456,7 +1532,7 @@ var Canvas = function () {
 		this.blockWidth = this.width / _.getBoardColumns();
 		this.blockHeight = this.height / _.getBoardRows();
 		this.animationFrame = null;
-		this.activeBlockPositionAnimation = null;
+		this.tetrominoPositionAnimation = null;
 		this.isRunningInternal = false;
 		this.initialSpeed = 500;
 
@@ -1484,11 +1560,11 @@ var Canvas = function () {
 		value: function toggleGameState() {
 			if (_.isRunning() && !this.isRunningInternal) {
 				this.isRunningInternal = true;
-				this.updateActiveBlockPosition();
+				this.updateTetrominoPosition();
 				this.loop();
 			} else if (!_.isRunning() && this.isRunningInternal) {
 				this.isRunningInternal = false;
-				this.cancelActiveBlockPosition();
+				this.cancelTetrominoPosition();
 				this.cancelLoop();
 			}
 		}
@@ -1530,9 +1606,9 @@ var Canvas = function () {
 			}
 		}
 	}, {
-		key: 'drawActiveBlock',
-		value: function drawActiveBlock() {
-			var block = _.getActiveBlock();
+		key: 'drawTetromino',
+		value: function drawTetromino() {
+			var block = _.getTetromino();
 			for (var y = 0; y < block.shape.length; ++y) {
 				for (var x = 0; x < block.shape.length; ++x) {
 					if (block.shape[y][x]) {
@@ -1543,23 +1619,23 @@ var Canvas = function () {
 			}
 		}
 	}, {
-		key: 'updateActiveBlockPosition',
-		value: function updateActiveBlockPosition() {
-			this.activeBlockPositionAnimation = setInterval(function () {
+		key: 'updateTetrominoPosition',
+		value: function updateTetrominoPosition() {
+			this.tetrominoPositionAnimation = setInterval(function () {
 				if ((0, _board.validBoardBoundary)({ offsetY: 1 })) {
-					_store2.default.dispatch((0, _activeBlock.moveActiveBlock)('DOWN'));
+					_store2.default.dispatch((0, _tetromino.moveTetromino)('DOWN'));
 					_store2.default.dispatch((0, _score.updateCurrentScore)(10));
 				} else {
-					_store2.default.dispatch((0, _board2.freezeBoard)(_.getActiveBlock().shape));
+					_store2.default.dispatch((0, _board2.freezeBoard)(_.getTetromino().shape));
 					_store2.default.dispatch((0, _board2.removeLineFromBoard)());
-					_store2.default.dispatch((0, _activeBlock.setActiveBlock)(new _tetromino2.default()));
+					_store2.default.dispatch((0, _tetromino.addTetromino)(new _tetromino3.default()));
 				}
 			}, this.initialSpeed);
 		}
 	}, {
-		key: 'cancelActiveBlockPosition',
-		value: function cancelActiveBlockPosition() {
-			clearInterval(this.activeBlockPositionAnimation);
+		key: 'cancelTetrominoPosition',
+		value: function cancelTetrominoPosition() {
+			clearInterval(this.tetrominoPositionAnimation);
 		}
 	}, {
 		key: 'loop',
@@ -1573,7 +1649,7 @@ var Canvas = function () {
 			this.clearBoard();
 			this.setBlockStyle({ fill: 'white' });
 			this.drawBackground();
-			this.drawActiveBlock();
+			this.drawTetromino();
 
 			// if (process.env.NODE_ENV === 'development') {
 			// 	this.stats.end()
@@ -1609,7 +1685,7 @@ var Canvas = function () {
 
 exports.default = Canvas;
 
-},{"../actions/activeBlock":23,"../actions/board":24,"../actions/score":26,"../components/tetromino":30,"../selectors":47,"../store":48,"../utils/board":49,"../utils/dom":50,"lodash/throttle":12}],29:[function(require,module,exports){
+},{"../actions/board":23,"../actions/score":26,"../actions/tetromino":27,"../components/tetromino":31,"../selectors":48,"../store":49,"../utils/board":50,"../utils/dom":51,"lodash/throttle":12}],30:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1622,7 +1698,7 @@ var _store2 = _interopRequireDefault(_store);
 
 var _selectors = require('../selectors');
 
-var _activeBlock = require('../actions/activeBlock');
+var _tetromino = require('../actions/tetromino');
 
 var _keyCode = require('../constants/keyCode');
 
@@ -1637,12 +1713,12 @@ function onPressKeydown(_ref) {
 
 	switch (keyCode) {
 		case _keyCode.LEFT_ARROW:
-			return _store2.default.dispatch((0, _activeBlock.moveActiveBlock)('LEFT'));
+			return _store2.default.dispatch((0, _tetromino.moveTetromino)('LEFT'));
 		case _keyCode.RIGHT_ARROW:
-			return _store2.default.dispatch((0, _activeBlock.moveActiveBlock)('RIGHT'));
+			return _store2.default.dispatch((0, _tetromino.moveTetromino)('RIGHT'));
 		case _keyCode.SPACE_BAR:
 		case _keyCode.UP_ARROW:
-			return _store2.default.dispatch((0, _activeBlock.rotateActiveBlock)());
+			return _store2.default.dispatch((0, _tetromino.rotateTetromino)());
 		default:
 			return;
 	}
@@ -1654,7 +1730,7 @@ function addEvents() {
 
 exports.default = { addEvents: addEvents };
 
-},{"../actions/activeBlock":23,"../constants/keyCode":35,"../selectors":47,"../store":48}],30:[function(require,module,exports){
+},{"../actions/tetromino":27,"../constants/keyCode":35,"../selectors":48,"../store":49}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1691,7 +1767,7 @@ var Tetromino = function Tetromino() {
 
 exports.default = Tetromino;
 
-},{"../constants/shapes":38}],31:[function(require,module,exports){
+},{"../constants/shapes":38}],32:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1718,17 +1794,7 @@ function addEvents() {
 
 exports.default = { addEvents: addEvents };
 
-},{"../selectors":47,"../store":48}],32:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var ACTIVE_BLOCK_SET = exports.ACTIVE_BLOCK_SET = 'ACTIVE_BLOCK_SET';
-var ACTIVE_BLOCK_MOVE = exports.ACTIVE_BLOCK_MOVE = 'ACTIVE_BLOCK_MOVE';
-var ACTIVE_BLOCK_ROTATE = exports.ACTIVE_BLOCK_ROTATE = 'ACTIVE_BLOCK_ROTATE';
-
-},{}],33:[function(require,module,exports){
+},{"../selectors":48,"../store":49}],33:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1803,10 +1869,20 @@ exports.default = SHAPES;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var TETROMINO_ADD = exports.TETROMINO_ADD = 'TETROMINO_ADD';
+var TETROMINO_MOVE = exports.TETROMINO_MOVE = 'TETROMINO_MOVE';
+var TETROMINO_ROTATE = exports.TETROMINO_ROTATE = 'TETROMINO_ROTATE';
+
+},{}],40:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 var TETRYS_STATE = exports.TETRYS_STATE = 'TETRYS_STATE';
 var TETRYS_CACHE = exports.TETRYS_CACHE = 'TETRYS_CACHE';
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 var _keyboard = require('./components/keyboard');
@@ -1838,84 +1914,7 @@ _buttons2.default.addEvents();
 _views2.default.addEvents();
 game.init();
 
-},{"./components/buttons":27,"./components/canvas":28,"./components/keyboard":29,"./components/views":31,"./utils/serviceWorker":52}],41:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.default = ActiveBlock;
-
-var _activeBlock = require('../constants/activeBlock');
-
-var _board = require('../utils/board');
-
-var initialState = {
-	identifier: '',
-	shape: [],
-	column: 0,
-	row: 0
-};
-
-function rotateBlock(current) {
-	var newCurrent = [];
-	for (var y = 0; y < current.length; ++y) {
-		newCurrent[y] = [];
-		for (var x = 0; x < current.length; ++x) {
-			newCurrent[y][x] = current[current.length - 1 - x][y];
-		}
-	}
-	return newCurrent;
-}
-
-function ActiveBlock() {
-	var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
-	var action = arguments[1];
-
-	switch (action.type) {
-		case _activeBlock.ACTIVE_BLOCK_SET:
-			return Object.assign({}, state, {
-				identifier: action.identifier,
-				shape: action.shape,
-				column: action.column,
-				row: action.row
-			});
-		case _activeBlock.ACTIVE_BLOCK_MOVE:
-			{
-				switch (action.direction) {
-					case 'LEFT':
-						if ((0, _board.validBoardBoundary)({ offsetX: -1 })) {
-							return Object.assign({}, state, { column: --state.column });
-						}
-						return state;
-					case 'RIGHT':
-						if ((0, _board.validBoardBoundary)({ offsetX: 1 })) {
-							return Object.assign({}, state, { column: ++state.column });
-						}
-						return state;
-					case 'DOWN':
-						if ((0, _board.validBoardBoundary)({ offsetY: 1 })) {
-							return Object.assign({}, state, { row: ++state.row });
-						}
-						return state;
-					default:
-						return state;
-				}
-			}
-		case _activeBlock.ACTIVE_BLOCK_ROTATE:
-			{
-				var tetromino = rotateBlock(state.shape);
-				if ((0, _board.validBoardBoundary)({ tetromino: tetromino })) {
-					return Object.assign({}, state, { shape: tetromino });
-				}
-				return state;
-			}
-		default:
-			return state;
-	}
-}
-
-},{"../constants/activeBlock":32,"../utils/board":49}],42:[function(require,module,exports){
+},{"./components/buttons":28,"./components/canvas":29,"./components/keyboard":30,"./components/views":32,"./utils/serviceWorker":53}],42:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1991,7 +1990,7 @@ function Board() {
 	}
 }
 
-},{"../constants/board":33,"../selectors":47,"../utils/board":49}],43:[function(require,module,exports){
+},{"../constants/board":33,"../selectors":48,"../utils/board":50}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2043,9 +2042,9 @@ var _board = require('./board');
 
 var _board2 = _interopRequireDefault(_board);
 
-var _activeBlock = require('./activeBlock');
+var _tetromino = require('./tetromino');
 
-var _activeBlock2 = _interopRequireDefault(_activeBlock);
+var _tetromino2 = _interopRequireDefault(_tetromino);
 
 var _score = require('./score');
 
@@ -2061,11 +2060,11 @@ exports.default = (0, _redux.combineReducers)({
 	score: _score2.default,
 	game: _game2.default,
 	board: _board2.default,
-	activeBlock: _activeBlock2.default,
+	tetromino: _tetromino2.default,
 	route: _route2.default
 });
 
-},{"./activeBlock":41,"./board":42,"./game":43,"./route":45,"./score":46,"redux":19}],45:[function(require,module,exports){
+},{"./board":42,"./game":43,"./route":45,"./score":46,"./tetromino":47,"redux":19}],45:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2143,11 +2142,88 @@ function Score() {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+exports.default = Tetromino;
+
+var _tetromino = require('../constants/tetromino');
+
+var _board = require('../utils/board');
+
+var initialState = {
+	identifier: '',
+	shape: [],
+	column: 0,
+	row: 0
+};
+
+function rotateTetromino(current) {
+	var newCurrent = [];
+	for (var y = 0; y < current.length; ++y) {
+		newCurrent[y] = [];
+		for (var x = 0; x < current.length; ++x) {
+			newCurrent[y][x] = current[current.length - 1 - x][y];
+		}
+	}
+	return newCurrent;
+}
+
+function Tetromino() {
+	var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
+	var action = arguments[1];
+
+	switch (action.type) {
+		case _tetromino.TETROMINO_ADD:
+			return Object.assign({}, state, {
+				identifier: action.identifier,
+				shape: action.shape,
+				column: action.column,
+				row: action.row
+			});
+		case _tetromino.TETROMINO_MOVE:
+			{
+				switch (action.direction) {
+					case 'LEFT':
+						if ((0, _board.validBoardBoundary)({ offsetX: -1 })) {
+							return Object.assign({}, state, { column: --state.column });
+						}
+						return state;
+					case 'RIGHT':
+						if ((0, _board.validBoardBoundary)({ offsetX: 1 })) {
+							return Object.assign({}, state, { column: ++state.column });
+						}
+						return state;
+					case 'DOWN':
+						if ((0, _board.validBoardBoundary)({ offsetY: 1 })) {
+							return Object.assign({}, state, { row: ++state.row });
+						}
+						return state;
+					default:
+						return state;
+				}
+			}
+		case _tetromino.TETROMINO_ROTATE:
+			{
+				var tetromino = rotateTetromino(state.shape);
+				if ((0, _board.validBoardBoundary)({ tetromino: tetromino })) {
+					return Object.assign({}, state, { shape: tetromino });
+				}
+				return state;
+			}
+		default:
+			return state;
+	}
+}
+
+},{"../constants/tetromino":39,"../utils/board":50}],48:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 exports.isRunning = isRunning;
 exports.getBoardColumns = getBoardColumns;
 exports.getBoardRows = getBoardRows;
 exports.getGrid = getGrid;
-exports.getActiveBlock = getActiveBlock;
+exports.getTetromino = getTetromino;
 exports.getCurrentScore = getCurrentScore;
 exports.getRoute = getRoute;
 
@@ -2173,9 +2249,9 @@ function getGrid() {
 	return _store2.default.getState().board.grid;
 }
 
-// Active block
-function getActiveBlock() {
-	return _store2.default.getState().activeBlock;
+// Tetromino
+function getTetromino() {
+	return _store2.default.getState().tetromino;
 }
 
 // Score
@@ -2188,7 +2264,7 @@ function getRoute() {
 	return _store2.default.getState().route.route;
 }
 
-},{"../store":48}],48:[function(require,module,exports){
+},{"../store":49}],49:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2220,7 +2296,7 @@ store.subscribe((0, _throttle2.default)(function () {
 
 exports.default = store;
 
-},{"../reducers":44,"../utils/localStorage":51,"lodash/throttle":12,"redux":19}],49:[function(require,module,exports){
+},{"../reducers":44,"../utils/localStorage":52,"lodash/throttle":12,"redux":19}],50:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2260,7 +2336,7 @@ function validBoardBoundary() {
 	var _ref$tetromino = _ref.tetromino;
 	var tetromino = _ref$tetromino === undefined ? [] : _ref$tetromino;
 
-	var activeBlock = _.getActiveBlock();
+	var activeBlock = _.getTetromino();
 	var newOffsetX = activeBlock.column + offsetX;
 	var newOffsetY = activeBlock.row + offsetY;
 	var shape = tetromino;
@@ -2297,7 +2373,7 @@ function validBoardBoundary() {
 	return true;
 }
 
-},{"../constants/board":33,"../selectors":47}],50:[function(require,module,exports){
+},{"../constants/board":33,"../selectors":48}],51:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2306,7 +2382,7 @@ Object.defineProperty(exports, "__esModule", {
 var $ = exports.$ = document.querySelector.bind(document);
 var $$ = exports.$$ = document.querySelectorAll.bind(document);
 
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2339,7 +2415,7 @@ function saveState(state) {
 	}
 }
 
-},{"../constants/tetrys":39}],52:[function(require,module,exports){
+},{"../constants/tetrys":40}],53:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2358,4 +2434,4 @@ function installServiceWorker() {
 	});
 }
 
-},{}]},{},[40]);
+},{}]},{},[41]);

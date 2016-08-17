@@ -1,6 +1,6 @@
 import store from '../store'
 import { isRunning } from '../selectors'
-import { moveActiveBlock, rotateActiveBlock } from '../actions/activeBlock'
+import { moveTetromino, rotateTetromino } from '../actions/tetromino'
 import {
 	LEFT_ARROW,
 	RIGHT_ARROW,
@@ -15,12 +15,12 @@ function onPressKeydown ({ keyCode }) {
 
 	switch (keyCode) {
 	case LEFT_ARROW:
-		return store.dispatch(moveActiveBlock('LEFT'))
+		return store.dispatch(moveTetromino('LEFT'))
 	case RIGHT_ARROW:
-		return store.dispatch(moveActiveBlock('RIGHT'))
+		return store.dispatch(moveTetromino('RIGHT'))
 	case SPACE_BAR:
 	case UP_ARROW:
-		return store.dispatch(rotateActiveBlock())
+		return store.dispatch(rotateTetromino())
 	default:
 		return
 	}

@@ -19,7 +19,7 @@ export function validBoardBoundary ({
 	offsetY = 0,
 	tetromino = []
 } = {}) {
-	const activeBlock = _.getActiveBlock()
+	const activeBlock = _.getTetromino()
 	const newOffsetX = activeBlock.column + offsetX
 	const newOffsetY = activeBlock.row + offsetY
 	let shape = tetromino
