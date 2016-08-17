@@ -1263,7 +1263,7 @@ function removeLineFromBoard() {
 	};
 }
 
-},{"../constants/board":33}],24:[function(require,module,exports){
+},{"../constants/board":32}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1303,28 +1303,7 @@ function updateGameLevel() {
 	};
 }
 
-},{"../constants/game":34}],25:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.default = changeRoute;
-
-var _route = require('../constants/route');
-
-var _route2 = _interopRequireDefault(_route);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function changeRoute(route) {
-	return {
-		type: _route2.default,
-		route: route
-	};
-}
-
-},{"../constants/route":36}],26:[function(require,module,exports){
+},{"../constants/game":33}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1357,7 +1336,7 @@ function addScore(score) {
 	};
 }
 
-},{"../constants/score":37}],27:[function(require,module,exports){
+},{"../constants/score":35}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1396,22 +1375,19 @@ function rotateTetromino() {
 	};
 }
 
-},{"../constants/tetromino":39}],28:[function(require,module,exports){
+},{"../constants/tetromino":37}],27:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+exports.default = addButtonEvents;
 
 var _dom = require('../utils/dom');
 
 var _store = require('../store');
 
 var _store2 = _interopRequireDefault(_store);
-
-var _route = require('../actions/route');
-
-var _route2 = _interopRequireDefault(_route);
 
 var _game = require('../actions/game');
 
@@ -1421,13 +1397,22 @@ var _tetromino2 = require('./tetromino');
 
 var _tetromino3 = _interopRequireDefault(_tetromino2);
 
+var _views = require('./presentational/views');
+
+var _views2 = _interopRequireDefault(_views);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var $buttons = [].concat(_toConsumableArray((0, _dom.$$)('button')));
 
-function onButtonAction(action) {
+/**
+ * Evaluates the `action` parameter and dispatches appropiate action.
+ * @param {String} action
+ * @return {undefined|ReduxStore} [description]
+ */
+function dispatchAction(action) {
 	switch (action) {
 		case 'startGame':
 			_store2.default.dispatch((0, _tetromino.addTetromino)(new _tetromino3.default()));
@@ -1450,49 +1435,59 @@ function onButtonAction(action) {
 	}
 }
 
+/**
+ * Event handler that depending on the `data-` attributes of an element either updates
+ * the view or store.dispatches actions.
+ * @param {HTMLElement} target
+ * @return {undefined}
+ */
 function onClickButton(_ref) {
 	var target = _ref.target;
 
 	if (target.nodeName !== 'BUTTON') return;
+
 	var dataRoute = target.getAttribute('data-route');
 	var dataAction = target.getAttribute('data-action');
 
-	if (dataRoute) {
-		_store2.default.dispatch((0, _route2.default)(dataRoute));
-	}
+	if (dataRoute) (0, _views2.default)(dataRoute);
+	if (dataAction) dispatchAction(dataAction);
 
-	if (dataAction) {
-		onButtonAction(dataAction);
-	}
-
-	return target.blur();
+	target.blur();
 }
 
-function addEvents() {
-	$buttons.forEach(function ($btn) {
+/**
+ * Adds event listener to buttons.
+ * @return {undefined}
+ */
+function addButtonEvents() {
+	return $buttons.forEach(function ($btn) {
 		return $btn.addEventListener('click', onClickButton);
 	});
 }
 
-exports.default = { addEvents: addEvents };
-
-},{"../actions/game":24,"../actions/route":25,"../actions/tetromino":27,"../store":49,"../utils/dom":51,"./tetromino":31}],29:[function(require,module,exports){
+},{"../actions/game":24,"../actions/tetromino":26,"../store":46,"../utils/dom":48,"./presentational/views":30,"./tetromino":31}],28:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+exports.Canvas = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); // import Stats from 'stats.js'
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+exports.default = createCanvas;
 
 var _throttle = require('lodash/throttle');
 
 var _throttle2 = _interopRequireDefault(_throttle);
 
-var _dom = require('../utils/dom');
+var _utils = require('../utils');
 
-var _board = require('../utils/board');
+var _tetromino = require('../actions/tetromino');
+
+var _board = require('../actions/board');
+
+var _score = require('../actions/score');
 
 var _store = require('../store');
 
@@ -1500,69 +1495,47 @@ var _store2 = _interopRequireDefault(_store);
 
 var _selectors = require('../selectors');
 
-var _ = _interopRequireWildcard(_selectors);
-
-var _tetromino = require('../actions/tetromino');
-
-var _board2 = require('../actions/board');
-
-var _score = require('../actions/score');
-
 var _tetromino2 = require('../components/tetromino');
 
 var _tetromino3 = _interopRequireDefault(_tetromino2);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-// const { NODE_ENV } = process.env
-
-var Canvas = function () {
+var Canvas = exports.Canvas = function () {
 	function Canvas(canvas) {
 		_classCallCheck(this, Canvas);
 
-		this.canvas = (0, _dom.$)(canvas);
+		this.canvas = (0, _utils.$)(canvas);
 		this.context = this.canvas.getContext('2d');
 		this.wrapper = this.canvas.parentNode;
 		this.width = this.wrapper.offsetWidth;
 		this.height = this.wrapper.offsetHeight;
-		this.blockWidth = this.width / _.getBoardColumns();
-		this.blockHeight = this.height / _.getBoardRows();
+		this.blockWidth = this.width / (0, _selectors.getBoardColumns)();
+		this.blockHeight = this.height / (0, _selectors.getBoardRows)();
 		this.animationFrame = null;
 		this.tetrominoPositionAnimation = null;
 		this.isRunningInternal = false;
 		this.initialSpeed = 500;
-
-		// if (NODE_ENV === 'development') {
-		// 	this.stats = new Stats()
-		// }
 	}
 
 	_createClass(Canvas, [{
-		key: 'appendStats',
-		value: function appendStats() {
-			this.stats.showPanel(0);
-			document.body.appendChild(this.stats.dom);
-		}
-	}, {
 		key: 'setSize',
 		value: function setSize() {
 			this.canvas.width = this.width = this.wrapper.offsetWidth;
 			this.canvas.height = this.height = this.wrapper.offsetHeight;
-			this.blockWidth = this.width / _.getBoardColumns();
-			this.blockHeight = this.height / _.getBoardRows();
+			this.blockWidth = this.width / (0, _selectors.getBoardColumns)();
+			this.blockHeight = this.height / (0, _selectors.getBoardRows)();
 		}
 	}, {
 		key: 'toggleGameState',
 		value: function toggleGameState() {
-			if (_.isRunning() && !this.isRunningInternal) {
+			if ((0, _selectors.isRunning)() && !this.isRunningInternal) {
 				this.isRunningInternal = true;
 				this.updateTetrominoPosition();
 				this.loop();
-			} else if (!_.isRunning() && this.isRunningInternal) {
+			} else if (!(0, _selectors.isRunning)() && this.isRunningInternal) {
 				this.isRunningInternal = false;
 				this.cancelTetrominoPosition();
 				this.cancelLoop();
@@ -1594,7 +1567,7 @@ var Canvas = function () {
 	}, {
 		key: 'drawBackground',
 		value: function drawBackground() {
-			for (var y = 0, grid = _.getGrid(); y < grid.length; ++y) {
+			for (var y = 0, grid = (0, _selectors.getGrid)(); y < grid.length; ++y) {
 				for (var x = 0; x < grid[y].length; ++x) {
 					if (grid[y][x] === 1) {
 						this.setBlockStyle({ fill: 'mediumseagreen' });
@@ -1608,7 +1581,7 @@ var Canvas = function () {
 	}, {
 		key: 'drawTetromino',
 		value: function drawTetromino() {
-			var block = _.getTetromino();
+			var block = (0, _selectors.getTetromino)();
 			for (var y = 0; y < block.shape.length; ++y) {
 				for (var x = 0; x < block.shape.length; ++x) {
 					if (block.shape[y][x]) {
@@ -1622,12 +1595,12 @@ var Canvas = function () {
 		key: 'updateTetrominoPosition',
 		value: function updateTetrominoPosition() {
 			this.tetrominoPositionAnimation = setInterval(function () {
-				if ((0, _board.validBoardBoundary)({ offsetY: 1 })) {
+				if ((0, _utils.validBoardBoundary)({ offsetY: 1 })) {
 					_store2.default.dispatch((0, _tetromino.moveTetromino)('DOWN'));
 					_store2.default.dispatch((0, _score.updateCurrentScore)(10));
 				} else {
-					_store2.default.dispatch((0, _board2.freezeBoard)(_.getTetromino().shape));
-					_store2.default.dispatch((0, _board2.removeLineFromBoard)());
+					_store2.default.dispatch((0, _board.freezeBoard)((0, _selectors.getTetromino)().shape));
+					_store2.default.dispatch((0, _board.removeLineFromBoard)());
 					_store2.default.dispatch((0, _tetromino.addTetromino)(new _tetromino3.default()));
 				}
 			}, this.initialSpeed);
@@ -1642,18 +1615,10 @@ var Canvas = function () {
 		value: function loop() {
 			this.animationFrame = requestAnimationFrame(this.loop.bind(this));
 
-			// if (process.env.NODE_ENV === 'development') {
-			// 	this.stats.begin()
-			// }
-
 			this.clearBoard();
 			this.setBlockStyle({ fill: 'white' });
 			this.drawBackground();
 			this.drawTetromino();
-
-			// if (process.env.NODE_ENV === 'development') {
-			// 	this.stats.end()
-			// }
 		}
 	}, {
 		key: 'cancelLoop',
@@ -1668,14 +1633,9 @@ var Canvas = function () {
 	}, {
 		key: 'init',
 		value: function init() {
-			// if (NODE_ENV === 'development') {
-			// 	this.appendStats()
-			// }
-
 			this.addEvents();
 			this.setSize();
 			this.drawBackground();
-
 			_store2.default.subscribe(this.toggleGameState.bind(this));
 		}
 	}]);
@@ -1683,18 +1643,21 @@ var Canvas = function () {
 	return Canvas;
 }();
 
-exports.default = Canvas;
+function createCanvas(selector) {
+	var canvas = new Canvas(selector);
+	return canvas.init();
+}
 
-},{"../actions/board":23,"../actions/score":26,"../actions/tetromino":27,"../components/tetromino":31,"../selectors":48,"../store":49,"../utils/board":50,"../utils/dom":51,"lodash/throttle":12}],30:[function(require,module,exports){
+},{"../actions/board":23,"../actions/score":25,"../actions/tetromino":26,"../components/tetromino":31,"../selectors":45,"../store":46,"../utils":49,"lodash/throttle":12}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+exports.onPressKeydownEvent = onPressKeydownEvent;
+exports.default = addKeyboardEvents;
 
 var _store = require('../store');
-
-var _store2 = _interopRequireDefault(_store);
 
 var _selectors = require('../selectors');
 
@@ -1702,35 +1665,66 @@ var _tetromino = require('../actions/tetromino');
 
 var _keyCode = require('../constants/keyCode');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function onPressKeydown(_ref) {
+/**
+ * Takes an event object and dispatches different tetromino actions.
+ * @alias onPressKeydownEvent
+ * @param {Number} keyCode
+ * @returns {undefined|ReduxState}
+ */
+function onPressKeydownEvent(_ref) {
 	var keyCode = _ref.keyCode;
 
-	if (!(0, _selectors.isRunning)()) {
-		return;
-	}
+	if (!(0, _selectors.isRunning)()) return;
 
 	switch (keyCode) {
 		case _keyCode.LEFT_ARROW:
-			return _store2.default.dispatch((0, _tetromino.moveTetromino)('LEFT'));
+			return (0, _store.dispatch)((0, _tetromino.moveTetromino)('LEFT'));
 		case _keyCode.RIGHT_ARROW:
-			return _store2.default.dispatch((0, _tetromino.moveTetromino)('RIGHT'));
+			return (0, _store.dispatch)((0, _tetromino.moveTetromino)('RIGHT'));
 		case _keyCode.SPACE_BAR:
 		case _keyCode.UP_ARROW:
-			return _store2.default.dispatch((0, _tetromino.rotateTetromino)());
+			return (0, _store.dispatch)((0, _tetromino.rotateTetromino)());
 		default:
 			return;
 	}
 }
 
-function addEvents() {
-	window.addEventListener('keydown', onPressKeydown);
+/**
+ * Adds event listener to `window` object.
+ * @return {undefined}
+ */
+function addKeyboardEvents() {
+	window.addEventListener('keydown', onPressKeydownEvent);
 }
 
-exports.default = { addEvents: addEvents };
+},{"../actions/tetromino":26,"../constants/keyCode":34,"../selectors":45,"../store":46}],30:[function(require,module,exports){
+"use strict";
 
-},{"../actions/tetromino":27,"../constants/keyCode":35,"../selectors":48,"../store":49}],31:[function(require,module,exports){
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = updateView;
+var $body = document.body;
+
+/**
+ * Assigns a new class name to the `<body>` element.
+ * @param {String} route
+ * @return {undefined}
+ */
+function updateBodyClass(route) {
+  $body.className = $body.className.replace(/page-(.*)/g, "page-" + route);
+}
+
+/**
+ * Wrapper function for `updateBodyClass()`
+ * @param {String} route
+ * @return {undefined}
+ */
+function updateView(route) {
+  return updateBodyClass(route);
+}
+
+},{}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1745,6 +1739,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/**
+ * Returns a new tetromino object.
+ * @return {Object}
+ */
 var Tetromino = function Tetromino() {
 	_classCallCheck(this, Tetromino);
 
@@ -1767,34 +1765,7 @@ var Tetromino = function Tetromino() {
 
 exports.default = Tetromino;
 
-},{"../constants/shapes":38}],32:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _store = require('../store');
-
-var _store2 = _interopRequireDefault(_store);
-
-var _selectors = require('../selectors');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var $body = document.body;
-
-function updateBodyClass() {
-	$body.className = $body.className.replace(/page-(.*)/g, 'page-' + (0, _selectors.getRoute)());
-}
-
-function addEvents() {
-	_store2.default.subscribe(updateBodyClass);
-}
-
-exports.default = { addEvents: addEvents };
-
-},{"../selectors":48,"../store":49}],33:[function(require,module,exports){
+},{"../constants/shapes":36}],32:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1805,7 +1776,7 @@ var BOARD_LINE_REMOVE = exports.BOARD_LINE_REMOVE = 'BOARD_LINE_REMOVE';
 var BOARD_COLUMNS = exports.BOARD_COLUMNS = 10;
 var BOARD_ROWS = exports.BOARD_ROWS = 20;
 
-},{}],34:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1816,7 +1787,7 @@ var GAME_PAUSED = exports.GAME_PAUSED = 'GAME_PAUSED';
 var GAME_END = exports.GAME_END = 'GAME_END';
 var GAME_LEVEL_UPDATE = exports.GAME_LEVEL_UPDATE = 'GAME_LEVEL_UPDATE';
 
-},{}],35:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1828,16 +1799,7 @@ var LEFT_ARROW = exports.LEFT_ARROW = 37;
 var RIGHT_ARROW = exports.RIGHT_ARROW = 39;
 var DOWN_ARROW = exports.DOWN_ARROW = 40;
 
-},{}],36:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var ROUTE_CHANGE = 'ROUTE_CHANGE';
-exports.default = ROUTE_CHANGE;
-
-},{}],37:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1847,7 +1809,7 @@ var SCORE_CURRENT_UPDATE = exports.SCORE_CURRENT_UPDATE = 'SCORE_CURRENT_UPDATE'
 var SCORE_HIGHSCORE_SET = exports.SCORE_HIGHSCORE_SET = 'SCORE_HIGHSCORE_SET';
 var SCORE_ADD = exports.SCORE_ADD = 'SCORE_ADD';
 
-},{}],38:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1863,7 +1825,7 @@ var SHAPES = {
 
 exports.default = SHAPES;
 
-},{}],39:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1873,7 +1835,7 @@ var TETROMINO_ADD = exports.TETROMINO_ADD = 'TETROMINO_ADD';
 var TETROMINO_MOVE = exports.TETROMINO_MOVE = 'TETROMINO_MOVE';
 var TETROMINO_ROTATE = exports.TETROMINO_ROTATE = 'TETROMINO_ROTATE';
 
-},{}],40:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1882,8 +1844,12 @@ Object.defineProperty(exports, "__esModule", {
 var TETRYS_STATE = exports.TETRYS_STATE = 'TETRYS_STATE';
 var TETRYS_CACHE = exports.TETRYS_CACHE = 'TETRYS_CACHE';
 
-},{}],41:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 'use strict';
+
+var _serviceWorker = require('./utils/serviceWorker');
+
+var _serviceWorker2 = _interopRequireDefault(_serviceWorker);
 
 var _keyboard = require('./components/keyboard');
 
@@ -1893,28 +1859,18 @@ var _buttons = require('./components/buttons');
 
 var _buttons2 = _interopRequireDefault(_buttons);
 
-var _views = require('./components/views');
-
-var _views2 = _interopRequireDefault(_views);
-
 var _canvas = require('./components/canvas');
 
 var _canvas2 = _interopRequireDefault(_canvas);
 
-var _serviceWorker = require('./utils/serviceWorker');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-(0, _serviceWorker.installServiceWorker)();
+(0, _canvas2.default)('#game');
+(0, _serviceWorker2.default)();
+(0, _keyboard2.default)();
+(0, _buttons2.default)();
 
-// Initialise UI
-var game = new _canvas2.default('#game');
-_keyboard2.default.addEvents();
-_buttons2.default.addEvents();
-_views2.default.addEvents();
-game.init();
-
-},{"./components/buttons":28,"./components/canvas":29,"./components/keyboard":30,"./components/views":32,"./utils/serviceWorker":53}],42:[function(require,module,exports){
+},{"./components/buttons":27,"./components/canvas":28,"./components/keyboard":29,"./utils/serviceWorker":51}],40:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1990,7 +1946,7 @@ function Board() {
 	}
 }
 
-},{"../constants/board":33,"../selectors":48,"../utils/board":50}],43:[function(require,module,exports){
+},{"../constants/board":32,"../selectors":45,"../utils/board":47}],41:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2025,7 +1981,7 @@ function Game() {
 	}
 }
 
-},{"../constants/game":34}],44:[function(require,module,exports){
+},{"../constants/game":33}],42:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2050,53 +2006,16 @@ var _score = require('./score');
 
 var _score2 = _interopRequireDefault(_score);
 
-var _route = require('./route');
-
-var _route2 = _interopRequireDefault(_route);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = (0, _redux.combineReducers)({
 	score: _score2.default,
 	game: _game2.default,
 	board: _board2.default,
-	tetromino: _tetromino2.default,
-	route: _route2.default
+	tetromino: _tetromino2.default
 });
 
-},{"./board":42,"./game":43,"./route":45,"./score":46,"./tetromino":47,"redux":19}],45:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.default = Route;
-
-var _route = require('../constants/route');
-
-var _route2 = _interopRequireDefault(_route);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var initialState = {
-	route: 'menu'
-};
-
-function Route() {
-	var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
-	var action = arguments[1];
-
-	switch (action.type) {
-		case _route2.default:
-			return Object.assign({}, state, {
-				route: action.route
-			});
-		default:
-			return state;
-	}
-}
-
-},{"../constants/route":36}],46:[function(require,module,exports){
+},{"./board":40,"./game":41,"./score":43,"./tetromino":44,"redux":19}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2136,7 +2055,7 @@ function Score() {
 	}
 }
 
-},{"../constants/score":37}],47:[function(require,module,exports){
+},{"../constants/score":35}],44:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2213,7 +2132,7 @@ function Tetromino() {
 	}
 }
 
-},{"../constants/tetromino":39,"../utils/board":50}],48:[function(require,module,exports){
+},{"../constants/tetromino":37,"../utils/board":47}],45:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2225,7 +2144,6 @@ exports.getBoardRows = getBoardRows;
 exports.getGrid = getGrid;
 exports.getTetromino = getTetromino;
 exports.getCurrentScore = getCurrentScore;
-exports.getRoute = getRoute;
 
 var _store = require('../store');
 
@@ -2259,12 +2177,7 @@ function getCurrentScore() {
 	return _store2.default.getState().score.current;
 }
 
-// Route
-function getRoute() {
-	return _store2.default.getState().route.route;
-}
-
-},{"../store":49}],49:[function(require,module,exports){
+},{"../store":46}],46:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2281,22 +2194,22 @@ var _reducers = require('../reducers');
 
 var _reducers2 = _interopRequireDefault(_reducers);
 
-var _localStorage = require('../utils/localStorage');
+var _utils = require('../utils');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var persistedState = (0, _localStorage.loadState)();
+var persistedState = (0, _utils.loadState)();
 var store = (0, _redux.createStore)(_reducers2.default, persistedState, window.devToolsExtension && window.devToolsExtension());
 
 store.subscribe((0, _throttle2.default)(function () {
-	(0, _localStorage.saveState)({
+	return (0, _utils.saveState)({
 		score: store.getState().score
 	});
 }), 5000);
 
 exports.default = store;
 
-},{"../reducers":44,"../utils/localStorage":52,"lodash/throttle":12,"redux":19}],50:[function(require,module,exports){
+},{"../reducers":42,"../utils":49,"lodash/throttle":12,"redux":19}],47:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2373,7 +2286,7 @@ function validBoardBoundary() {
 	return true;
 }
 
-},{"../constants/board":33,"../selectors":48}],51:[function(require,module,exports){
+},{"../constants/board":32,"../selectors":45}],48:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2382,7 +2295,35 @@ Object.defineProperty(exports, "__esModule", {
 var $ = exports.$ = document.querySelector.bind(document);
 var $$ = exports.$$ = document.querySelectorAll.bind(document);
 
-},{}],52:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.installServiceWorker = exports.saveState = exports.loadState = exports.validBoardBoundary = exports.getEmptyGrid = exports.$$ = exports.$ = undefined;
+
+var _dom = require('./dom');
+
+var _board = require('./board');
+
+var _localStorage = require('./localStorage');
+
+var _serviceWorker = require('./serviceWorker');
+
+var _serviceWorker2 = _interopRequireDefault(_serviceWorker);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.$ = _dom.$;
+exports.$$ = _dom.$$;
+exports.getEmptyGrid = _board.getEmptyGrid;
+exports.validBoardBoundary = _board.validBoardBoundary;
+exports.loadState = _localStorage.loadState;
+exports.saveState = _localStorage.saveState;
+exports.installServiceWorker = _serviceWorker2.default;
+
+},{"./board":47,"./dom":48,"./localStorage":50,"./serviceWorker":51}],50:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2415,13 +2356,13 @@ function saveState(state) {
 	}
 }
 
-},{"../constants/tetrys":40}],53:[function(require,module,exports){
+},{"../constants/tetrys":38}],51:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.installServiceWorker = installServiceWorker;
+exports.default = installServiceWorker;
 function installServiceWorker() {
 	if (!('serviceWorker' in navigator)) {
 		return;
@@ -2434,4 +2375,4 @@ function installServiceWorker() {
 	});
 }
 
-},{}]},{},[41]);
+},{}]},{},[39]);

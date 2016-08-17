@@ -1,8 +1,4 @@
-import {
-	SCORE_CURRENT_UPDATE,
-	SCORE_HIGHSCORE_SET,
-	SCORE_ADD
-} from '../constants/score'
+import { SCORE_CURRENT_UPDATE, SCORE_HIGHSCORE_SET, SCORE_ADD } from '../constants/score'
 
 export function updateCurrentScore (current) {
 	return {

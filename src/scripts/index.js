@@ -1,14 +1,9 @@
-import Keyboard from './components/keyboard'
-import Buttons from './components/buttons'
-import Views from './components/views'
-import Canvas from './components/canvas'
-import { installServiceWorker } from './utils/serviceWorker'
+import installServiceWorker from './utils/serviceWorker'
+import addKeyboardEvents from './components/keyboard'
+import addButtonEvents from './components/buttons'
+import createCanvas from './components/canvas'
 
+createCanvas('#game')
 installServiceWorker()
-
-// Initialise UI
-const game = new Canvas('#game')
-Keyboard.addEvents()
-Buttons.addEvents()
-Views.addEvents()
-game.init()
+addKeyboardEvents()
+addButtonEvents()

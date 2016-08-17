@@ -25,8 +25,3 @@ export function getTetromino () {
 export function getCurrentScore () {
 	return store.getState().score.current
 }
-
-// Route
-export function getRoute () {
-	return store.getState().route.route
-}

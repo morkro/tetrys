@@ -1,55 +1,42 @@
-// import Stats from 'stats.js'
 import throttle from 'lodash/throttle'
-import { $ } from '../utils/dom'
-import { validBoardBoundary } from '../utils/board'
-import store from '../store'
-import * as _ from '../selectors'
+import { $, validBoardBoundary } from '../utils'
 import { addTetromino, moveTetromino } from '../actions/tetromino'
 import { freezeBoard, removeLineFromBoard } from '../actions/board'
 import { updateCurrentScore } from '../actions/score'
+import store from '../store'
+import { getTetromino, getBoardRows, getBoardColumns, getGrid, isRunning } from '../selectors'
 import Tetromino from '../components/tetromino'
 
-// const { NODE_ENV } = process.env
-
-export default class Canvas {
+export class Canvas {
 	constructor (canvas) {
 		this.canvas = $(canvas)
 		this.context = this.canvas.getContext('2d')
 		this.wrapper = this.canvas.parentNode
 		this.width = this.wrapper.offsetWidth
 		this.height = this.wrapper.offsetHeight
-		this.blockWidth = this.width / _.getBoardColumns()
-		this.blockHeight = this.height / _.getBoardRows()
+		this.blockWidth = this.width / getBoardColumns()
+		this.blockHeight = this.height / getBoardRows()
 		this.animationFrame = null
 		this.tetrominoPositionAnimation = null
 		this.isRunningInternal = false
 		this.initialSpeed = 500
-
-		// if (NODE_ENV === 'development') {
-		// 	this.stats = new Stats()
-		// }
-	}
-
-	appendStats () {
-		this.stats.showPanel(0)
-		document.body.appendChild(this.stats.dom)
 	}
 
 	setSize () {
 		this.canvas.width = this.width = this.wrapper.offsetWidth
 		this.canvas.height = this.height = this.wrapper.offsetHeight
-		this.blockWidth = this.width / _.getBoardColumns()
-		this.blockHeight = this.height / _.getBoardRows()
+		this.blockWidth = this.width / getBoardColumns()
+		this.blockHeight = this.height / getBoardRows()
 	}
 
 	toggleGameState () {
-		if (_.isRunning() && !this.isRunningInternal) {
+		if (isRunning() && !this.isRunningInternal) {
 			this.isRunningInternal = true
 			this.updateTetrominoPosition()
 			this.loop()
 		}
 
-		else if (!_.isRunning() && this.isRunningInternal) {
+		else if (!isRunning() && this.isRunningInternal) {
 			this.isRunningInternal = false
 			this.cancelTetrominoPosition()
 			this.cancelLoop()
@@ -77,7 +64,7 @@ export default class Canvas {
 	}
 
 	drawBackground () {
-		for (let y = 0, grid = _.getGrid(); y < grid.length; ++y) {
+		for (let y = 0, grid = getGrid(); y < grid.length; ++y) {
 			for (let x = 0; x < grid[y].length; ++x) {
 				if (grid[y][x] === 1) {
 					this.setBlockStyle({ fill: 'mediumseagreen' })
@@ -91,7 +78,7 @@ export default class Canvas {
 	}
 
 	drawTetromino () {
-		const block = _.getTetromino()
+		const block = getTetromino()
 		for (let y = 0; y < block.shape.length; ++y) {
 			for (let x = 0; x < block.shape.length; ++x) {
 				if (block.shape[y][x]) {
@@ -109,7 +96,7 @@ export default class Canvas {
 				store.dispatch(updateCurrentScore(10))
 			}
 			else {
-				store.dispatch(freezeBoard(_.getTetromino().shape))
+				store.dispatch(freezeBoard(getTetromino().shape))
 				store.dispatch(removeLineFromBoard())
 				store.dispatch(addTetromino(new Tetromino()))
 			}
@@ -123,18 +110,10 @@ export default class Canvas {
 	loop () {
 		this.animationFrame = requestAnimationFrame(this.loop.bind(this))
 
-		// if (process.env.NODE_ENV === 'development') {
-		// 	this.stats.begin()
-		// }
-
 		this.clearBoard()
 		this.setBlockStyle({ fill: 'white' })
 		this.drawBackground()
 		this.drawTetromino()
-
-		// if (process.env.NODE_ENV === 'development') {
-		// 	this.stats.end()
-		// }
 	}
 
 	cancelLoop () {
@@ -146,14 +125,14 @@ export default class Canvas {
 	}
 
 	init () {
-		// if (NODE_ENV === 'development') {
-		// 	this.appendStats()
-		// }
-
 		this.addEvents()
 		this.setSize()
 		this.drawBackground()
-
 		store.subscribe(this.toggleGameState.bind(this))
 	}
+}
+
+export default function createCanvas (selector) {
+	const canvas = new Canvas(selector)
+	return canvas.init()
 }

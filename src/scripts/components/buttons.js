@@ -1,13 +1,18 @@
 import { $$ } from '../utils/dom'
 import store from '../store'
-import changeRoute from '../actions/route'
 import { startGame, endGame } from '../actions/game'
 import { addTetromino, moveTetromino, rotateTetromino } from '../actions/tetromino'
 import Tetromino from './tetromino'
+import updateView from './presentational/views'
 
 const $buttons = [...$$('button')]
 
-function onButtonAction (action) {
+/**
+ * Evaluates the `action` parameter and dispatches appropiate action.
+ * @param {String} action
+ * @return {undefined|ReduxStore} [description]
+ */
+function dispatchAction (action) {
 	switch (action) {
 	case 'startGame':
 		store.dispatch(addTetromino(new Tetromino()))
@@ -30,24 +35,28 @@ function onButtonAction (action) {
 	}
 }
 
+/**
+ * Event handler that depending on the `data-` attributes of an element either updates
+ * the view or store.dispatches actions.
+ * @param {HTMLElement} target
+ * @return {undefined}
+ */
 function onClickButton ({ target }) {
 	if (target.nodeName !== 'BUTTON') return
+
 	const dataRoute = target.getAttribute('data-route')
 	const dataAction = target.getAttribute('data-action')
 
-	if (dataRoute) {
-		store.dispatch(changeRoute(dataRoute))
-	}
+	if (dataRoute) updateView(dataRoute)
+	if (dataAction) dispatchAction(dataAction)
 
-	if (dataAction) {
-		onButtonAction(dataAction)
-	}
-
-	return target.blur()
+	target.blur()
 }
 
-function addEvents () {
-	$buttons.forEach($btn => $btn.addEventListener('click', onClickButton))
+/**
+ * Adds event listener to buttons.
+ * @return {undefined}
+ */
+export default function addButtonEvents () {
+	return $buttons.forEach($btn => $btn.addEventListener('click', onClickButton))
 }
-
-export default { addEvents }

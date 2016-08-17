@@ -1,4 +1,4 @@
-export function installServiceWorker () {
+export default function installServiceWorker () {
 	if (!('serviceWorker' in navigator)) {
 		return
 	}

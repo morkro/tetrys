@@ -1,5 +1,9 @@
 import SHAPES from '../constants/shapes'
 
+/**
+ * Returns a new tetromino object.
+ * @return {Object}
+ */
 export default class Tetromino {
 	constructor () {
 		this.randomID = Math.floor(Math.random() * Object.keys(SHAPES).length)

@@ -1,9 +1,4 @@
-import {
-	GAME_START,
-	GAME_PAUSED,
-	GAME_END,
-	GAME_LEVEL_UPDATE
-} from '../constants/game'
+import { GAME_START, GAME_PAUSED, GAME_END, GAME_LEVEL_UPDATE } from '../constants/game'
 
 export function startGame () {
 	return {
