@@ -413,7 +413,6 @@ body {
   height: 100vh;
   overflow: hidden;
   position: relative;
-  font-family: "Open Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-direction: column;
@@ -423,8 +422,16 @@ main {
   height: 95vh;
   position: relative; }
 
-body > header {
-  height: 5vh; }
+body {
+  font-family: "Open Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif; }
+
+p {
+  font-size: 120%;
+  line-height: 160%; }
+
+#tetrys-header {
+  height: 5vh;
+  position: relative; }
 
 .tetrys-view {
   position: absolute;
@@ -436,11 +443,12 @@ body > header {
   display: flex;
   -ms-flex-align: center;
       align-items: center;
-  -ms-flex-pack: center;
-      justify-content: center;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
   -ms-flex-direction: column;
       flex-direction: column;
-  transform: translateX(-110%); }
+  transform: translateX(-110%);
+  padding: 0 5vw; }
   .page-menu .tetrys-view.view-menu {
     transform: translateX(0); }
   .page-about .tetrys-view.view-about {
@@ -451,21 +459,23 @@ body > header {
     transform: translateX(0); }
 
 .tetrys-view header {
-  width: 100vw;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-pack: center;
       justify-content: center; }
 
 .tetrys-view footer {
-  width: 100vw; }
+  width: 100vw;
+  border-top: 2px solid black;
+  padding: 3vw 4vw;
+  text-align: center; }
 
 button {
   font-weight: 700;
   text-transform: uppercase;
   background: white;
   border: 3px solid black;
-  border-radius: 0px;
+  border-radius: 6px;
   padding: 12px 14px;
   cursor: pointer;
   box-shadow: 0px 6px 0px -3px rgba(0, 0, 0, 0.2);
@@ -501,6 +511,7 @@ button {
   height: 125vw;
   max-height: 660px;
   outline: 3px solid black;
+  border-radius: 6px;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-pack: center;

@@ -1389,7 +1389,6 @@ function onClickButton(_ref) {
 		_store2.default.dispatch((0, _route2.default)(dataRoute));
 	}
 
-	target.focus();
 	target.blur();
 }
 
@@ -1710,7 +1709,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var $body = document.body;
 
 function updateBodyClass() {
-	$body.className = $body.className.replace(/page-(.*)/g, 'page-' + (0, _selectors.getRoute)().route);
+	$body.className = $body.className.replace(/page-(.*)/g, 'page-' + (0, _selectors.getRoute)());
 }
 
 function addEvents() {
@@ -2186,7 +2185,7 @@ function getCurrentScore() {
 
 // Route
 function getRoute() {
-	return _store2.default.getState().route;
+	return _store2.default.getState().route.route;
 }
 
 },{"../store":48}],48:[function(require,module,exports){

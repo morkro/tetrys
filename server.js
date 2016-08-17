@@ -16,5 +16,5 @@ module.exports = () =>
 		})
 		.listen(server.get('port'), (error) => {
 			if (error) return debug(error)
-			debug(`application is running at localhost:${server.get('port')}`)
+			debug(`application is running at http://localhost:${server.get('port')}`)
 		})

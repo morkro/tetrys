@@ -8,9 +8,10 @@ $pages: ("menu", "about", "scoreboard", "game");
 	height: 100%;
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-between;
 	flex-direction: column;
 	transform: translateX(-110%);
+	padding: 0 5vw;
 
 	@each $page in $pages {
 		.page-#{$page} &.view-#{$page} {
@@ -20,11 +21,13 @@ $pages: ("menu", "about", "scoreboard", "game");
 }
 
 .tetrys-view header {
-	width: 100vw;
 	display: flex;
 	justify-content: center;
 }
 
 .tetrys-view footer {
 	width: 100vw;
+	border-top: 2px solid black;
+	padding: 3vw 4vw;
+	text-align: center;
 }
