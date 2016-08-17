@@ -5,7 +5,7 @@ import {
 	BOARD_ROWS
 } from '../constants/board'
 import { getEmptyGrid } from '../utils/board'
-import { getActiveBlock } from '../selectors'
+import { getTetromino } from '../selectors'
 
 const initialState = {
 	columns: BOARD_COLUMNS,
@@ -14,7 +14,7 @@ const initialState = {
 }
 
 function freeze ({ shape, grid }) {
-	const block = getActiveBlock()
+	const block = getTetromino()
 	const newGrid = grid
 	for (let y = 0; y < shape.length; ++y) {
 		for (let x = 0; x < shape.length; ++x) {

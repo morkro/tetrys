@@ -1,5 +1,5 @@
 import { BOARD_COLUMNS, BOARD_ROWS } from '../constants/board'
-import * as _ from '../selectors'
+import { getTetromino, getGrid, getBoardRows, getBoardColumns } from '../selectors'
 
 export function getEmptyGrid () {
 	const grid = []
@@ -19,7 +19,7 @@ export function validBoardBoundary ({
 	offsetY = 0,
 	tetromino = []
 } = {}) {
-	const activeBlock = _.getTetromino()
+	const activeBlock = getTetromino()
 	const newOffsetX = activeBlock.column + offsetX
 	const newOffsetY = activeBlock.row + offsetY
 	let shape = tetromino
@@ -31,14 +31,14 @@ export function validBoardBoundary ({
 	for (let y = 0; y < shape.length; ++y) {
 		for (let x = 0; x < shape.length; ++x) {
 			if (shape[y][x]) {
-				const grid = _.getGrid()
+				const grid = getGrid()
 				if (
 					typeof grid[y + newOffsetY] === 'undefined' ||
 					typeof grid[y + newOffsetY][x + newOffsetX] === 'undefined' ||
 					grid[y + newOffsetY][x + newOffsetX] ||
 					x + newOffsetX < 0 ||
-					y + newOffsetY >= _.getBoardRows() ||
-					x + newOffsetX >= _.getBoardColumns()
+					y + newOffsetY >= getBoardRows() ||
+					x + newOffsetX >= getBoardColumns()
 				) {
 					// if (x + newOffsetX >= _.getBoardColumns() ||
 					// y + newOffsetY >= _.getBoardRows()) {

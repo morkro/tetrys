@@ -1659,11 +1659,15 @@ exports.default = addKeyboardEvents;
 
 var _store = require('../store');
 
+var _store2 = _interopRequireDefault(_store);
+
 var _selectors = require('../selectors');
 
 var _tetromino = require('../actions/tetromino');
 
 var _keyCode = require('../constants/keyCode');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Takes an event object and dispatches different tetromino actions.
@@ -1678,12 +1682,12 @@ function onPressKeydownEvent(_ref) {
 
 	switch (keyCode) {
 		case _keyCode.LEFT_ARROW:
-			return (0, _store.dispatch)((0, _tetromino.moveTetromino)('LEFT'));
+			return _store2.default.dispatch((0, _tetromino.moveTetromino)('LEFT'));
 		case _keyCode.RIGHT_ARROW:
-			return (0, _store.dispatch)((0, _tetromino.moveTetromino)('RIGHT'));
+			return _store2.default.dispatch((0, _tetromino.moveTetromino)('RIGHT'));
 		case _keyCode.SPACE_BAR:
 		case _keyCode.UP_ARROW:
-			return (0, _store.dispatch)((0, _tetromino.rotateTetromino)());
+			return _store2.default.dispatch((0, _tetromino.rotateTetromino)());
 		default:
 			return;
 	}
@@ -1894,7 +1898,7 @@ function freeze(_ref) {
 	var shape = _ref.shape;
 	var grid = _ref.grid;
 
-	var block = (0, _selectors.getActiveBlock)();
+	var block = (0, _selectors.getTetromino)();
 	var newGrid = grid;
 	for (var y = 0; y < shape.length; ++y) {
 		for (var x = 0; x < shape.length; ++x) {
@@ -2222,10 +2226,6 @@ var _board = require('../constants/board');
 
 var _selectors = require('../selectors');
 
-var _ = _interopRequireWildcard(_selectors);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
 function getEmptyGrid() {
 	var grid = [];
 
@@ -2249,7 +2249,7 @@ function validBoardBoundary() {
 	var _ref$tetromino = _ref.tetromino;
 	var tetromino = _ref$tetromino === undefined ? [] : _ref$tetromino;
 
-	var activeBlock = _.getTetromino();
+	var activeBlock = (0, _selectors.getTetromino)();
 	var newOffsetX = activeBlock.column + offsetX;
 	var newOffsetY = activeBlock.row + offsetY;
 	var shape = tetromino;
@@ -2261,8 +2261,8 @@ function validBoardBoundary() {
 	for (var y = 0; y < shape.length; ++y) {
 		for (var x = 0; x < shape.length; ++x) {
 			if (shape[y][x]) {
-				var grid = _.getGrid();
-				if (typeof grid[y + newOffsetY] === 'undefined' || typeof grid[y + newOffsetY][x + newOffsetX] === 'undefined' || grid[y + newOffsetY][x + newOffsetX] || x + newOffsetX < 0 || y + newOffsetY >= _.getBoardRows() || x + newOffsetX >= _.getBoardColumns()) {
+				var grid = (0, _selectors.getGrid)();
+				if (typeof grid[y + newOffsetY] === 'undefined' || typeof grid[y + newOffsetY][x + newOffsetX] === 'undefined' || grid[y + newOffsetY][x + newOffsetX] || x + newOffsetX < 0 || y + newOffsetY >= (0, _selectors.getBoardRows)() || x + newOffsetX >= (0, _selectors.getBoardColumns)()) {
 					// if (x + newOffsetX >= _.getBoardColumns() ||
 					// y + newOffsetY >= _.getBoardRows()) {
 					// 	console.group()

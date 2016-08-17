@@ -1,4 +1,4 @@
-import { dispatch } from '../store'
+import store from '../store'
 import { isRunning } from '../selectors'
 import { moveTetromino, rotateTetromino } from '../actions/tetromino'
 import { LEFT_ARROW, RIGHT_ARROW, UP_ARROW, SPACE_BAR } from '../constants/keyCode'
@@ -14,12 +14,12 @@ export function onPressKeydownEvent ({ keyCode }) {
 
 	switch (keyCode) {
 	case LEFT_ARROW:
-		return dispatch(moveTetromino('LEFT'))
+		return store.dispatch(moveTetromino('LEFT'))
 	case RIGHT_ARROW:
-		return dispatch(moveTetromino('RIGHT'))
+		return store.dispatch(moveTetromino('RIGHT'))
 	case SPACE_BAR:
 	case UP_ARROW:
-		return dispatch(rotateTetromino())
+		return store.dispatch(rotateTetromino())
 	default:
 		return
 	}
