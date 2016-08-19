@@ -6,10 +6,11 @@
 <body class="page-menu">
 	{% include "partials/header.html" %}
 	<main role="main">
-		{% include "pages/menu.html" %}
 		{% include "pages/score.html" %}
 		{% include "pages/game.html" %}
 		{% include "pages/about.html" %}
+		{# Default view needs to be at the end #}
+		{% include "pages/menu.html" %}
 	</main>
 	<script src="main.js"></script>
 </body>

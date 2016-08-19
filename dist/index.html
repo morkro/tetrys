@@ -34,38 +34,10 @@
 </head>
 <body class="page-menu">
 	<header id="tetrys-header">
-	<button type="button" data-route="menu">Back</button>
+	<a href="#" role="button">Back</a>
 </header>
 	<main role="main">
-		<section class="tetrys-view view-menu">
-	<header>
-		<h1>Tetrys</h1>
-	</header>
-
-	<ul class="tetrys-controls">
-		<li>
-			<button type="button" data-route="game" data-action="startGame">
-				Start game
-			</button>
-		</li>
-		<li>
-			<button type="button" data-route="scoreboard">
-				Scoreboard
-			</button>
-		</li>
-		<li>
-			<button type="button" data-route="about">
-				About
-			</button>
-		</li>
-	</ul>
-
-	<footer>
-		<span>Works offline!</span>
-		<span>Add to homescreen</span>
-	</footer>
-</section>
-		<section class="tetrys-view view-scoreboard">
+		<section class="tetrys-view view-scoreboard" id="score">
 	<header>
 		<h1>Scoreboard</h1>
 	</header>
@@ -73,12 +45,12 @@
 	<span>Highscore: <strong>0</strong></span>
 	<ol></ol>
 </section>
-		<section class="tetrys-view view-game">
+		<section class="tetrys-view view-game" id="play">
 	<header class="tetrys-score">
 		<strong>Score:</strong> <span>0</span>
 		<ul class="tetrys-controls">
 			<li>
-				<button role="button" data-action="toggleGame">
+				<button data-action="toggleGame">
 					Pause
 				</button>
 			</li>
@@ -115,7 +87,7 @@
 		</ul>
 	</footer>
 </section>
-		<section class="tetrys-view view-about">
+		<section class="tetrys-view view-about" id="about">
 	<header>
 		<h1>About</h1>
 	</header>
@@ -126,6 +98,29 @@
 	<p>
 		Tetrys is an open source project; all code and documentation can be found on <a href="https://github.com/morkro/tetrys" target="_blank">GitHub</a>.
 	</p>
+</section>
+		
+		<section class="tetrys-view view-menu" id="menu">
+	<header>
+		<h1>Tetrys</h1>
+	</header>
+
+	<ul class="tetrys-controls">
+		<li>
+			<a href="#play" role="button" data-action="startGame">Start game</a>
+		</li>
+		<li>
+			<a href="#score" role="button">Scoreboard</a>
+		</li>
+		<li>
+			<a href="#about" role="button">About</a>
+		</li>
+	</ul>
+
+	<footer>
+		<span>Works offline!</span>
+		<span>Add to homescreen</span>
+	</footer>
 </section>
 	</main>
 	<script src="main.js"></script>

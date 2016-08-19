@@ -1,6 +1,9 @@
-button {
+button, [role=button] {
+	display: inline-block;
 	font-weight: 700;
 	text-transform: uppercase;
+	text-decoration: none;
+	color: black;
 	background: white;
 	border: 3px solid rgba(0, 0, 0, 1);
 	border-radius: 6px;

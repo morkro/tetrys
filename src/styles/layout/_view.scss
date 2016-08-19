@@ -1,5 +1,3 @@
-$pages: ("menu", "about", "scoreboard", "game");
-
 .tetrys-view {
 	position: absolute;
 	top: 0;
@@ -13,10 +11,13 @@ $pages: ("menu", "about", "scoreboard", "game");
 	transform: translateX(-110%);
 	padding: 0 5vw;
 
-	@each $page in $pages {
-		.page-#{$page} &.view-#{$page} {
-			transform: translateX(0);
-		}
+	&:last-of-type,
+	&:target {
+		transform: translateX(0);
+	}
+
+	&:target ~ & {
+		transform: translateX(-110%);
 	}
 }
 

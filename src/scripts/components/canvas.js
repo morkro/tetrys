@@ -1,21 +1,26 @@
 import throttle from 'lodash/throttle'
+import { BOARD_COLUMNS, BOARD_ROWS } from '../constants/board'
 import { $, validBoardBoundary } from '../utils'
 import { addTetromino, moveTetromino } from '../actions/tetromino'
 import { freezeBoard, removeLineFromBoard } from '../actions/board'
 import { updateCurrentScore } from '../actions/score'
-import store from '../store'
-import { getTetromino, getBoardRows, getBoardColumns, getGrid, isRunning } from '../selectors'
+import { getTetromino, getGrid, isRunning } from '../selectors'
 import Tetromino from '../components/tetromino'
 
-export class Canvas {
-	constructor (canvas) {
-		this.canvas = $(canvas)
-		this.context = this.canvas.getContext('2d')
-		this.wrapper = this.canvas.parentNode
-		this.width = this.wrapper.offsetWidth
-		this.height = this.wrapper.offsetHeight
-		this.blockWidth = this.width / getBoardColumns()
-		this.blockHeight = this.height / getBoardRows()
+export default class Canvas {
+	constructor ({ store, selector } = {}) {
+		this.store = store
+
+		this.$canvas = $(selector)
+		this.$wrapper = this.$canvas.parentNode
+		this.context = this.$canvas.getContext('2d')
+
+		this.width = this.$wrapper.offsetWidth
+		this.height = this.$wrapper.offsetHeight
+
+		this.blockWidth = this.width / BOARD_COLUMNS
+		this.blockHeight = this.height / BOARD_ROWS
+
 		this.animationFrame = null
 		this.tetrominoPositionAnimation = null
 		this.isRunningInternal = false
@@ -23,20 +28,20 @@ export class Canvas {
 	}
 
 	setSize () {
-		this.canvas.width = this.width = this.wrapper.offsetWidth
-		this.canvas.height = this.height = this.wrapper.offsetHeight
-		this.blockWidth = this.width / getBoardColumns()
-		this.blockHeight = this.height / getBoardRows()
+		this.$canvas.width = this.width = this.$wrapper.offsetWidth
+		this.$canvas.height = this.height = this.$wrapper.offsetHeight
+		this.blockWidth = this.width / BOARD_COLUMNS
+		this.blockHeight = this.height / BOARD_ROWS
 	}
 
 	toggleGameState () {
-		if (isRunning() && !this.isRunningInternal) {
+		if (isRunning(this.store) && !this.isRunningInternal) {
 			this.isRunningInternal = true
 			this.updateTetrominoPosition()
 			this.loop()
 		}
 
-		else if (!isRunning() && this.isRunningInternal) {
+		else if (!isRunning(this.store) && this.isRunningInternal) {
 			this.isRunningInternal = false
 			this.cancelTetrominoPosition()
 			this.cancelLoop()
@@ -64,7 +69,7 @@ export class Canvas {
 	}
 
 	drawBackground () {
-		for (let y = 0, grid = getGrid(); y < grid.length; ++y) {
+		for (let y = 0, grid = getGrid(this.store); y < grid.length; ++y) {
 			for (let x = 0; x < grid[y].length; ++x) {
 				if (grid[y][x] === 1) {
 					this.setBlockStyle({ fill: 'mediumseagreen' })
@@ -78,7 +83,7 @@ export class Canvas {
 	}
 
 	drawTetromino () {
-		const block = getTetromino()
+		const block = getTetromino(this.store)
 		for (let y = 0; y < block.shape.length; ++y) {
 			for (let x = 0; x < block.shape.length; ++x) {
 				if (block.shape[y][x]) {
@@ -91,15 +96,22 @@ export class Canvas {
 
 	updateTetrominoPosition () {
 		this.tetrominoPositionAnimation = setInterval(() => {
-			if (validBoardBoundary({ offsetY: 1 })) {
-				store.dispatch(moveTetromino('DOWN'))
-				store.dispatch(updateCurrentScore(10))
+			const tetromino = getTetromino(this.store)
+			const validBoundary = validBoardBoundary({
+				active: tetromino,
+				grid: getGrid(this.store),
+				offsetY: 1
+			})
+
+			if (!validBoundary) {
+				this.store.dispatch(freezeBoard(tetromino))
+				this.store.dispatch(removeLineFromBoard())
+				this.store.dispatch(addTetromino(new Tetromino()))
+				return
 			}
-			else {
-				store.dispatch(freezeBoard(getTetromino().shape))
-				store.dispatch(removeLineFromBoard())
-				store.dispatch(addTetromino(new Tetromino()))
-			}
+
+			this.store.dispatch(moveTetromino('DOWN'))
+			this.store.dispatch(updateCurrentScore(10))
 		}, this.initialSpeed)
 	}
 
@@ -128,11 +140,6 @@ export class Canvas {
 		this.addEvents()
 		this.setSize()
 		this.drawBackground()
-		store.subscribe(this.toggleGameState.bind(this))
+		this.store.subscribe(this.toggleGameState.bind(this))
 	}
-}
-
-export default function createCanvas (selector) {
-	const canvas = new Canvas(selector)
-	return canvas.init()
 }

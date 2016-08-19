@@ -17,8 +17,9 @@ export function moveTetromino (direction) {
 	}
 }
 
-export function rotateTetromino () {
+export function rotateTetromino (shape) {
 	return {
-		type: TETROMINO_ROTATE
+		type: TETROMINO_ROTATE,
+		shape
 	}
 }

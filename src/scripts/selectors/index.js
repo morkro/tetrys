@@ -1,27 +1,19 @@
-import store from '../store'
-
 // Game
-export function isRunning () {
+export function isRunning (store) {
 	return store.getState().game.isRunning
 }
 
 // Board
-export function getBoardColumns () {
-	return store.getState().board.columns
-}
-export function getBoardRows () {
-	return store.getState().board.rows
-}
-export function getGrid () {
-	return store.getState().board.grid
+export function getGrid (store) {
+	return store.getState().board
 }
 
 // Tetromino
-export function getTetromino () {
+export function getTetromino (store) {
 	return store.getState().tetromino
 }
 
 // Score
-export function getCurrentScore () {
+export function getCurrentScore (store) {
 	return store.getState().score.current
 }

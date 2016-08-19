@@ -1,9 +1,9 @@
 import { BOARD_FREEZE, BOARD_LINE_REMOVE } from '../constants/board'
 
-export function freezeBoard (shape) {
+export function freezeBoard (tetromino) {
 	return {
 		type: BOARD_FREEZE,
-		shape
+		tetromino
 	}
 }
 

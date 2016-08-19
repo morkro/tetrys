@@ -1,6 +1,9 @@
 import { BOARD_COLUMNS, BOARD_ROWS } from '../constants/board'
-import { getTetromino, getGrid, getBoardRows, getBoardColumns } from '../selectors'
 
+/**
+ * Returns a new empty grid.
+ * @return {Array}
+ */
 export function getEmptyGrid () {
 	const grid = []
 
@@ -14,46 +17,41 @@ export function getEmptyGrid () {
 	return grid
 }
 
+/**
+ * Checks if the an array (tetromino) is still in the valid grid boundaries.
+ * @param {Array} active
+ * @param {Array} grid
+ * @param {Number} offsetX
+ * @param {Number} offsetY
+ * @param {Array} tetromino
+ * @return {Boolean}
+ */
 export function validBoardBoundary ({
+	active = [],
+	grid = [],
 	offsetX = 0,
 	offsetY = 0,
 	tetromino = []
 } = {}) {
-	const activeBlock = getTetromino()
-	const newOffsetX = activeBlock.column + offsetX
-	const newOffsetY = activeBlock.row + offsetY
+	const newOffsetX = active.column + offsetX
+	const newOffsetY = active.row + offsetY
 	let shape = tetromino
 
 	if (shape.length === 0) {
-		shape = activeBlock.shape
+		shape = active.shape
 	}
 
 	for (let y = 0; y < shape.length; ++y) {
 		for (let x = 0; x < shape.length; ++x) {
 			if (shape[y][x]) {
-				const grid = getGrid()
 				if (
 					typeof grid[y + newOffsetY] === 'undefined' ||
 					typeof grid[y + newOffsetY][x + newOffsetX] === 'undefined' ||
 					grid[y + newOffsetY][x + newOffsetX] ||
 					x + newOffsetX < 0 ||
-					y + newOffsetY >= getBoardRows() ||
-					x + newOffsetX >= getBoardColumns()
+					y + newOffsetY >= BOARD_ROWS ||
+					x + newOffsetX >= BOARD_COLUMNS
 				) {
-					// if (x + newOffsetX >= _.getBoardColumns() ||
-					// y + newOffsetY >= _.getBoardRows()) {
-					// 	console.group()
-					// 	console.log('x =>', x)
-					// 	console.log('newOffsetX =>', newOffsetX)
-					// 	console.log('x + newOffsetX', x + newOffsetX)
-					// 	console.log('_.getBoardColumns()', _.getBoardColumns())
-					// 	console.log('y =>', y)
-					// 	console.log('newOffsetY =>', newOffsetY)
-					// 	console.log('y + newOffsetY', y + newOffsetY)
-					// 	console.log('_.getBoardRows()', _.getBoardRows())
-					// 	console.groupEnd()
-					// }
-
 					return false
 				}
 			}
@@ -61,4 +59,54 @@ export function validBoardBoundary ({
 	}
 
 	return true
+}
+
+/**
+ * Rotates elements of an array (tetromino) and returns the new shape as array.
+ * @param {Array} current
+ * @return {Array}
+ */
+export function rotate (current) {
+	const newCurrent = []
+	for (let y = 0; y < current.length; ++y) {
+		newCurrent[y] = []
+		for (let x = 0; x < current.length; ++x) {
+			newCurrent[y][x] = current[(current.length - 1) - x][y]
+		}
+	}
+	return newCurrent
+}
+
+export function freezeBoard ({ tetromino, board } = {}) {
+	const newBoard = board
+	for (let y = 0; y < tetromino.shape.length; ++y) {
+		for (let x = 0; x < tetromino.shape.length; ++x) {
+			if (tetromino.shape[y][x]) {
+				newBoard[y + tetromino.row][x + tetromino.column] = tetromino.shape[y][x]
+			}
+		}
+	}
+	return newBoard
+}
+
+export function removeLineFromBoard (board) {
+	const newBoard = board
+	for (let y = BOARD_ROWS - 1; y >= 0; --y) {
+		let filledRow = true
+		for (let x = 0; x < BOARD_COLUMNS; ++x) {
+			if (board[y][x] === 0) {
+				filledRow = false
+				break
+			}
+		}
+		if (filledRow) {
+			for (let yy = y; yy > 0; --yy) {
+				for (let x = 0; x < BOARD_COLUMNS; ++x) {
+					newBoard[yy][x] = board[yy - 1][x]
+				}
+			}
+			++y
+		}
+	}
+	return newBoard
 }
