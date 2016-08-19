@@ -77,6 +77,12 @@ export function rotate (current) {
 	return newCurrent
 }
 
+/**
+ * Returns a modified array of the `board` parameter, with the position of `tetromino`
+ * @param {Array} tetromino
+ * @param {Array} board
+ * @return {Array}
+ */
 export function freezeBoard ({ tetromino, board } = {}) {
 	const newBoard = board
 	for (let y = 0; y < tetromino.shape.length; ++y) {
@@ -89,6 +95,11 @@ export function freezeBoard ({ tetromino, board } = {}) {
 	return newBoard
 }
 
+/**
+ * Modifies `board` by removing a full list of columns.
+ * @param {Array} board
+ * @return {Array}
+ */
 export function removeLineFromBoard (board) {
 	const newBoard = board
 	for (let y = BOARD_ROWS - 1; y >= 0; --y) {
