@@ -20,3 +20,22 @@ installServiceWorker()
 pageControls.addEvents()
 keyboardControls.addEvents()
 game.init()
+// scoreboard.init()
+
+window.addEventListener('hashchange', ({ oldURL, newURL }) => {
+	const oldLocation = oldURL.split('#')[1]
+	const newLocation = newURL.split('#')[1]
+
+	// When leaving a view
+	switch (oldLocation) {
+	case 'play': return game.stop()
+	default: break
+	}
+
+	// When entering a view
+	switch (newLocation) {
+	case 'play': return game.start()
+	case 'score': // scoreboard.update()
+	default: break
+	}
+})

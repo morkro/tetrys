@@ -1,7 +1,5 @@
 import { $$ } from '../utils/dom'
-import { startGame, endGame } from '../actions/game'
-import { addTetromino, moveTetromino, rotateTetromino } from '../actions/tetromino'
-import Tetromino from './tetromino'
+import { endGame, moveTetromino, rotateTetromino } from '../actions'
 
 /**
  * @class PageControls
@@ -20,10 +18,6 @@ export default class PageControls {
 	 */
 	onClick ({ target }) {
 		switch (target.getAttribute('data-action')) {
-		case 'startGame':
-			this.store.dispatch(addTetromino(new Tetromino()))
-			this.store.dispatch(startGame())
-			break
 		case 'pauseGame':
 			this.store.dispatch(endGame())
 			break

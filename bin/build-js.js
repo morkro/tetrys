@@ -22,7 +22,7 @@ function transpile ({
 	return new Promise((resolve, reject) => {
 		const stream = browserify(`./src/scripts/${fileName}.js`)
 			.ignore(ignoreFile)
-			.transform('babelify', { plugins, presets: ['es2015'] })
+			.transform('babelify', { plugins, presets: ['latest'] })
 			.transform('envify', Object.assign({ _: 'purge' }, params))
 			.bundle()
 			.pipe(createWriteStream(`./dist/${outputFileName}.js`))

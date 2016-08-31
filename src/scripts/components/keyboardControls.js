@@ -1,4 +1,4 @@
-import { moveTetromino, rotateTetromino } from '../actions/tetromino'
+import { moveTetromino, rotateTetromino } from '../actions'
 import { LEFT_ARROW, RIGHT_ARROW, UP_ARROW, SPACE_BAR } from '../constants/keyCode'
 import { isRunning, getTetromino, getGrid } from '../selectors'
 import { validBoardBoundary, rotate } from '../utils/board'

@@ -1,11 +1,14 @@
 import throttle from 'lodash/throttle'
 import { BOARD_COLUMNS, BOARD_ROWS } from '../constants/board'
 import { $, validBoardBoundary } from '../utils'
-import { addTetromino, moveTetromino } from '../actions/tetromino'
-import { freezeBoard, removeLineFromBoard } from '../actions/board'
-import { updateCurrentScore } from '../actions/score'
 import { getTetromino, getGrid, isRunning } from '../selectors'
-import Tetromino from '../components/tetromino'
+import Tetromino from './tetromino'
+import {
+	startGame, endGame,
+	addTetromino, moveTetromino,
+	freezeBoard, removeLineFromBoard,
+	updateCurrentScore
+} from '../actions'
 
 export default class Canvas {
 	constructor ({ store, selector } = {}) {
@@ -130,6 +133,15 @@ export default class Canvas {
 
 	cancelLoop () {
 		cancelAnimationFrame(this.animationFrame)
+	}
+
+	stop () {
+		this.store.dispatch(endGame())
+	}
+
+	start () {
+		this.store.dispatch(addTetromino(new Tetromino()))
+		this.store.dispatch(startGame())
 	}
 
 	addEvents () {
