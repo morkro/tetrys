@@ -1,12 +1,12 @@
 import {
 	SCORE_CURRENT_UPDATE,
-	SCORE_HIGHSCORE_SET,
+	SCORE_CURRENT_CLEAR,
 	SCORE_ADD
 } from '../constants/score'
+import { updateScoreList } from '../utils'
 
 const initialState = {
 	current: 0,
-	highscore: 0,
 	all: []
 }
 
@@ -16,13 +16,13 @@ export default function Score (state = initialState, action) {
 		return Object.assign({}, state, {
 			current: state.current + action.current
 		})
-	case SCORE_HIGHSCORE_SET:
+	case SCORE_CURRENT_CLEAR:
 		return Object.assign({}, state, {
-			highscore: action.highscore
+			current: 0
 		})
 	case SCORE_ADD:
 		return Object.assign({}, state, {
-			all: [...state.all, action.all]
+			all: updateScoreList(state.current, state.all)
 		})
 	default:
 		return state

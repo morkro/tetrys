@@ -1,10 +1,7 @@
 import throttle from 'lodash/throttle'
-import { saveState } from './utils'
 import configureStore from './store/configureStore'
-import installServiceWorker from './utils/serviceWorker'
-import PageControls from './components/pageControls'
-import KeyboardControls from './components/keyboardControls'
-import Canvas from './components/canvas'
+import { saveState, installServiceWorker } from './utils'
+import { PageControls, KeyboardControls, Canvas } from './components'
 
 const store = configureStore()
 const pageControls = new PageControls({ selector: 'button, [role=button]', store })

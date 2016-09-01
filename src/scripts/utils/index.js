@@ -1,6 +1,7 @@
 import { $, $$ } from './dom'
 import { loadState, saveState } from './localStorage'
 import installServiceWorker from './serviceWorker'
+import updateScoreList from './score'
 import {
 	getEmptyGrid,
 	validBoardBoundary,
@@ -19,5 +20,6 @@ export {
 	removeLineFromBoard,
 	loadState,
 	saveState,
-	installServiceWorker
+	installServiceWorker,
+	updateScoreList
 }

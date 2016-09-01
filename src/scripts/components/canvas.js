@@ -7,7 +7,7 @@ import {
 	startGame, endGame,
 	addTetromino, moveTetromino,
 	freezeBoard, removeLineFromBoard,
-	updateCurrentScore
+	updateCurrentScore, addScore, clearCurrentScore
 } from '../actions'
 
 export default class Canvas {
@@ -40,7 +40,7 @@ export default class Canvas {
 	toggleGameState () {
 		if (isRunning(this.store) && !this.isRunningInternal) {
 			this.isRunningInternal = true
-			this.updateTetrominoPosition()
+			this.updateGame()
 			this.loop()
 		}
 
@@ -97,7 +97,7 @@ export default class Canvas {
 		}
 	}
 
-	updateTetrominoPosition () {
+	updateGame () {
 		this.tetrominoPositionAnimation = setInterval(() => {
 			const tetromino = getTetromino(this.store)
 			const validBoundary = validBoardBoundary({
@@ -136,7 +136,13 @@ export default class Canvas {
 	}
 
 	stop () {
+		if (!isRunning(this.store)) {
+			return
+		}
+
 		this.store.dispatch(endGame())
+		this.store.dispatch(addScore())
+		this.store.dispatch(clearCurrentScore())
 	}
 
 	start () {

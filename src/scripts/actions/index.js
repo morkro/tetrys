@@ -1,6 +1,6 @@
 import { freezeBoard, removeLineFromBoard } from './board'
 import { startGame, pauseGame, endGame, updateGameLevel } from './game'
-import { updateCurrentScore, setHighscore, addScore } from './score'
+import { updateCurrentScore, clearCurrentScore, setHighscore, addScore } from './score'
 import { addTetromino, moveTetromino, rotateTetromino } from './tetromino'
 
 export {
@@ -11,6 +11,7 @@ export {
 	endGame,
 	updateGameLevel,
 	updateCurrentScore,
+	clearCurrentScore,
 	setHighscore,
 	addScore,
 	addTetromino,
