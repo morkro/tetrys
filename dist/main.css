@@ -527,3 +527,35 @@ button, [role=button] {
       justify-content: center;
   -ms-flex-align: center;
       align-items: center; }
+
+.view-about {
+  -ms-flex-pack: center;
+      justify-content: center; }
+
+.view-scoreboard {
+  -ms-flex-pack: center;
+      justify-content: center; }
+
+.tetrys-scoreboard {
+  width: 100%; }
+  .tetrys-scoreboard li {
+    padding: 15px 20px;
+    position: relative; }
+    .tetrys-scoreboard li:not(:last-child) {
+      margin-bottom: 15px; }
+    .tetrys-scoreboard li:first-child:before {
+      background: #ffd54f; }
+    .tetrys-scoreboard li:before {
+      content: "";
+      position: absolute;
+      background: white;
+      border: 3px solid black;
+      border-radius: 6px;
+      width: calc(100% + 40px);
+      height: calc(100% - 3px);
+      left: -40px;
+      top: 0;
+      z-index: -1; }
+  .tetrys-scoreboard span {
+    font-size: 125%;
+    font-weight: 700; }

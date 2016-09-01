@@ -1,0 +1,38 @@
+.view-scoreboard {
+	justify-content: center;
+}
+
+.tetrys-scoreboard {
+	width: 100%;
+
+	li {
+		padding: 15px 20px;
+		position: relative;
+
+		&:not(:last-child) {
+			margin-bottom: 15px;
+		}
+
+		&:first-child:before {
+			background: $yellow;
+		}
+
+		&:before {
+			content: "";
+			position: absolute;
+			background: white;
+			border: 3px solid black;
+			border-radius: 6px;
+			width: calc(100% + 40px);
+			height: calc(100% - 3px);
+			left: -40px;
+			top: 0;
+			z-index: -1;
+		}
+	}
+
+	span {
+		font-size: 125%;
+		font-weight: 700;
+	}
+}

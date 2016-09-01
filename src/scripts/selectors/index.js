@@ -17,3 +17,7 @@ export function getTetromino (store) {
 export function getCurrentScore (store) {
 	return store.getState().score.current
 }
+
+export function getScoreList (store) {
+	return store.getState().score.all
+}

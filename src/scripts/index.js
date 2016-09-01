@@ -1,24 +1,28 @@
 import throttle from 'lodash/throttle'
 import configureStore from './store/configureStore'
 import { saveState, installServiceWorker } from './utils'
-import { PageControls, KeyboardControls, Canvas } from './components'
+import { PageControls, KeyboardControls, Canvas, ScoreBoard } from './components'
 
 const store = configureStore()
 const pageControls = new PageControls({ selector: 'button, [role=button]', store })
 const keyboardControls = new KeyboardControls({ scope: window, store })
 const game = new Canvas({ selector: '#game', store })
+const scoreBoard = new ScoreBoard({ selector: '.tetrys-scoreboard', store })
 
+// Save game data to localStorage periodically
 store.subscribe(throttle(() => {
 	const { score } = store.getState()
 	saveState({ score })
 }, 5000))
 
+// Initialise all modules
 installServiceWorker()
 pageControls.addEvents()
 keyboardControls.addEvents()
+scoreBoard.init()
 game.init()
-// scoreboard.init()
 
+// Update views on hash change
 window.addEventListener('hashchange', ({ oldURL, newURL }) => {
 	const oldLocation = oldURL.split('#')[1]
 	const newLocation = newURL.split('#')[1]
@@ -32,7 +36,7 @@ window.addEventListener('hashchange', ({ oldURL, newURL }) => {
 	// When entering a view
 	switch (newLocation) {
 	case 'play': return game.start()
-	case 'score': // scoreboard.update()
+	case 'score': return scoreBoard.update()
 	default: break
 	}
 })
