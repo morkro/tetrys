@@ -1,12 +1,16 @@
 <section class="tetrys-view view-{{ view_name }}" id="{{ view_id }}">
-	{% block header %}		{% include "partials/back-button.html" %}
-		{% if view_title %}
-		<h1>{{ view_title }}</h1>
-		{% endif %}
-	{% endblock %}
-	</header>
+	<div class="view-inner">
+		<header>
+		{% block header %}
+		{% include "partials/back-button.html" %}
+			{% if view_title %}
+			<h1>{{ view_title }}</h1>
+			{% endif %}
+		{% endblock %}
+		</header>
 
-	{% block main %}{% endblock %}
+		{% block main %}{% endblock %}
 
-	{% block footer %}{% endblock %}
+		{% block footer %}{% endblock %}
+	</div>
 </section>

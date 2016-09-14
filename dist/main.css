@@ -437,6 +437,20 @@ p {
   left: 0;
   width: 100vw;
   height: 100%;
+  transform: translateX(-110%);
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+      justify-content: center; }
+  .tetrys-view:last-of-type, .tetrys-view:target {
+    transform: translateX(0); }
+  .tetrys-view:target ~ .tetrys-view {
+    transform: translateX(-110%); }
+
+.view-inner {
+  width: 100%;
+  max-width: 500px;
+  padding: 0 5vw;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
@@ -444,13 +458,7 @@ p {
   -ms-flex-pack: justify;
       justify-content: space-between;
   -ms-flex-direction: column;
-      flex-direction: column;
-  transform: translateX(-110%);
-  padding: 0 5vw; }
-  .tetrys-view:last-of-type, .tetrys-view:target {
-    transform: translateX(0); }
-  .tetrys-view:target ~ .tetrys-view {
-    transform: translateX(-110%); }
+      flex-direction: column; }
 
 .tetrys-view header {
   display: -ms-flexbox;
@@ -540,11 +548,11 @@ button, [role=button] {
   -ms-flex-align: center;
       align-items: center; }
 
-.view-about {
+.view-about .view-inner {
   -ms-flex-pack: center;
       justify-content: center; }
 
-.view-scoreboard {
+.view-scoreboard .view-inner {
   -ms-flex-pack: center;
       justify-content: center; }
 
