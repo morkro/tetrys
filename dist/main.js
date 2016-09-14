@@ -1,4 +1,13 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(){function l(a,b){document.addEventListener?a.addEventListener("scroll",b,!1):a.attachEvent("scroll",b)}function m(a){document.body?a():document.addEventListener?document.addEventListener("DOMContentLoaded",function c(){document.removeEventListener("DOMContentLoaded",c);a()}):document.attachEvent("onreadystatechange",function k(){if("interactive"==document.readyState||"complete"==document.readyState)document.detachEvent("onreadystatechange",k),a()})};function q(a){this.a=document.createElement("div");this.a.setAttribute("aria-hidden","true");this.a.appendChild(document.createTextNode(a));this.b=document.createElement("span");this.c=document.createElement("span");this.h=document.createElement("span");this.f=document.createElement("span");this.g=-1;this.b.style.cssText="max-width:none;display:inline-block;position:absolute;height:100%;width:100%;overflow:scroll;font-size:16px;";this.c.style.cssText="max-width:none;display:inline-block;position:absolute;height:100%;width:100%;overflow:scroll;font-size:16px;";
+this.f.style.cssText="max-width:none;display:inline-block;position:absolute;height:100%;width:100%;overflow:scroll;font-size:16px;";this.h.style.cssText="display:inline-block;width:200%;height:200%;font-size:16px;max-width:none;";this.b.appendChild(this.h);this.c.appendChild(this.f);this.a.appendChild(this.b);this.a.appendChild(this.c)}
+function w(a,b){a.a.style.cssText="max-width:none;min-width:20px;min-height:20px;display:inline-block;overflow:hidden;position:absolute;width:auto;margin:0;padding:0;top:-999px;left:-999px;white-space:nowrap;font:"+b+";"}function x(a){var b=a.a.offsetWidth,c=b+100;a.f.style.width=c+"px";a.c.scrollLeft=c;a.b.scrollLeft=a.b.scrollWidth+100;return a.g!==b?(a.g=b,!0):!1}function z(a,b){function c(){var a=k;x(a)&&null!==a.a.parentNode&&b(a.g)}var k=a;l(a.b,c);l(a.c,c);x(a)};function A(a,b){var c=b||{};this.family=a;this.style=c.style||"normal";this.weight=c.weight||"normal";this.stretch=c.stretch||"normal"}var B=null,C=null,D=null;function H(){if(null===C){var a=document.createElement("div");try{a.style.font="condensed 100px sans-serif"}catch(b){}C=""!==a.style.font}return C}function I(a,b){return[a.style,a.weight,H()?a.stretch:"","100px",b].join(" ")}
+A.prototype.load=function(a,b){var c=this,k=a||"BESbswy",y=b||3E3,E=(new Date).getTime();return new Promise(function(a,b){null===D&&(D=!!document.fonts);if(D){var J=new Promise(function(a,b){function e(){(new Date).getTime()-E>=y?b():document.fonts.load(I(c,'"'+c.family+'"'),k).then(function(c){1<=c.length?a():setTimeout(e,25)},function(){b()})}e()}),K=new Promise(function(a,c){setTimeout(c,y)});Promise.race([K,J]).then(function(){a(c)},function(){b(c)})}else m(function(){function r(){var b;if(b=
+-1!=f&&-1!=g||-1!=f&&-1!=h||-1!=g&&-1!=h)(b=f!=g&&f!=h&&g!=h)||(null===B&&(b=/AppleWebKit\/([0-9]+)(?:\.([0-9]+))/.exec(window.navigator.userAgent),B=!!b&&(536>parseInt(b[1],10)||536===parseInt(b[1],10)&&11>=parseInt(b[2],10))),b=B&&(f==t&&g==t&&h==t||f==u&&g==u&&h==u||f==v&&g==v&&h==v)),b=!b;b&&(null!==d.parentNode&&d.parentNode.removeChild(d),clearTimeout(G),a(c))}function F(){if((new Date).getTime()-E>=y)null!==d.parentNode&&d.parentNode.removeChild(d),b(c);else{var a=document.hidden;if(!0===a||
+void 0===a)f=e.a.offsetWidth,g=n.a.offsetWidth,h=p.a.offsetWidth,r();G=setTimeout(F,50)}}var e=new q(k),n=new q(k),p=new q(k),f=-1,g=-1,h=-1,t=-1,u=-1,v=-1,d=document.createElement("div"),G=0;d.dir="ltr";w(e,I(c,"sans-serif"));w(n,I(c,"serif"));w(p,I(c,"monospace"));d.appendChild(e.a);d.appendChild(n.a);d.appendChild(p.a);document.body.appendChild(d);t=e.a.offsetWidth;u=n.a.offsetWidth;v=p.a.offsetWidth;F();z(e,function(a){f=a;r()});w(e,I(c,'"'+c.family+'",sans-serif'));z(n,function(a){g=a;r()});
+w(n,I(c,'"'+c.family+'",serif'));z(p,function(a){h=a;r()});w(p,I(c,'"'+c.family+'",monospace'))})})};"undefined"!==typeof module?module.exports=A:(window.FontFaceObserver=A,window.FontFaceObserver.prototype.load=A.prototype.load);}());
+
+},{}],2:[function(require,module,exports){
 (function (global){
 /** Detect free variable `global` from Node.js. */
 var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
@@ -6,7 +15,7 @@ var freeGlobal = typeof global == 'object' && global && global.Object === Object
 module.exports = freeGlobal;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 var overArg = require('./_overArg');
 
 /** Built-in value references. */
@@ -14,7 +23,7 @@ var getPrototype = overArg(Object.getPrototypeOf, Object);
 
 module.exports = getPrototype;
 
-},{"./_overArg":4}],3:[function(require,module,exports){
+},{"./_overArg":5}],4:[function(require,module,exports){
 /**
  * Checks if `value` is a host object in IE < 9.
  *
@@ -36,7 +45,7 @@ function isHostObject(value) {
 
 module.exports = isHostObject;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 /**
  * Creates a unary function that invokes `func` with its argument transformed.
  *
@@ -53,7 +62,7 @@ function overArg(func, transform) {
 
 module.exports = overArg;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 var freeGlobal = require('./_freeGlobal');
 
 /** Detect free variable `self`. */
@@ -64,7 +73,7 @@ var root = freeGlobal || freeSelf || Function('return this')();
 
 module.exports = root;
 
-},{"./_freeGlobal":1}],6:[function(require,module,exports){
+},{"./_freeGlobal":2}],7:[function(require,module,exports){
 var isObject = require('./isObject'),
     now = require('./now'),
     toNumber = require('./toNumber');
@@ -254,7 +263,7 @@ function debounce(func, wait, options) {
 
 module.exports = debounce;
 
-},{"./isObject":7,"./now":11,"./toNumber":13}],7:[function(require,module,exports){
+},{"./isObject":8,"./now":12,"./toNumber":14}],8:[function(require,module,exports){
 /**
  * Checks if `value` is the
  * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
@@ -287,7 +296,7 @@ function isObject(value) {
 
 module.exports = isObject;
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /**
  * Checks if `value` is object-like. A value is object-like if it's not `null`
  * and has a `typeof` result of "object".
@@ -318,7 +327,7 @@ function isObjectLike(value) {
 
 module.exports = isObjectLike;
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 var getPrototype = require('./_getPrototype'),
     isHostObject = require('./_isHostObject'),
     isObjectLike = require('./isObjectLike');
@@ -390,7 +399,7 @@ function isPlainObject(value) {
 
 module.exports = isPlainObject;
 
-},{"./_getPrototype":2,"./_isHostObject":3,"./isObjectLike":8}],10:[function(require,module,exports){
+},{"./_getPrototype":3,"./_isHostObject":4,"./isObjectLike":9}],11:[function(require,module,exports){
 var isObjectLike = require('./isObjectLike');
 
 /** `Object#toString` result references. */
@@ -430,7 +439,7 @@ function isSymbol(value) {
 
 module.exports = isSymbol;
 
-},{"./isObjectLike":8}],11:[function(require,module,exports){
+},{"./isObjectLike":9}],12:[function(require,module,exports){
 var root = require('./_root');
 
 /**
@@ -455,7 +464,7 @@ var now = function() {
 
 module.exports = now;
 
-},{"./_root":5}],12:[function(require,module,exports){
+},{"./_root":6}],13:[function(require,module,exports){
 var debounce = require('./debounce'),
     isObject = require('./isObject');
 
@@ -526,7 +535,7 @@ function throttle(func, wait, options) {
 
 module.exports = throttle;
 
-},{"./debounce":6,"./isObject":7}],13:[function(require,module,exports){
+},{"./debounce":7,"./isObject":8}],14:[function(require,module,exports){
 var isObject = require('./isObject'),
     isSymbol = require('./isSymbol');
 
@@ -594,7 +603,7 @@ function toNumber(value) {
 
 module.exports = toNumber;
 
-},{"./isObject":7,"./isSymbol":10}],14:[function(require,module,exports){
+},{"./isObject":8,"./isSymbol":11}],15:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -653,7 +662,7 @@ function applyMiddleware() {
     };
   };
 }
-},{"./compose":17}],15:[function(require,module,exports){
+},{"./compose":18}],16:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -705,7 +714,7 @@ function bindActionCreators(actionCreators, dispatch) {
   }
   return boundActionCreators;
 }
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -833,7 +842,7 @@ function combineReducers(reducers) {
     return hasChanged ? nextState : state;
   };
 }
-},{"./createStore":18,"./utils/warning":20,"lodash/isPlainObject":9}],17:[function(require,module,exports){
+},{"./createStore":19,"./utils/warning":21,"lodash/isPlainObject":10}],18:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -874,7 +883,7 @@ function compose() {
     if (typeof _ret === "object") return _ret.v;
   }
 }
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1137,7 +1146,7 @@ function createStore(reducer, initialState, enhancer) {
     replaceReducer: replaceReducer
   }, _ref2[_symbolObservable2["default"]] = observable, _ref2;
 }
-},{"lodash/isPlainObject":9,"symbol-observable":21}],19:[function(require,module,exports){
+},{"lodash/isPlainObject":10,"symbol-observable":22}],20:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1184,7 +1193,7 @@ exports.combineReducers = _combineReducers2["default"];
 exports.bindActionCreators = _bindActionCreators2["default"];
 exports.applyMiddleware = _applyMiddleware2["default"];
 exports.compose = _compose2["default"];
-},{"./applyMiddleware":14,"./bindActionCreators":15,"./combineReducers":16,"./compose":17,"./createStore":18,"./utils/warning":20}],20:[function(require,module,exports){
+},{"./applyMiddleware":15,"./bindActionCreators":16,"./combineReducers":17,"./compose":18,"./createStore":19,"./utils/warning":21}],21:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1210,7 +1219,7 @@ function warning(message) {
   } catch (e) {}
   /* eslint-enable no-empty */
 }
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 (function (global){
 /* global window */
 'use strict';
@@ -1218,7 +1227,7 @@ function warning(message) {
 module.exports = require('./ponyfill')(global || window || this);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./ponyfill":22}],22:[function(require,module,exports){
+},{"./ponyfill":23}],23:[function(require,module,exports){
 'use strict';
 
 module.exports = function symbolObservablePonyfill(root) {
@@ -1239,7 +1248,7 @@ module.exports = function symbolObservablePonyfill(root) {
 	return result;
 };
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1263,7 +1272,7 @@ function removeLineFromBoard() {
 	};
 }
 
-},{"../constants/board":34}],24:[function(require,module,exports){
+},{"../constants/board":35}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1303,7 +1312,7 @@ function updateGameLevel() {
 	};
 }
 
-},{"../constants/game":35}],25:[function(require,module,exports){
+},{"../constants/game":36}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1333,7 +1342,7 @@ exports.addTetromino = _tetromino.addTetromino;
 exports.moveTetromino = _tetromino.moveTetromino;
 exports.rotateTetromino = _tetromino.rotateTetromino;
 
-},{"./board":23,"./game":24,"./score":26,"./tetromino":27}],26:[function(require,module,exports){
+},{"./board":24,"./game":25,"./score":27,"./tetromino":28}],27:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1364,7 +1373,7 @@ function addScore() {
 	};
 }
 
-},{"../constants/score":37}],27:[function(require,module,exports){
+},{"../constants/score":38}],28:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1404,7 +1413,7 @@ function rotateTetromino(shape) {
 	};
 }
 
-},{"../constants/tetromino":39}],28:[function(require,module,exports){
+},{"../constants/tetromino":40}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1612,7 +1621,7 @@ var Canvas = function () {
 
 exports.default = Canvas;
 
-},{"../actions":25,"../constants/board":34,"../selectors":47,"../utils":51,"./tetromino":33,"lodash/throttle":12}],29:[function(require,module,exports){
+},{"../actions":26,"../constants/board":35,"../selectors":48,"../utils":52,"./tetromino":34,"lodash/throttle":13}],30:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1648,7 +1657,7 @@ exports.Canvas = _canvas2.default;
 exports.ScoreBoard = _scoreBoard2.default;
 exports.Tetromino = _tetromino2.default;
 
-},{"./canvas":28,"./keyboardControls":30,"./pageControls":31,"./scoreBoard":32,"./tetromino":33}],30:[function(require,module,exports){
+},{"./canvas":29,"./keyboardControls":31,"./pageControls":32,"./scoreBoard":33,"./tetromino":34}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1752,7 +1761,7 @@ var KeyboardControls = function () {
 
 exports.default = KeyboardControls;
 
-},{"../actions":25,"../constants/keyCode":36,"../selectors":47,"../utils":51}],31:[function(require,module,exports){
+},{"../actions":26,"../constants/keyCode":37,"../selectors":48,"../utils":52}],32:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1841,7 +1850,7 @@ var PageControls = function () {
 
 exports.default = PageControls;
 
-},{"../actions":25,"../utils/dom":50}],32:[function(require,module,exports){
+},{"../actions":26,"../utils/dom":51}],33:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1891,7 +1900,7 @@ var ScoreBoard = function () {
 
 exports.default = ScoreBoard;
 
-},{"../selectors":47,"../utils":51}],33:[function(require,module,exports){
+},{"../selectors":48,"../utils":52}],34:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1932,7 +1941,7 @@ var Tetromino = function Tetromino() {
 
 exports.default = Tetromino;
 
-},{"../constants/shapes":38}],34:[function(require,module,exports){
+},{"../constants/shapes":39}],35:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1943,7 +1952,7 @@ var BOARD_LINE_REMOVE = exports.BOARD_LINE_REMOVE = 'BOARD_LINE_REMOVE';
 var BOARD_COLUMNS = exports.BOARD_COLUMNS = 10;
 var BOARD_ROWS = exports.BOARD_ROWS = 20;
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1954,7 +1963,7 @@ var GAME_PAUSED = exports.GAME_PAUSED = 'GAME_PAUSED';
 var GAME_END = exports.GAME_END = 'GAME_END';
 var GAME_LEVEL_UPDATE = exports.GAME_LEVEL_UPDATE = 'GAME_LEVEL_UPDATE';
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1966,7 +1975,7 @@ var LEFT_ARROW = exports.LEFT_ARROW = 37;
 var RIGHT_ARROW = exports.RIGHT_ARROW = 39;
 var DOWN_ARROW = exports.DOWN_ARROW = 40;
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1977,7 +1986,7 @@ var SCORE_CURRENT_CLEAR = exports.SCORE_CURRENT_CLEAR = 'SCORE_CURRENT_CLEAR';
 var SCORE_ADD = exports.SCORE_ADD = 'SCORE_ADD';
 var SCORE_LIST_LENGTH = exports.SCORE_LIST_LENGTH = 10;
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1993,7 +2002,7 @@ var SHAPES = {
 
 exports.default = SHAPES;
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2003,7 +2012,7 @@ var TETROMINO_ADD = exports.TETROMINO_ADD = 'TETROMINO_ADD';
 var TETROMINO_MOVE = exports.TETROMINO_MOVE = 'TETROMINO_MOVE';
 var TETROMINO_ROTATE = exports.TETROMINO_ROTATE = 'TETROMINO_ROTATE';
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2012,12 +2021,16 @@ Object.defineProperty(exports, "__esModule", {
 var TETRYS_STATE = exports.TETRYS_STATE = 'TETRYS_STATE';
 var TETRYS_CACHE = exports.TETRYS_CACHE = 'TETRYS_CACHE';
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 'use strict';
 
 var _throttle = require('lodash/throttle');
 
 var _throttle2 = _interopRequireDefault(_throttle);
+
+var _fontfaceobserver = require('fontfaceobserver');
+
+var _fontfaceobserver2 = _interopRequireDefault(_fontfaceobserver);
 
 var _configureStore = require('./store/configureStore');
 
@@ -2034,6 +2047,7 @@ var pageControls = new _components.PageControls({ selector: 'button, [role=butto
 var keyboardControls = new _components.KeyboardControls({ scope: window, store: store });
 var game = new _components.Canvas({ selector: '#game', store: store });
 var scoreBoard = new _components.ScoreBoard({ selector: '.tetrys-scoreboard', store: store });
+var fontSourceCodePro = new _fontfaceobserver2.default('Source Code Pro');
 
 // Save game data to localStorage periodically
 store.subscribe((0, _throttle2.default)(function () {
@@ -2045,6 +2059,9 @@ store.subscribe((0, _throttle2.default)(function () {
 }, 5000));
 
 // Initialise all modules
+fontSourceCodePro.load().then(function () {
+	return document.body.classList.add('fonts-loaded');
+});
 (0, _utils.installServiceWorker)();
 pageControls.addEvents();
 keyboardControls.addEvents();
@@ -2078,7 +2095,7 @@ window.addEventListener('hashchange', function (_ref) {
 	}
 });
 
-},{"./components":29,"./store/configureStore":48,"./utils":51,"lodash/throttle":12}],42:[function(require,module,exports){
+},{"./components":30,"./store/configureStore":49,"./utils":52,"fontfaceobserver":1,"lodash/throttle":13}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2106,7 +2123,7 @@ function Board() {
 	}
 }
 
-},{"../constants/board":34,"../utils/board":49}],43:[function(require,module,exports){
+},{"../constants/board":35,"../utils/board":50}],44:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2141,7 +2158,7 @@ function Game() {
 	}
 }
 
-},{"../constants/game":35}],44:[function(require,module,exports){
+},{"../constants/game":36}],45:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2175,7 +2192,7 @@ exports.default = (0, _redux.combineReducers)({
 	tetromino: _tetromino2.default
 });
 
-},{"./board":42,"./game":43,"./score":45,"./tetromino":46,"redux":19}],45:[function(require,module,exports){
+},{"./board":43,"./game":44,"./score":46,"./tetromino":47,"redux":20}],46:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2214,7 +2231,7 @@ function Score() {
 	}
 }
 
-},{"../constants/score":37,"../utils":51}],46:[function(require,module,exports){
+},{"../constants/score":38,"../utils":52}],47:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2261,7 +2278,7 @@ function Tetromino() {
 	}
 }
 
-},{"../constants/tetromino":39}],47:[function(require,module,exports){
+},{"../constants/tetromino":40}],48:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2296,7 +2313,7 @@ function getScoreList(store) {
 	return store.getState().score.all;
 }
 
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2322,7 +2339,7 @@ function configureStore() {
 	return (0, _redux.createStore)(_reducers2.default, persistedState, devToolsExtension && devToolsExtension());
 }
 
-},{"../reducers":44,"../utils":51,"redux":19}],49:[function(require,module,exports){
+},{"../reducers":45,"../utils":52,"redux":20}],50:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2461,7 +2478,7 @@ function removeLineFromBoard(board) {
 	return newBoard;
 }
 
-},{"../constants/board":34}],50:[function(require,module,exports){
+},{"../constants/board":35}],51:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2470,7 +2487,7 @@ Object.defineProperty(exports, "__esModule", {
 var $ = exports.$ = document.querySelector.bind(document);
 var $$ = exports.$$ = document.querySelectorAll.bind(document);
 
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2506,7 +2523,7 @@ exports.saveState = _localStorage.saveState;
 exports.installServiceWorker = _serviceWorker2.default;
 exports.updateScoreList = _score2.default;
 
-},{"./board":49,"./dom":50,"./localStorage":52,"./score":53,"./serviceWorker":54}],52:[function(require,module,exports){
+},{"./board":50,"./dom":51,"./localStorage":53,"./score":54,"./serviceWorker":55}],53:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2539,7 +2556,7 @@ function saveState(state) {
 	}
 }
 
-},{"../constants/tetrys":40}],53:[function(require,module,exports){
+},{"../constants/tetrys":41}],54:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2558,7 +2575,7 @@ function updateScoreList() {
 	}).reverse().slice(0, _score.SCORE_LIST_LENGTH);
 }
 
-},{"../constants/score":37}],54:[function(require,module,exports){
+},{"../constants/score":38}],55:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2577,4 +2594,4 @@ function installServiceWorker() {
 	});
 }
 
-},{}]},{},[41]);
+},{}]},{},[42]);

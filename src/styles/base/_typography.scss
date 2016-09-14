@@ -1,5 +1,9 @@
 body {
-	font-family: $text-font-stack;
+	font-family: $default-font-stack;
+
+	&.fonts-loaded {
+		font-family: $source-code-pro;
+	}
 }
 
 p {

@@ -1,4 +1,5 @@
 import throttle from 'lodash/throttle'
+import FontFaceObserver from 'fontfaceobserver'
 import configureStore from './store/configureStore'
 import { saveState, installServiceWorker } from './utils'
 import { PageControls, KeyboardControls, Canvas, ScoreBoard } from './components'
@@ -8,6 +9,7 @@ const pageControls = new PageControls({ selector: 'button, [role=button]', store
 const keyboardControls = new KeyboardControls({ scope: window, store })
 const game = new Canvas({ selector: '#game', store })
 const scoreBoard = new ScoreBoard({ selector: '.tetrys-scoreboard', store })
+const fontSourceCodePro = new FontFaceObserver('Source Code Pro')
 
 // Save game data to localStorage periodically
 store.subscribe(throttle(() => {
@@ -16,6 +18,7 @@ store.subscribe(throttle(() => {
 }, 5000))
 
 // Initialise all modules
+fontSourceCodePro.load().then(() => document.body.classList.add('fonts-loaded'))
 installServiceWorker()
 pageControls.addEvents()
 keyboardControls.addEvents()
