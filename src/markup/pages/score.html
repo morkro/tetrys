@@ -1,8 +1,14 @@
-<section class="tetrys-view view-scoreboard" id="score">
-	<header>
-		<h1>Scoreboard</h1>
-	</header>
+{% extends "layouts/default.html" %}
+{% from "components/page-header.html" import title as title %}
 
+{% set view_name = "scoreboard" %}
+{% set view_id = "score" %}
+
+{% block header %}
+	{{ title("Scoreboard") }}
+{% endblock %}
+
+{% block main %}
 	<ol class="tetrys-scoreboard">
 		<li><span></span></li>
 		<li><span></span></li>
@@ -15,4 +21,4 @@
 		<li><span></span></li>
 		<li><span></span></li>
 	</ol>
-</section>
+{% endblock %}

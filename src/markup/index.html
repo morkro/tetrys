@@ -4,7 +4,10 @@
 	{% include "partials/meta.html" %}
 </head>
 <body class="page-menu">
-	{% include "partials/header.html" %}
+	<header id="tetrys-header">
+		<a href="#" role="button">Back</a>
+	</header>
+
 	<main role="main">
 		{% include "pages/score.html" %}
 		{% include "pages/game.html" %}
@@ -12,6 +15,7 @@
 		{# Default view needs to be at the end #}
 		{% include "pages/menu.html" %}
 	</main>
+
 	<script src="main.js"></script>
 </body>
 </html>

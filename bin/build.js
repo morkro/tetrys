@@ -28,3 +28,4 @@ cleanDist()
 		}
 		return watch()
 	})
+	.catch(debug)

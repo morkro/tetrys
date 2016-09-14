@@ -1,4 +1,9 @@
-<section class="tetrys-view view-game" id="play">
+{% extends "layouts/default.html" %}
+
+{% set view_name = "game" %}
+{% set view_id = "play" %}
+
+{% block header %}
 	<header class="tetrys-score">
 		<strong>Score:</strong> <span>0</span>
 		<ul class="tetrys-controls">
@@ -9,11 +14,15 @@
 			</li>
 		</ul>
 	</header>
+{% endblock %}
 
+{% block main %}
 	<section class="tetrys-game">
 		<canvas id="game"></canvas>
 	</section>
+{% endblock %}
 
+{% block footer %}
 	<footer>
 		<ul class="tetrys-controls">
 			<li>
@@ -39,4 +48,4 @@
 			</li>
 		</ul>
 	</footer>
-</section>
+{% endblock %}

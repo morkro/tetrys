@@ -2,7 +2,7 @@ const { outputFile } = require('fs-promise')
 const nunjucks = require('nunjucks')
 const debug = require('debug')('tetrys:build:html')
 
-nunjucks.configure('./src/views', { watch: true })
+const environment = nunjucks.configure('./src/markup', { watch: true })
 
 /**
  * Renders the HTML views via nunjucks.
@@ -11,7 +11,7 @@ nunjucks.configure('./src/views', { watch: true })
  */
 function renderHTML (path = '') {
 	return new Promise((resolve, reject) => {
-		nunjucks.render(path, (error, response) => {
+		environment.render(path, (error, response) => {
 			if (error) reject(error)
 			resolve(response)
 		})

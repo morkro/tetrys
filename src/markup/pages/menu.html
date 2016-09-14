@@ -1,8 +1,14 @@
-<section class="tetrys-view view-menu" id="menu">
-	<header>
-		<h1>Tetrys</h1>
-	</header>
+{% extends "layouts/default.html" %}
+{% from "components/page-header.html" import title as title %}
 
+{% set view_name = "menu" %}
+{% set view_id = "menu" %}
+
+{% block header %}
+	{{ title("Tetrys") }}
+{% endblock %}
+
+{% block main %}
 	<ul class="tetrys-controls">
 		<li>
 			<a href="#play" role="button">Start game</a>
@@ -14,9 +20,11 @@
 			<a href="#about" role="button">About</a>
 		</li>
 	</ul>
+{% endblock %}
 
+{% block footer %}
 	<footer>
 		<span>Works offline!</span>
 		<span>Add to homescreen</span>
 	</footer>
-</section>
+{% endblock %}

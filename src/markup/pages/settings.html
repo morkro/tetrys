@@ -1,0 +1,13 @@
+{% extends "layouts/pages.html" %}
+{% from "components/page-header.html" import title as title %}
+
+{% set view_name = "settings" %}
+{% set view_id = "settings" %}
+
+{% block header %}
+	{{ title("Settings") }}
+{% endblock %}
+
+{% block main %}
+	<p>Settings</p>
+{% endblock %}

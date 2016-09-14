@@ -25,7 +25,7 @@ function definePostCssPlugins () {
 function compileSass () {
 	return new Promise((resolve, reject) => {
 		sass.render({
-			file: './src/styles/main.scss',
+			file: './src/styles/index.scss',
 			outFile: './dist/main.css',
 			outputStyle: defineNodeEnvOutput({
 				prod: 'compressed',

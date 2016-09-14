@@ -1,12 +1,18 @@
-<section class="tetrys-view view-about" id="about">
-	<header>
-		<h1>About</h1>
-	</header>
+{% extends "layouts/default.html" %}
+{% from "components/page-header.html" import title as title %}
 
+{% set view_name = "about" %}
+{% set view_id = "about" %}
+
+{% block header %}
+	{{ title("About") }}
+{% endblock %}
+
+{% block main %}
 	<p>
 		Tetrys is a progressive web application made by <a href="http://morkro.de" target="_blank">Moritz Kröger</a>. The goal of this project was to create an offline-first mobile web game which can be played from anywhere without stable internet connection.
 	</p>
 	<p>
 		Tetrys is an open source project; all code and documentation can be found on <a href="https://github.com/morkro/tetrys" target="_blank">GitHub</a>.
 	</p>
-</section>
+{% endblock %}
