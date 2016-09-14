@@ -1,12 +1,8 @@
 {% extends "layouts/default.html" %}
-{% from "components/header.html" import title as title %}
 
 {% set view_name = "scoreboard" %}
 {% set view_id = "score" %}
-
-{% block header %}
-	{{ title("Scoreboard") }}
-{% endblock %}
+{% set view_title = "Scoreboard" %}
 
 {% block main %}
 	<ol class="tetrys-scoreboard">

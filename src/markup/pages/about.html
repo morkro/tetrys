@@ -1,12 +1,8 @@
 {% extends "layouts/default.html" %}
-{% from "components/header.html" import title as title %}
 
 {% set view_name = "about" %}
 {% set view_id = "about" %}
-
-{% block header %}
-	{{ title("About") }}
-{% endblock %}
+{% set view_title = "About" %}
 
 {% block main %}
 	<p>

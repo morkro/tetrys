@@ -36,21 +36,18 @@
 <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700" rel="stylesheet">
 </head>
 <body>
-	<header id="tetrys-header">
-		<a href="#" role="button">Back</a>
-	</header>
-
 	<main role="main">
+		<section class="tetrys-view view-scoreboard" id="score">
+			<a href="#" role="button">
+	<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+		<path fill="#000000" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+	</svg>
+</a>
 		
-
-<section class="tetrys-view view-scoreboard" id="score">
+		<h1>Scoreboard</h1>
+		
 	
-	
-<header>
-	<h1>Scoreboard</h1>
-</header>
-
-
+	</header>
 
 	
 	<ol class="tetrys-scoreboard">
@@ -66,28 +63,34 @@
 		<li><span></span></li>
 	</ol>
 
+
 	
 </section>
-		
-
-<section class="tetrys-view view-game" id="play">
+		<section class="tetrys-view view-game" id="play">
 	
-	<header class="tetrys-score">
-		<strong>Score:</strong> <span>0</span>
-		<ul class="tetrys-controls">
-			<li>
-				<button data-action="toggleGame">
-					Pause
-				</button>
-			</li>
-		</ul>
-	</header>
+			<a href="#" role="button">
+	<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+		<path fill="#000000" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+	</svg>
+</a>
+		
+	
+	<strong>Score:</strong> <span>0</span>
+	<ul class="tetrys-controls">
+		<li>
+			<button data-action="toggleGame">
+				Pause
+			</button>
+		</li>
+	</ul>
 
+	</header>
 
 	
 	<section class="tetrys-game">
 		<canvas id="game"></canvas>
 	</section>
+
 
 	
 	<footer>
@@ -117,16 +120,17 @@
 	</footer>
 
 </section>
+		<section class="tetrys-view view-about" id="about">
+			<a href="#" role="button">
+	<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+		<path fill="#000000" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+	</svg>
+</a>
 		
-
-<section class="tetrys-view view-about" id="about">
+		<h1>About</h1>
+		
 	
-	
-<header>
-	<h1>About</h1>
-</header>
-
-
+	</header>
 
 	
 	<p>
@@ -136,19 +140,21 @@
 		Tetrys is an open source project; all code and documentation can be found on <a href="https://github.com/morkro/tetrys" target="_blank">GitHub</a>.
 	</p>
 
+
 	
 </section>
 		
+		<section class="tetrys-view view-menu" id="menu">
+			<a href="#" role="button">
+	<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+		<path fill="#000000" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+	</svg>
+</a>
 		
-
-<section class="tetrys-view view-menu" id="menu">
+		<h1>Tetrys</h1>
+		
 	
-	
-<header>
-	<h1>Tetrys</h1>
-</header>
-
-
+	</header>
 
 	
 	<ul class="tetrys-controls">
@@ -162,6 +168,7 @@
 			<a href="#about" role="button">About</a>
 		</li>
 	</ul>
+
 
 	
 	<footer>

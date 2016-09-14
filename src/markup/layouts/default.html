@@ -1,10 +1,12 @@
-{% from "components/header.html" import title as title %}
-
 <section class="tetrys-view view-{{ view_name }}" id="{{ view_id }}">
-	{% block header %}
-		{{ title("Default") }}
+	{% block header %}		{% include "partials/back-button.html" %}
+		{% if view_title %}
+		<h1>{{ view_title }}</h1>
+		{% endif %}
 	{% endblock %}
+	</header>
 
 	{% block main %}{% endblock %}
+
 	{% block footer %}{% endblock %}
 </section>

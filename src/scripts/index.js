@@ -18,8 +18,7 @@ fontSourceCodePro.load().then(() =>
 
 // Save game data to localStorage periodically
 store.subscribe(throttle(() => {
-	const { score } = store.getState()
-	saveState({ score })
+	saveState({ score: store.getState().score })
 }, 5000))
 
 // Initialise all modules

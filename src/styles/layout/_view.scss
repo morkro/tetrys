@@ -24,6 +24,19 @@
 .tetrys-view header {
 	display: flex;
 	justify-content: center;
+	align-items: center;
+
+	a {
+		margin-right: 15px;
+	}
+
+	h1 {
+		text-transform: uppercase;
+		color: #000;
+		font-size: 350%;
+		text-shadow: 0px 3px 0px rgba(0, 0, 0, .25);
+		text-align: center;
+	}
 }
 
 .tetrys-view footer {

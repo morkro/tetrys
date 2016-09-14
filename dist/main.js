@@ -2133,11 +2133,7 @@ fontSourceCodePro.load().then(function () {
 
 // Save game data to localStorage periodically
 store.subscribe((0, _throttle2.default)(function () {
-	var _store$getState = store.getState();
-
-	var score = _store$getState.score;
-
-	(0, _utils.saveState)({ score: score });
+	(0, _utils.saveState)({ score: store.getState().score });
 }, 5000));
 
 // Initialise all modules
