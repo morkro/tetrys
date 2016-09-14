@@ -1,5 +1,5 @@
 import { $ } from '../utils'
-import { getScoreList } from '../selectors'
+import { getScoreList } from '../store'
 
 export default class ScoreBoard {
 	constructor ({ selector, store }) {

@@ -1,7 +1,7 @@
 import throttle from 'lodash/throttle'
 import { BOARD_COLUMNS, BOARD_ROWS } from '../constants/board'
 import { $, validBoardBoundary } from '../utils'
-import { getTetromino, getGrid, isRunning } from '../selectors'
+import { getTetromino, getGrid, isRunning } from '../store'
 import Tetromino from './tetromino'
 import {
 	startGame, endGame,

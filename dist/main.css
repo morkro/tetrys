@@ -483,6 +483,7 @@ button, [role=button] {
   text-decoration: none;
   color: black;
   background: white;
+  border: none;
   border-radius: 6px;
   padding: 18px 20px;
   cursor: pointer;
