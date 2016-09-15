@@ -30,7 +30,7 @@ game.init()
 
 // Init routing
 route.init(view => document.body.classList.add(`page-${view}`))
-route.onUpdate((current, previous) => {
+route.onRouteChange((previous, current) => {
 	document.body.classList.remove(`page-${previous}`)
 	document.body.classList.add(`page-${current}`)
 

@@ -10,9 +10,11 @@ export default class ScoreObserver {
 	}
 
 	updateScore () {
-		if (isRunning(this.store)) {
-			this.$label.updateLabel(getCurrentScore(this.store))
+		if (!isRunning(this.store)) {
+			return
 		}
+
+		this.$label.updateLabel(getCurrentScore(this.store))
 	}
 
 	updateScoreBoard () {

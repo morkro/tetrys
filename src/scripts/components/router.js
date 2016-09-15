@@ -3,7 +3,7 @@ export default class Router {
 		this.defaultRoute = defaultRoute
 		this.previousRoute = null
 		this.currentRoute = this.getCurrentRoute()
-		this.onUpdateCallback = () => {}
+		this.onRouteChangeCallback = () => {}
 	}
 
 	getCurrentRoute () {
@@ -19,7 +19,7 @@ export default class Router {
 		window.addEventListener('hashchange', ({ oldURL, newURL }) => {
 			this.previousRoute = oldURL.split('#')[1]
 			this.currentRoute = newURL.split('#')[1]
-			this.onUpdateCallback(this.getCurrentRoute(), this.getPreviousRoute())
+			this.onRouteChangeCallback(this.getPreviousRoute(), this.getCurrentRoute())
 		})
 	}
 
@@ -28,7 +28,7 @@ export default class Router {
 		cb(this.currentRoute)
 	}
 
-	onUpdate (cb) {
-		this.onUpdateCallback = cb
+	onRouteChange (cb) {
+		this.onRouteChangeCallback = cb
 	}
 }
