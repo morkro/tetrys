@@ -11,7 +11,7 @@ export default class Router {
 		return hash ? hash.split('#')[1] : this.defaultRoute
 	}
 
-	getPreviewsRoute () {
+	getPreviousRoute () {
 		return this.previousRoute ? this.previousRoute : this.defaultRoute
 	}
 
@@ -19,7 +19,7 @@ export default class Router {
 		window.addEventListener('hashchange', ({ oldURL, newURL }) => {
 			this.previousRoute = oldURL.split('#')[1]
 			this.currentRoute = newURL.split('#')[1]
-			this.callback(this.getCurrentRoute(), this.getPreviewsRoute())
+			this.callback(this.getCurrentRoute(), this.getPreviousRoute())
 		})
 	}
 
