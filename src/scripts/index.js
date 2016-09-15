@@ -2,14 +2,14 @@ import throttle from 'lodash/throttle'
 import FontFaceObserver from 'fontfaceobserver'
 import configureStore from './store'
 import { saveState, installServiceWorker } from './utils'
-import { Router, PageControls, KeyboardControls, Canvas, ScoreBoard } from './components'
+import { Router, PageControls, KeyboardControls, Canvas, ScoreObserver } from './components'
 
 const store = configureStore()
 const route = new Router({ defaultRoute: 'menu' })
 const pageControls = new PageControls({ selector: 'button, [role=button]', store })
 const keyboardControls = new KeyboardControls({ scope: window, store })
 const game = new Canvas({ selector: '#game', store })
-const scoreBoard = new ScoreBoard({ selector: '.tetrys-scoreboard', store })
+const scoreObserver = new ScoreObserver(store)
 const fontSourceCodePro = new FontFaceObserver('Source Code Pro')
 
 fontSourceCodePro.load().then(() =>
@@ -25,7 +25,7 @@ store.subscribe(throttle(() => {
 installServiceWorker()
 pageControls.addEvents()
 keyboardControls.addEvents()
-scoreBoard.init()
+scoreObserver.init()
 game.init()
 
 // Init routing
@@ -36,5 +36,5 @@ route.onUpdate((current, previous) => {
 
 	if (previous === 'play') game.stop()
 	if (current === 'play') game.start()
-	if (current === 'score') scoreBoard.update()
+	if (current === 'score') scoreObserver.updateScoreBoard()
 })
