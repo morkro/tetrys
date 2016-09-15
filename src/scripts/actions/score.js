@@ -1,7 +1,6 @@
 import {
 	SCORE_CURRENT_UPDATE,
 	SCORE_CURRENT_CLEAR,
-	SCORE_HIGHSCORE_SET,
 	SCORE_ADD
 } from '../constants/score'
 
