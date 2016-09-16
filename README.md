@@ -1,5 +1,8 @@
-# Tetrys
-Tetris as Progressive Web Application.
+# Tetrys ☳
+Tetris as Progressive Web Application _(currently still in active development)_.
+
+## News :fire:
+I am currently searching for a designer to partner me! Please get in touch with [me](https://github.com/morkro), if you're interested in collaboration.
 
 ## Development :wrench:
 This application _requires_ Node.js `>=6.0.0` to run locally and the [Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en) for debugging Redux applications.
