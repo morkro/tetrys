@@ -1272,7 +1272,7 @@ function removeLineFromBoard() {
 	};
 }
 
-},{"../constants/board":38}],25:[function(require,module,exports){
+},{"../constants/board":39}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1312,7 +1312,7 @@ function updateGameLevel() {
 	};
 }
 
-},{"../constants/game":39}],26:[function(require,module,exports){
+},{"../constants/game":40}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1373,7 +1373,7 @@ function addScore() {
 	};
 }
 
-},{"../constants/score":41}],28:[function(require,module,exports){
+},{"../constants/score":42}],28:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1413,221 +1413,13 @@ function rotateTetromino(shape) {
 	};
 }
 
-},{"../constants/tetromino":43}],29:[function(require,module,exports){
+},{"../constants/tetromino":44}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _throttle = require('lodash/throttle');
-
-var _throttle2 = _interopRequireDefault(_throttle);
-
-var _board = require('../constants/board');
-
-var _utils = require('../utils');
-
-var _store = require('../store');
-
-var _tetromino = require('./tetromino');
-
-var _tetromino2 = _interopRequireDefault(_tetromino);
-
-var _actions = require('../actions');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Canvas = function () {
-	function Canvas() {
-		var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-		var store = _ref.store;
-		var selector = _ref.selector;
-
-		_classCallCheck(this, Canvas);
-
-		this.store = store;
-
-		this.$canvas = (0, _utils.$)(selector);
-		this.$wrapper = this.$canvas.parentNode;
-		this.context = this.$canvas.getContext('2d');
-
-		this.width = this.$wrapper.offsetWidth;
-		this.height = this.$wrapper.offsetHeight;
-
-		this.blockWidth = this.width / _board.BOARD_COLUMNS;
-		this.blockHeight = this.height / _board.BOARD_ROWS;
-
-		this.animationFrame = null;
-		this.tetrominoPositionAnimation = null;
-		this.isRunningInternal = false;
-		this.initialSpeed = 500;
-	}
-
-	_createClass(Canvas, [{
-		key: 'setSize',
-		value: function setSize() {
-			this.$canvas.width = this.width = this.$wrapper.offsetWidth;
-			this.$canvas.height = this.height = this.$wrapper.offsetHeight;
-			this.blockWidth = this.width / _board.BOARD_COLUMNS;
-			this.blockHeight = this.height / _board.BOARD_ROWS;
-		}
-	}, {
-		key: 'toggleGameState',
-		value: function toggleGameState() {
-			if ((0, _store.isRunning)(this.store) && !this.isRunningInternal) {
-				this.isRunningInternal = true;
-				this.updateGame();
-				this.loop();
-			} else if (!(0, _store.isRunning)(this.store) && this.isRunningInternal) {
-				this.isRunningInternal = false;
-				this.cancelTetrominoPosition();
-				this.cancelLoop();
-			}
-		}
-	}, {
-		key: 'clearBoard',
-		value: function clearBoard() {
-			this.context.clearRect(0, 0, this.width, this.height);
-		}
-	}, {
-		key: 'setBlockStyle',
-		value: function setBlockStyle() {
-			var _ref2 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-			var fill = _ref2.fill;
-			var _ref2$stroke = _ref2.stroke;
-			var stroke = _ref2$stroke === undefined ? 'transparent' : _ref2$stroke;
-
-			this.context.fillStyle = fill;
-			this.context.strokeStyle = stroke;
-		}
-	}, {
-		key: 'drawSimpleBlock',
-		value: function drawSimpleBlock(x, y) {
-			this.context.fillRect(this.blockWidth * x, this.blockHeight * y, this.blockWidth - 1, this.blockHeight - 1);
-			this.context.strokeRect(this.blockWidth * x, this.blockHeight * y, this.blockWidth - 1, this.blockHeight - 1);
-		}
-	}, {
-		key: 'drawBackground',
-		value: function drawBackground() {
-			for (var y = 0, grid = (0, _store.getGrid)(this.store); y < grid.length; ++y) {
-				for (var x = 0; x < grid[y].length; ++x) {
-					if (grid[y][x] === 1) {
-						this.setBlockStyle({ fill: 'mediumseagreen' });
-					} else {
-						this.setBlockStyle({ fill: 'white' });
-					}
-					this.drawSimpleBlock(x, y);
-				}
-			}
-		}
-	}, {
-		key: 'drawTetromino',
-		value: function drawTetromino() {
-			var block = (0, _store.getTetromino)(this.store);
-			for (var y = 0; y < block.shape.length; ++y) {
-				for (var x = 0; x < block.shape.length; ++x) {
-					if (block.shape[y][x]) {
-						this.setBlockStyle({ fill: 'cornflowerblue' });
-						this.drawSimpleBlock(block.column + x, block.row + y);
-					}
-				}
-			}
-		}
-	}, {
-		key: 'updateGame',
-		value: function updateGame() {
-			var _this = this;
-
-			this.tetrominoPositionAnimation = setInterval(function () {
-				var tetromino = (0, _store.getTetromino)(_this.store);
-				var validBoundary = (0, _utils.validBoardBoundary)({
-					active: tetromino,
-					grid: (0, _store.getGrid)(_this.store),
-					offsetY: 1
-				});
-
-				if (!validBoundary) {
-					_this.store.dispatch((0, _actions.freezeBoard)(tetromino));
-					_this.store.dispatch((0, _actions.removeLineFromBoard)());
-					_this.store.dispatch((0, _actions.addTetromino)(new _tetromino2.default()));
-					return;
-				}
-
-				_this.store.dispatch((0, _actions.moveTetromino)('DOWN'));
-				_this.store.dispatch((0, _actions.updateCurrentScore)(10));
-			}, this.initialSpeed);
-		}
-	}, {
-		key: 'cancelTetrominoPosition',
-		value: function cancelTetrominoPosition() {
-			clearInterval(this.tetrominoPositionAnimation);
-		}
-	}, {
-		key: 'loop',
-		value: function loop() {
-			this.animationFrame = requestAnimationFrame(this.loop.bind(this));
-
-			this.clearBoard();
-			this.setBlockStyle({ fill: 'white' });
-			this.drawBackground();
-			this.drawTetromino();
-		}
-	}, {
-		key: 'cancelLoop',
-		value: function cancelLoop() {
-			cancelAnimationFrame(this.animationFrame);
-		}
-	}, {
-		key: 'stop',
-		value: function stop() {
-			if (!(0, _store.isRunning)(this.store)) {
-				return;
-			}
-
-			this.store.dispatch((0, _actions.endGame)());
-			this.store.dispatch((0, _actions.addScore)());
-			this.store.dispatch((0, _actions.clearCurrentScore)());
-		}
-	}, {
-		key: 'start',
-		value: function start() {
-			this.store.dispatch((0, _actions.addTetromino)(new _tetromino2.default()));
-			this.store.dispatch((0, _actions.startGame)());
-		}
-	}, {
-		key: 'addEvents',
-		value: function addEvents() {
-			window.addEventListener('resize', (0, _throttle2.default)(this.setSize, 100).bind(this));
-		}
-	}, {
-		key: 'init',
-		value: function init() {
-			this.addEvents();
-			this.setSize();
-			this.drawBackground();
-			this.store.subscribe(this.toggleGameState.bind(this));
-		}
-	}]);
-
-	return Canvas;
-}();
-
-exports.default = Canvas;
-
-},{"../actions":26,"../constants/board":38,"../store":53,"../utils":56,"./tetromino":37,"lodash/throttle":13}],30:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.Router = exports.Tetromino = exports.ScoreObserver = exports.Canvas = exports.KeyboardControls = exports.PageControls = undefined;
+exports.Router = exports.Tetromino = exports.ScoreObserver = exports.TetrisGame = exports.KeyboardControls = exports.PageControls = undefined;
 
 var _pageControls = require('./pageControls');
 
@@ -1637,9 +1429,9 @@ var _keyboardControls = require('./keyboardControls');
 
 var _keyboardControls2 = _interopRequireDefault(_keyboardControls);
 
-var _canvas = require('./canvas');
+var _tetrisGame = require('./tetrisGame');
 
-var _canvas2 = _interopRequireDefault(_canvas);
+var _tetrisGame2 = _interopRequireDefault(_tetrisGame);
 
 var _scoreObserver = require('./scoreObserver');
 
@@ -1657,12 +1449,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.PageControls = _pageControls2.default;
 exports.KeyboardControls = _keyboardControls2.default;
-exports.Canvas = _canvas2.default;
+exports.TetrisGame = _tetrisGame2.default;
 exports.ScoreObserver = _scoreObserver2.default;
 exports.Tetromino = _tetromino2.default;
 exports.Router = _router2.default;
 
-},{"./canvas":29,"./keyboardControls":31,"./pageControls":32,"./router":33,"./scoreObserver":36,"./tetromino":37}],31:[function(require,module,exports){
+},{"./keyboardControls":30,"./pageControls":31,"./router":32,"./scoreObserver":35,"./tetrisGame":37,"./tetromino":38}],30:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1766,7 +1558,7 @@ var KeyboardControls = function () {
 
 exports.default = KeyboardControls;
 
-},{"../actions":26,"../constants/keyCode":40,"../store":53,"../utils":56}],32:[function(require,module,exports){
+},{"../actions":26,"../constants/keyCode":41,"../store":54,"../utils":57}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1855,7 +1647,7 @@ var PageControls = function () {
 
 exports.default = PageControls;
 
-},{"../actions":26,"../utils/dom":55}],33:[function(require,module,exports){
+},{"../actions":26,"../utils/dom":56}],32:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1927,7 +1719,7 @@ var Router = function () {
 
 exports.default = Router;
 
-},{}],34:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1968,7 +1760,7 @@ var ScoreBoard = function () {
 
 exports.default = ScoreBoard;
 
-},{"../../utils":56}],35:[function(require,module,exports){
+},{"../../utils":57}],34:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2004,7 +1796,7 @@ var ScoreLabel = function () {
 
 exports.default = ScoreLabel;
 
-},{"../../utils":56}],36:[function(require,module,exports){
+},{"../../utils":57}],35:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2062,7 +1854,254 @@ var ScoreObserver = function () {
 
 exports.default = ScoreObserver;
 
-},{"../../store":53,"./$board":34,"./$label":35}],37:[function(require,module,exports){
+},{"../../store":54,"./$board":33,"./$label":34}],36:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _throttle = require('lodash/throttle');
+
+var _throttle2 = _interopRequireDefault(_throttle);
+
+var _utils = require('../../utils');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Canvas = function () {
+	function Canvas() {
+		var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+		var BOARD_COLUMNS = _ref.BOARD_COLUMNS;
+		var BOARD_ROWS = _ref.BOARD_ROWS;
+
+		_classCallCheck(this, Canvas);
+
+		this.$canvas = (0, _utils.$)('#game');
+		this.$wrapper = this.$canvas.parentNode;
+		this.context = this.$canvas.getContext('2d');
+
+		this.BOARD_COLUMNS = BOARD_COLUMNS;
+		this.BOARD_ROWS = BOARD_ROWS;
+
+		this.width = this.$wrapper.offsetWidth;
+		this.height = this.$wrapper.offsetHeight;
+		this.blockWidth = this.width / this.BOARD_COLUMNS;
+		this.blockHeight = this.height / this.BOARD_ROWS;
+	}
+
+	_createClass(Canvas, [{
+		key: 'setCanvasSize',
+		value: function setCanvasSize() {
+			this.$canvas.width = this.width = this.$wrapper.offsetWidth;
+			this.$canvas.height = this.height = this.$wrapper.offsetHeight;
+			this.blockWidth = this.width / this.BOARD_COLUMNS;
+			this.blockHeight = this.height / this.BOARD_ROWS;
+		}
+	}, {
+		key: 'clearBoard',
+		value: function clearBoard() {
+			this.context.clearRect(0, 0, this.width, this.height);
+		}
+	}, {
+		key: 'setBlockStyle',
+		value: function setBlockStyle() {
+			var _ref2 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+			var fill = _ref2.fill;
+			var _ref2$stroke = _ref2.stroke;
+			var stroke = _ref2$stroke === undefined ? 'transparent' : _ref2$stroke;
+
+			this.context.fillStyle = fill;
+			this.context.strokeStyle = stroke;
+		}
+	}, {
+		key: 'drawSimpleBlock',
+		value: function drawSimpleBlock(x, y) {
+			this.context.fillRect(this.blockWidth * x, this.blockHeight * y, this.blockWidth - 1, this.blockHeight - 1);
+			this.context.strokeRect(this.blockWidth * x, this.blockHeight * y, this.blockWidth - 1, this.blockHeight - 1);
+		}
+	}, {
+		key: 'addEvents',
+		value: function addEvents() {
+			window.addEventListener('resize', (0, _throttle2.default)(this.setCanvasSize, 100).bind(this));
+		}
+	}, {
+		key: 'init',
+		value: function init() {
+			this.addEvents();
+			this.setCanvasSize();
+		}
+	}]);
+
+	return Canvas;
+}();
+
+exports.default = Canvas;
+
+},{"../../utils":57,"lodash/throttle":13}],37:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _$canvas = require('./$canvas');
+
+var _$canvas2 = _interopRequireDefault(_$canvas);
+
+var _board = require('../../constants/board');
+
+var _utils = require('../../utils');
+
+var _store = require('../../store');
+
+var _tetromino = require('../tetromino');
+
+var _tetromino2 = _interopRequireDefault(_tetromino);
+
+var _actions = require('../../actions');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var TetrisGame = function () {
+	function TetrisGame(store) {
+		_classCallCheck(this, TetrisGame);
+
+		this.store = store;
+		this.$canvas = new _$canvas2.default({ BOARD_COLUMNS: _board.BOARD_COLUMNS, BOARD_ROWS: _board.BOARD_ROWS });
+
+		this.animationFrame = null;
+		this.tetrominoPositionAnimation = null;
+		this.isRunningInternal = false;
+		this.initialSpeed = 500;
+	}
+
+	_createClass(TetrisGame, [{
+		key: 'toggleGameState',
+		value: function toggleGameState() {
+			if ((0, _store.isRunning)(this.store) && !this.isRunningInternal) {
+				this.isRunningInternal = true;
+				this.updateGame();
+				this.loop();
+			} else if (!(0, _store.isRunning)(this.store) && this.isRunningInternal) {
+				this.isRunningInternal = false;
+				this.cancelTetrominoPosition();
+				this.cancelLoop();
+			}
+		}
+	}, {
+		key: 'drawBackground',
+		value: function drawBackground() {
+			for (var y = 0, grid = (0, _store.getGrid)(this.store); y < grid.length; ++y) {
+				for (var x = 0; x < grid[y].length; ++x) {
+					if (grid[y][x] === 1) {
+						this.$canvas.setBlockStyle({ fill: 'mediumseagreen' });
+					} else {
+						this.$canvas.setBlockStyle({ fill: 'white' });
+					}
+					this.$canvas.drawSimpleBlock(x, y);
+				}
+			}
+		}
+	}, {
+		key: 'drawTetromino',
+		value: function drawTetromino() {
+			var block = (0, _store.getTetromino)(this.store);
+			for (var y = 0; y < block.shape.length; ++y) {
+				for (var x = 0; x < block.shape.length; ++x) {
+					if (block.shape[y][x]) {
+						this.$canvas.setBlockStyle({ fill: 'cornflowerblue' });
+						this.$canvas.drawSimpleBlock(block.column + x, block.row + y);
+					}
+				}
+			}
+		}
+	}, {
+		key: 'updateGame',
+		value: function updateGame() {
+			var _this = this;
+
+			this.tetrominoPositionAnimation = setInterval(function () {
+				var tetromino = (0, _store.getTetromino)(_this.store);
+				var validBoundary = (0, _utils.validBoardBoundary)({
+					active: tetromino,
+					grid: (0, _store.getGrid)(_this.store),
+					offsetY: 1
+				});
+
+				if (!validBoundary) {
+					_this.store.dispatch((0, _actions.freezeBoard)(tetromino));
+					_this.store.dispatch((0, _actions.removeLineFromBoard)());
+					_this.store.dispatch((0, _actions.addTetromino)(new _tetromino2.default()));
+					return;
+				}
+
+				_this.store.dispatch((0, _actions.moveTetromino)('DOWN'));
+				_this.store.dispatch((0, _actions.updateCurrentScore)(10));
+			}, this.initialSpeed);
+		}
+	}, {
+		key: 'cancelTetrominoPosition',
+		value: function cancelTetrominoPosition() {
+			clearInterval(this.tetrominoPositionAnimation);
+		}
+	}, {
+		key: 'loop',
+		value: function loop() {
+			this.animationFrame = requestAnimationFrame(this.loop.bind(this));
+
+			this.$canvas.clearBoard();
+			this.$canvas.setBlockStyle({ fill: 'white' });
+			this.drawBackground();
+			this.drawTetromino();
+		}
+	}, {
+		key: 'cancelLoop',
+		value: function cancelLoop() {
+			cancelAnimationFrame(this.animationFrame);
+		}
+	}, {
+		key: 'stop',
+		value: function stop() {
+			if (!(0, _store.isRunning)(this.store)) {
+				return;
+			}
+
+			this.store.dispatch((0, _actions.endGame)());
+			this.store.dispatch((0, _actions.addScore)());
+			this.store.dispatch((0, _actions.clearCurrentScore)());
+		}
+	}, {
+		key: 'start',
+		value: function start() {
+			this.store.dispatch((0, _actions.addTetromino)(new _tetromino2.default()));
+			this.store.dispatch((0, _actions.startGame)());
+		}
+	}, {
+		key: 'init',
+		value: function init() {
+			this.$canvas.init();
+			this.drawBackground();
+			this.store.subscribe(this.toggleGameState.bind(this));
+		}
+	}]);
+
+	return TetrisGame;
+}();
+
+exports.default = TetrisGame;
+
+},{"../../actions":26,"../../constants/board":39,"../../store":54,"../../utils":57,"../tetromino":38,"./$canvas":36}],38:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2103,7 +2142,7 @@ var Tetromino = function Tetromino() {
 
 exports.default = Tetromino;
 
-},{"../constants/shapes":42}],38:[function(require,module,exports){
+},{"../constants/shapes":43}],39:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2114,7 +2153,7 @@ var BOARD_LINE_REMOVE = exports.BOARD_LINE_REMOVE = 'BOARD_LINE_REMOVE';
 var BOARD_COLUMNS = exports.BOARD_COLUMNS = 10;
 var BOARD_ROWS = exports.BOARD_ROWS = 20;
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2125,7 +2164,7 @@ var GAME_PAUSED = exports.GAME_PAUSED = 'GAME_PAUSED';
 var GAME_END = exports.GAME_END = 'GAME_END';
 var GAME_LEVEL_UPDATE = exports.GAME_LEVEL_UPDATE = 'GAME_LEVEL_UPDATE';
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2137,7 +2176,7 @@ var LEFT_ARROW = exports.LEFT_ARROW = 37;
 var RIGHT_ARROW = exports.RIGHT_ARROW = 39;
 var DOWN_ARROW = exports.DOWN_ARROW = 40;
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2148,7 +2187,7 @@ var SCORE_CURRENT_CLEAR = exports.SCORE_CURRENT_CLEAR = 'SCORE_CURRENT_CLEAR';
 var SCORE_ADD = exports.SCORE_ADD = 'SCORE_ADD';
 var SCORE_LIST_LENGTH = exports.SCORE_LIST_LENGTH = 10;
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2164,7 +2203,7 @@ var SHAPES = {
 
 exports.default = SHAPES;
 
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2174,7 +2213,7 @@ var TETROMINO_ADD = exports.TETROMINO_ADD = 'TETROMINO_ADD';
 var TETROMINO_MOVE = exports.TETROMINO_MOVE = 'TETROMINO_MOVE';
 var TETROMINO_ROTATE = exports.TETROMINO_ROTATE = 'TETROMINO_ROTATE';
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2183,7 +2222,7 @@ Object.defineProperty(exports, "__esModule", {
 var TETRYS_STATE = exports.TETRYS_STATE = 'TETRYS_STATE';
 var TETRYS_CACHE = exports.TETRYS_CACHE = 'TETRYS_CACHE';
 
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 'use strict';
 
 var _throttle = require('lodash/throttle');
@@ -2208,10 +2247,11 @@ var store = (0, _store2.default)();
 var route = new _components.Router({ defaultRoute: 'menu' });
 var pageControls = new _components.PageControls({ selector: 'button, [role=button]', store: store });
 var keyboardControls = new _components.KeyboardControls({ scope: window, store: store });
-var game = new _components.Canvas({ selector: '#game', store: store });
+var game = new _components.TetrisGame(store);
 var scoreObserver = new _components.ScoreObserver(store);
 var fontSourceCodePro = new _fontfaceobserver2.default('Source Code Pro');
 
+// Update fonts when finished loading.
 fontSourceCodePro.load().then(function () {
 	return document.body.classList.add('fonts-loaded');
 });
@@ -2220,13 +2260,6 @@ fontSourceCodePro.load().then(function () {
 store.subscribe((0, _throttle2.default)(function () {
 	(0, _utils.saveState)({ score: store.getState().score });
 }, 5000));
-
-// Initialise all modules
-(0, _utils.installServiceWorker)();
-pageControls.addEvents();
-keyboardControls.addEvents();
-scoreObserver.init();
-game.init();
 
 // Init routing
 route.init(function (view) {
@@ -2241,7 +2274,14 @@ route.onRouteChange(function (previous, current) {
 	if (current === 'score') scoreObserver.updateScoreBoard();
 });
 
-},{"./components":30,"./store":53,"./utils":56,"fontfaceobserver":1,"lodash/throttle":13}],46:[function(require,module,exports){
+// Initialise all modules
+(0, _utils.installServiceWorker)();
+pageControls.addEvents();
+keyboardControls.addEvents();
+scoreObserver.init();
+game.init();
+
+},{"./components":29,"./store":54,"./utils":57,"fontfaceobserver":1,"lodash/throttle":13}],47:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2269,7 +2309,7 @@ function Board() {
 	}
 }
 
-},{"../constants/board":38,"../utils/board":54}],47:[function(require,module,exports){
+},{"../constants/board":39,"../utils/board":55}],48:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2304,7 +2344,7 @@ function Game() {
 	}
 }
 
-},{"../constants/game":39}],48:[function(require,module,exports){
+},{"../constants/game":40}],49:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2338,7 +2378,7 @@ exports.default = (0, _redux.combineReducers)({
 	tetromino: _tetromino2.default
 });
 
-},{"./board":46,"./game":47,"./score":49,"./tetromino":50,"redux":20}],49:[function(require,module,exports){
+},{"./board":47,"./game":48,"./score":50,"./tetromino":51,"redux":20}],50:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2377,7 +2417,7 @@ function Score() {
 	}
 }
 
-},{"../constants/score":41,"../utils":56}],50:[function(require,module,exports){
+},{"../constants/score":42,"../utils":57}],51:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2424,7 +2464,7 @@ function Tetromino() {
 	}
 }
 
-},{"../constants/tetromino":43}],51:[function(require,module,exports){
+},{"../constants/tetromino":44}],52:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2450,7 +2490,7 @@ function configureStore() {
 	return (0, _redux.createStore)(_reducers2.default, persistedState, devToolsExtension && devToolsExtension());
 }
 
-},{"../reducers":48,"../utils":56,"redux":20}],52:[function(require,module,exports){
+},{"../reducers":49,"../utils":57,"redux":20}],53:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2485,7 +2525,7 @@ function getScoreList(store) {
 	return store.getState().score.all;
 }
 
-},{}],53:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2512,7 +2552,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = _configureStore2.default;
 
-},{"./configureStore":51,"./connect":52}],54:[function(require,module,exports){
+},{"./configureStore":52,"./connect":53}],55:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2651,7 +2691,7 @@ function removeLineFromBoard(board) {
 	return newBoard;
 }
 
-},{"../constants/board":38}],55:[function(require,module,exports){
+},{"../constants/board":39}],56:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2660,7 +2700,7 @@ Object.defineProperty(exports, "__esModule", {
 var $ = exports.$ = document.querySelector.bind(document);
 var $$ = exports.$$ = document.querySelectorAll.bind(document);
 
-},{}],56:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2696,7 +2736,7 @@ exports.saveState = _localStorage.saveState;
 exports.installServiceWorker = _serviceWorker2.default;
 exports.updateScoreList = _score2.default;
 
-},{"./board":54,"./dom":55,"./localStorage":57,"./score":58,"./serviceWorker":59}],57:[function(require,module,exports){
+},{"./board":55,"./dom":56,"./localStorage":58,"./score":59,"./serviceWorker":60}],58:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2729,7 +2769,7 @@ function saveState(state) {
 	}
 }
 
-},{"../constants/tetrys":44}],58:[function(require,module,exports){
+},{"../constants/tetrys":45}],59:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2748,7 +2788,7 @@ function updateScoreList() {
 	}).reverse().slice(0, _score.SCORE_LIST_LENGTH);
 }
 
-},{"../constants/score":41}],59:[function(require,module,exports){
+},{"../constants/score":42}],60:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2767,4 +2807,4 @@ function installServiceWorker() {
 	});
 }
 
-},{}]},{},[45]);
+},{}]},{},[46]);

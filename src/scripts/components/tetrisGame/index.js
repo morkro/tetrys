@@ -1,40 +1,24 @@
-import throttle from 'lodash/throttle'
-import { BOARD_COLUMNS, BOARD_ROWS } from '../constants/board'
-import { $, validBoardBoundary } from '../utils'
-import { getTetromino, getGrid, isRunning } from '../store'
-import Tetromino from './tetromino'
+import Canvas from './$canvas'
+import { BOARD_COLUMNS, BOARD_ROWS } from '../../constants/board'
+import { validBoardBoundary } from '../../utils'
+import { getTetromino, getGrid, isRunning } from '../../store'
+import Tetromino from '../tetromino'
 import {
 	startGame, endGame,
 	addTetromino, moveTetromino,
 	freezeBoard, removeLineFromBoard,
 	updateCurrentScore, addScore, clearCurrentScore
-} from '../actions'
+} from '../../actions'
 
-export default class Canvas {
-	constructor ({ store, selector } = {}) {
+export default class TetrisGame {
+	constructor (store) {
 		this.store = store
-
-		this.$canvas = $(selector)
-		this.$wrapper = this.$canvas.parentNode
-		this.context = this.$canvas.getContext('2d')
-
-		this.width = this.$wrapper.offsetWidth
-		this.height = this.$wrapper.offsetHeight
-
-		this.blockWidth = this.width / BOARD_COLUMNS
-		this.blockHeight = this.height / BOARD_ROWS
+		this.$canvas = new Canvas({ BOARD_COLUMNS, BOARD_ROWS })
 
 		this.animationFrame = null
 		this.tetrominoPositionAnimation = null
 		this.isRunningInternal = false
 		this.initialSpeed = 500
-	}
-
-	setSize () {
-		this.$canvas.width = this.width = this.$wrapper.offsetWidth
-		this.$canvas.height = this.height = this.$wrapper.offsetHeight
-		this.blockWidth = this.width / BOARD_COLUMNS
-		this.blockHeight = this.height / BOARD_ROWS
 	}
 
 	toggleGameState () {
@@ -51,36 +35,16 @@ export default class Canvas {
 		}
 	}
 
-	clearBoard () {
-		this.context.clearRect(0, 0, this.width, this.height)
-	}
-
-	setBlockStyle ({ fill, stroke = 'transparent' } = {}) {
-		this.context.fillStyle = fill
-		this.context.strokeStyle = stroke
-	}
-
-	drawSimpleBlock (x, y) {
-		this.context.fillRect(
-			this.blockWidth * x, this.blockHeight * y,
-			this.blockWidth - 1, this.blockHeight - 1
-		)
-		this.context.strokeRect(
-			this.blockWidth * x, this.blockHeight * y,
-			this.blockWidth - 1, this.blockHeight - 1
-		)
-	}
-
 	drawBackground () {
 		for (let y = 0, grid = getGrid(this.store); y < grid.length; ++y) {
 			for (let x = 0; x < grid[y].length; ++x) {
 				if (grid[y][x] === 1) {
-					this.setBlockStyle({ fill: 'mediumseagreen' })
+					this.$canvas.setBlockStyle({ fill: 'mediumseagreen' })
 				}
 				else {
-					this.setBlockStyle({ fill: 'white' })
+					this.$canvas.setBlockStyle({ fill: 'white' })
 				}
-				this.drawSimpleBlock(x, y)
+				this.$canvas.drawSimpleBlock(x, y)
 			}
 		}
 	}
@@ -90,8 +54,8 @@ export default class Canvas {
 		for (let y = 0; y < block.shape.length; ++y) {
 			for (let x = 0; x < block.shape.length; ++x) {
 				if (block.shape[y][x]) {
-					this.setBlockStyle({ fill: 'cornflowerblue' })
-					this.drawSimpleBlock(block.column + x, block.row + y)
+					this.$canvas.setBlockStyle({ fill: 'cornflowerblue' })
+					this.$canvas.drawSimpleBlock(block.column + x, block.row + y)
 				}
 			}
 		}
@@ -125,8 +89,8 @@ export default class Canvas {
 	loop () {
 		this.animationFrame = requestAnimationFrame(this.loop.bind(this))
 
-		this.clearBoard()
-		this.setBlockStyle({ fill: 'white' })
+		this.$canvas.clearBoard()
+		this.$canvas.setBlockStyle({ fill: 'white' })
 		this.drawBackground()
 		this.drawTetromino()
 	}
@@ -150,13 +114,8 @@ export default class Canvas {
 		this.store.dispatch(startGame())
 	}
 
-	addEvents () {
-		window.addEventListener('resize', throttle(this.setSize, 100).bind(this))
-	}
-
 	init () {
-		this.addEvents()
-		this.setSize()
+		this.$canvas.init()
 		this.drawBackground()
 		this.store.subscribe(this.toggleGameState.bind(this))
 	}
