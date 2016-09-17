@@ -1,9 +1,5 @@
-.view-scoreboard .view-inner {
-	justify-content: center;
-}
-
 .tetrys-scoreboard {
-	width: 100%;
+	width: calc(100% - 10vw);
 
 	li {
 		padding: 15px 20px;

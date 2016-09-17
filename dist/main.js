@@ -1878,7 +1878,7 @@ var Router = function () {
 		this.defaultRoute = defaultRoute;
 		this.previousRoute = null;
 		this.currentRoute = this.getCurrentRoute();
-		this.onUpdateCallback = function () {};
+		this.onRouteChangeCallback = function () {};
 	}
 
 	_createClass(Router, [{
@@ -1904,7 +1904,7 @@ var Router = function () {
 
 				_this.previousRoute = oldURL.split('#')[1];
 				_this.currentRoute = newURL.split('#')[1];
-				_this.onUpdateCallback(_this.getCurrentRoute(), _this.getPreviousRoute());
+				_this.onRouteChangeCallback(_this.getPreviousRoute(), _this.getCurrentRoute());
 			});
 		}
 	}, {
@@ -1916,9 +1916,9 @@ var Router = function () {
 			cb(this.currentRoute);
 		}
 	}, {
-		key: 'onUpdate',
-		value: function onUpdate(cb) {
-			this.onUpdateCallback = cb;
+		key: 'onRouteChange',
+		value: function onRouteChange(cb) {
+			this.onRouteChangeCallback = cb;
 		}
 	}]);
 
@@ -2039,9 +2039,11 @@ var ScoreObserver = function () {
 	_createClass(ScoreObserver, [{
 		key: 'updateScore',
 		value: function updateScore() {
-			if ((0, _store.isRunning)(this.store)) {
-				this.$label.updateLabel((0, _store.getCurrentScore)(this.store));
+			if (!(0, _store.isRunning)(this.store)) {
+				return;
 			}
+
+			this.$label.updateLabel((0, _store.getCurrentScore)(this.store));
 		}
 	}, {
 		key: 'updateScoreBoard',
@@ -2230,7 +2232,7 @@ game.init();
 route.init(function (view) {
 	return document.body.classList.add('page-' + view);
 });
-route.onUpdate(function (current, previous) {
+route.onRouteChange(function (previous, current) {
 	document.body.classList.remove('page-' + previous);
 	document.body.classList.add('page-' + current);
 

@@ -427,6 +427,9 @@ body {
   body.fonts-loaded {
     font-family: "Source Code Pro", monospace; }
 
+h1 {
+  margin: 0; }
+
 p {
   font-size: 120%;
   line-height: 160%; }
@@ -449,24 +452,24 @@ p {
 
 .view-inner {
   width: 100%;
-  max-width: 500px;
-  padding: 0 5vw;
+  max-width: 650px;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
       align-items: center;
-  -ms-flex-pack: justify;
-      justify-content: space-between;
   -ms-flex-direction: column;
       flex-direction: column; }
 
 .tetrys-view header {
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-pack: center;
-      justify-content: center;
+  -ms-flex-pack: start;
+      justify-content: flex-start;
   -ms-flex-align: center;
-      align-items: center; }
+      align-items: center;
+  width: 100%;
+  background: antiquewhite;
+  padding: 10px 10px; }
   .tetrys-view header a {
     margin-right: 15px; }
   .tetrys-view header h1 {
@@ -478,7 +481,6 @@ p {
 
 .tetrys-view footer {
   width: 100vw;
-  border-top: 2px solid black;
   padding: 0vw 4vw;
   height: 20vw;
   text-align: center;
@@ -531,8 +533,14 @@ button, [role=button] {
   .view-menu .tetrys-controls li {
     margin-bottom: 20px; }
 
+.view-game header {
+  -ms-flex-pack: justify;
+      justify-content: space-between; }
+
 .view-game footer .tetrys-controls {
   margin: 0; }
+  .view-game footer .tetrys-controls li {
+    margin: 0 10px; }
 
 .tetrys-game {
   width: 70vw;
@@ -548,16 +556,19 @@ button, [role=button] {
   -ms-flex-align: center;
       align-items: center; }
 
-.view-about .view-inner {
-  -ms-flex-pack: center;
-      justify-content: center; }
+.game-current-score {
+  background: white;
+  border-radius: 6px;
+  padding: 18px 20px;
+  box-shadow: 0px 3px 0px 0px rgba(0, 0, 0, 0.2);
+  text-transform: uppercase;
+  font-size: 150%; }
 
-.view-scoreboard .view-inner {
-  -ms-flex-pack: center;
-      justify-content: center; }
+.about-content {
+  padding: 0 5vw; }
 
 .tetrys-scoreboard {
-  width: 100%; }
+  width: calc(100% - 10vw); }
   .tetrys-scoreboard li {
     padding: 15px 20px;
     position: relative; }
