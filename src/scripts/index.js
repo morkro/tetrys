@@ -6,9 +6,9 @@ import { Router, PageControls, KeyboardControls, TetrisGame, ScoreObserver } fro
 
 const store = configureStore()
 const route = new Router({ defaultRoute: 'menu' })
-const pageControls = new PageControls({ selector: 'button, [role=button]', store })
-const keyboardControls = new KeyboardControls({ scope: window, store })
-const game = new TetrisGame(store)
+const pageControls = new PageControls(store)
+const keyboardControls = new KeyboardControls(store)
+const tetrisGame = new TetrisGame(store)
 const scoreObserver = new ScoreObserver(store)
 const fontSourceCodePro = new FontFaceObserver('Source Code Pro')
 
@@ -28,8 +28,8 @@ route.onRouteChange((previous, current) => {
 	document.body.classList.remove(`page-${previous}`)
 	document.body.classList.add(`page-${current}`)
 
-	if (previous === 'play') game.stop()
-	if (current === 'play') game.start()
+	if (previous === 'play') tetrisGame.stop()
+	if (current === 'play') tetrisGame.start()
 	if (current === 'score') scoreObserver.updateScoreBoard()
 })
 
@@ -38,4 +38,4 @@ installServiceWorker()
 pageControls.addEvents()
 keyboardControls.addEvents()
 scoreObserver.init()
-game.init()
+tetrisGame.init()

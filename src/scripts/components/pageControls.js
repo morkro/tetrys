@@ -11,8 +11,8 @@ import {
  * @class PageControls
  */
 export default class PageControls {
-	constructor ({ selector, store } = {}) {
-		this.$buttons = [...$$(selector)]
+	constructor (store) {
+		this.$buttons = [...$$('button, [role=button]')]
 		this.store = store
 	}
 

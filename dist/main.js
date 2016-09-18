@@ -1474,15 +1474,9 @@ var _utils = require('../utils');
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var KeyboardControls = function () {
-	function KeyboardControls() {
-		var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-		var scope = _ref.scope;
-		var store = _ref.store;
-
+	function KeyboardControls(store) {
 		_classCallCheck(this, KeyboardControls);
 
-		this.scope = scope;
 		this.store = store;
 	}
 
@@ -1511,8 +1505,8 @@ var KeyboardControls = function () {
 
 	}, {
 		key: 'onKeydown',
-		value: function onKeydown(_ref2) {
-			var keyCode = _ref2.keyCode;
+		value: function onKeydown(_ref) {
+			var keyCode = _ref.keyCode;
 
 			if (!(0, _store.isRunning)(this.store)) return;
 
@@ -1549,7 +1543,7 @@ var KeyboardControls = function () {
 	}, {
 		key: 'addEvents',
 		value: function addEvents() {
-			this.scope.addEventListener('keydown', this.onKeydown.bind(this));
+			window.addEventListener('keydown', this.onKeydown.bind(this));
 		}
 	}]);
 
@@ -1579,15 +1573,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class PageControls
  */
 var PageControls = function () {
-	function PageControls() {
-		var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-		var selector = _ref.selector;
-		var store = _ref.store;
-
+	function PageControls(store) {
 		_classCallCheck(this, PageControls);
 
-		this.$buttons = [].concat(_toConsumableArray((0, _dom.$$)(selector)));
+		this.$buttons = [].concat(_toConsumableArray((0, _dom.$$)('button, [role=button]')));
 		this.store = store;
 	}
 
@@ -1601,8 +1590,8 @@ var PageControls = function () {
 
 	_createClass(PageControls, [{
 		key: 'onClick',
-		value: function onClick(_ref2) {
-			var target = _ref2.target;
+		value: function onClick(_ref) {
+			var target = _ref.target;
 
 			switch (target.getAttribute('data-action')) {
 				case 'pauseGame':
@@ -1927,15 +1916,44 @@ var Canvas = function () {
 			this.context.strokeRect(this.blockWidth * x, this.blockHeight * y, this.blockWidth - 1, this.blockHeight - 1);
 		}
 	}, {
+		key: 'drawBackground',
+		value: function drawBackground(grid) {
+			for (var y = 0; y < grid.length; ++y) {
+				for (var x = 0; x < grid[y].length; ++x) {
+					if (grid[y][x] === 1) {
+						this.setBlockStyle({ fill: 'mediumseagreen' });
+					} else {
+						this.setBlockStyle({ fill: 'white' });
+					}
+					this.drawSimpleBlock(x, y);
+				}
+			}
+		}
+	}, {
+		key: 'drawTetromino',
+		value: function drawTetromino(block) {
+			for (var y = 0; y < block.shape.length; ++y) {
+				for (var x = 0; x < block.shape.length; ++x) {
+					if (block.shape[y][x]) {
+						this.setBlockStyle({ fill: 'cornflowerblue' });
+						this.drawSimpleBlock(block.column + x, block.row + y);
+					}
+				}
+			}
+		}
+	}, {
 		key: 'addEvents',
 		value: function addEvents() {
 			window.addEventListener('resize', (0, _throttle2.default)(this.setCanvasSize, 100).bind(this));
 		}
 	}, {
 		key: 'init',
-		value: function init() {
+		value: function init(_ref3) {
+			var grid = _ref3.grid;
+
 			this.addEvents();
 			this.setCanvasSize();
+			this.drawBackground(grid);
 		}
 	}]);
 
@@ -2000,33 +2018,6 @@ var TetrisGame = function () {
 			}
 		}
 	}, {
-		key: 'drawBackground',
-		value: function drawBackground() {
-			for (var y = 0, grid = (0, _store.getGrid)(this.store); y < grid.length; ++y) {
-				for (var x = 0; x < grid[y].length; ++x) {
-					if (grid[y][x] === 1) {
-						this.$canvas.setBlockStyle({ fill: 'mediumseagreen' });
-					} else {
-						this.$canvas.setBlockStyle({ fill: 'white' });
-					}
-					this.$canvas.drawSimpleBlock(x, y);
-				}
-			}
-		}
-	}, {
-		key: 'drawTetromino',
-		value: function drawTetromino() {
-			var block = (0, _store.getTetromino)(this.store);
-			for (var y = 0; y < block.shape.length; ++y) {
-				for (var x = 0; x < block.shape.length; ++x) {
-					if (block.shape[y][x]) {
-						this.$canvas.setBlockStyle({ fill: 'cornflowerblue' });
-						this.$canvas.drawSimpleBlock(block.column + x, block.row + y);
-					}
-				}
-			}
-		}
-	}, {
 		key: 'updateGame',
 		value: function updateGame() {
 			var _this = this;
@@ -2059,11 +2050,10 @@ var TetrisGame = function () {
 		key: 'loop',
 		value: function loop() {
 			this.animationFrame = requestAnimationFrame(this.loop.bind(this));
-
 			this.$canvas.clearBoard();
 			this.$canvas.setBlockStyle({ fill: 'white' });
-			this.drawBackground();
-			this.drawTetromino();
+			this.$canvas.drawBackground((0, _store.getGrid)(this.store));
+			this.$canvas.drawTetromino((0, _store.getTetromino)(this.store));
 		}
 	}, {
 		key: 'cancelLoop',
@@ -2090,8 +2080,7 @@ var TetrisGame = function () {
 	}, {
 		key: 'init',
 		value: function init() {
-			this.$canvas.init();
-			this.drawBackground();
+			this.$canvas.init({ grid: (0, _store.getGrid)(this.store) });
 			this.store.subscribe(this.toggleGameState.bind(this));
 		}
 	}]);
@@ -2245,9 +2234,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var store = (0, _store2.default)();
 var route = new _components.Router({ defaultRoute: 'menu' });
-var pageControls = new _components.PageControls({ selector: 'button, [role=button]', store: store });
-var keyboardControls = new _components.KeyboardControls({ scope: window, store: store });
-var game = new _components.TetrisGame(store);
+var pageControls = new _components.PageControls(store);
+var keyboardControls = new _components.KeyboardControls(store);
+var tetrisGame = new _components.TetrisGame(store);
 var scoreObserver = new _components.ScoreObserver(store);
 var fontSourceCodePro = new _fontfaceobserver2.default('Source Code Pro');
 
@@ -2269,8 +2258,8 @@ route.onRouteChange(function (previous, current) {
 	document.body.classList.remove('page-' + previous);
 	document.body.classList.add('page-' + current);
 
-	if (previous === 'play') game.stop();
-	if (current === 'play') game.start();
+	if (previous === 'play') tetrisGame.stop();
+	if (current === 'play') tetrisGame.start();
 	if (current === 'score') scoreObserver.updateScoreBoard();
 });
 
@@ -2279,7 +2268,7 @@ route.onRouteChange(function (previous, current) {
 pageControls.addEvents();
 keyboardControls.addEvents();
 scoreObserver.init();
-game.init();
+tetrisGame.init();
 
 },{"./components":29,"./store":54,"./utils":57,"fontfaceobserver":1,"lodash/throttle":13}],47:[function(require,module,exports){
 'use strict';

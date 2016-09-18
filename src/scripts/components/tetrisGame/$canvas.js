@@ -43,12 +43,38 @@ export default class Canvas {
 		)
 	}
 
+	drawBackground (grid) {
+		for (let y = 0; y < grid.length; ++y) {
+			for (let x = 0; x < grid[y].length; ++x) {
+				if (grid[y][x] === 1) {
+					this.setBlockStyle({ fill: 'mediumseagreen' })
+				}
+				else {
+					this.setBlockStyle({ fill: 'white' })
+				}
+				this.drawSimpleBlock(x, y)
+			}
+		}
+	}
+
+	drawTetromino (block) {
+		for (let y = 0; y < block.shape.length; ++y) {
+			for (let x = 0; x < block.shape.length; ++x) {
+				if (block.shape[y][x]) {
+					this.setBlockStyle({ fill: 'cornflowerblue' })
+					this.drawSimpleBlock(block.column + x, block.row + y)
+				}
+			}
+		}
+	}
+
 	addEvents () {
 		window.addEventListener('resize', throttle(this.setCanvasSize, 100).bind(this))
 	}
 
-	init () {
+	init ({ grid }) {
 		this.addEvents()
 		this.setCanvasSize()
+		this.drawBackground(grid)
 	}
 }

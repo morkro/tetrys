@@ -4,8 +4,7 @@ import { isRunning, getTetromino, getGrid } from '../store'
 import { validBoardBoundary, rotate } from '../utils'
 
 export default class KeyboardControls {
-	constructor ({ scope, store } = {}) {
-		this.scope = scope
+	constructor (store) {
 		this.store = store
 	}
 
@@ -57,6 +56,6 @@ export default class KeyboardControls {
 	 * @return {undefined}
 	 */
 	addEvents () {
-		this.scope.addEventListener('keydown', this.onKeydown.bind(this))
+		window.addEventListener('keydown', this.onKeydown.bind(this))
 	}
 }

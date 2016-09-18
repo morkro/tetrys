@@ -35,32 +35,6 @@ export default class TetrisGame {
 		}
 	}
 
-	drawBackground () {
-		for (let y = 0, grid = getGrid(this.store); y < grid.length; ++y) {
-			for (let x = 0; x < grid[y].length; ++x) {
-				if (grid[y][x] === 1) {
-					this.$canvas.setBlockStyle({ fill: 'mediumseagreen' })
-				}
-				else {
-					this.$canvas.setBlockStyle({ fill: 'white' })
-				}
-				this.$canvas.drawSimpleBlock(x, y)
-			}
-		}
-	}
-
-	drawTetromino () {
-		const block = getTetromino(this.store)
-		for (let y = 0; y < block.shape.length; ++y) {
-			for (let x = 0; x < block.shape.length; ++x) {
-				if (block.shape[y][x]) {
-					this.$canvas.setBlockStyle({ fill: 'cornflowerblue' })
-					this.$canvas.drawSimpleBlock(block.column + x, block.row + y)
-				}
-			}
-		}
-	}
-
 	updateGame () {
 		this.tetrominoPositionAnimation = setInterval(() => {
 			const tetromino = getTetromino(this.store)
@@ -88,11 +62,10 @@ export default class TetrisGame {
 
 	loop () {
 		this.animationFrame = requestAnimationFrame(this.loop.bind(this))
-
 		this.$canvas.clearBoard()
 		this.$canvas.setBlockStyle({ fill: 'white' })
-		this.drawBackground()
-		this.drawTetromino()
+		this.$canvas.drawBackground(getGrid(this.store))
+		this.$canvas.drawTetromino(getTetromino(this.store))
 	}
 
 	cancelLoop () {
@@ -115,8 +88,7 @@ export default class TetrisGame {
 	}
 
 	init () {
-		this.$canvas.init()
-		this.drawBackground()
+		this.$canvas.init({ grid: getGrid(this.store) })
 		this.store.subscribe(this.toggleGameState.bind(this))
 	}
 }
