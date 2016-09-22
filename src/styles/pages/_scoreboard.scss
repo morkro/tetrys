@@ -1,9 +1,15 @@
 .tetrys-scoreboard {
 	width: calc(100% - 10vw);
+	counter-reset: section;
+	list-style: none;
+	padding: 0;
 
 	li {
 		padding: 15px 20px;
 		position: relative;
+		background: white;
+		border: 3px solid black;
+		border-radius: 6px;
 
 		&:not(:last-child) {
 			margin-bottom: 15px;
@@ -14,16 +20,8 @@
 		}
 
 		&:before {
-			content: "";
-			position: absolute;
-			background: white;
-			border: 3px solid black;
-			border-radius: 6px;
-			width: calc(100% + 40px);
-			height: calc(100% - 3px);
-			left: -40px;
-			top: 0;
-			z-index: -1;
+			counter-increment: section;
+			content: counter(section);
 		}
 	}
 

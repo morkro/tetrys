@@ -568,25 +568,23 @@ button, [role=button] {
   padding: 0 5vw; }
 
 .tetrys-scoreboard {
-  width: calc(100% - 10vw); }
+  width: calc(100% - 10vw);
+  counter-reset: section;
+  list-style: none;
+  padding: 0; }
   .tetrys-scoreboard li {
     padding: 15px 20px;
-    position: relative; }
+    position: relative;
+    background: white;
+    border: 3px solid black;
+    border-radius: 6px; }
     .tetrys-scoreboard li:not(:last-child) {
       margin-bottom: 15px; }
     .tetrys-scoreboard li:first-child:before {
       background: #ffd54f; }
     .tetrys-scoreboard li:before {
-      content: "";
-      position: absolute;
-      background: white;
-      border: 3px solid black;
-      border-radius: 6px;
-      width: calc(100% + 40px);
-      height: calc(100% - 3px);
-      left: -40px;
-      top: 0;
-      z-index: -1; }
+      counter-increment: section;
+      content: counter(section); }
   .tetrys-scoreboard span {
     font-size: 125%;
     font-weight: 700; }

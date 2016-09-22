@@ -1719,8 +1719,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _utils = require('../../utils');
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var ScoreBoard = function () {
@@ -1728,19 +1726,35 @@ var ScoreBoard = function () {
 		_classCallCheck(this, ScoreBoard);
 
 		this.$board = (0, _utils.$)('.tetrys-scoreboard');
-		this.$items = [].concat(_toConsumableArray(this.$board.children));
 	}
 
 	_createClass(ScoreBoard, [{
+		key: 'emptyBoard',
+		value: function emptyBoard() {
+			this.$board.innerHTML = '';
+		}
+	}, {
+		key: 'createListItem',
+		value: function createListItem(txt) {
+			var $li = document.createElement('li');
+			var $span = document.createElement('span');
+			$span.appendChild(document.createTextNode(txt));
+			$li.appendChild($span);
+			return $li;
+		}
+	}, {
 		key: 'updateBoard',
 		value: function updateBoard() {
 			var _this = this;
 
 			var list = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 
-			list.forEach(function (score, index) {
-				_this.$items[index].children[0].innerText = score;
+			var fragment = document.createDocumentFragment();
+			list.forEach(function (score) {
+				return fragment.appendChild(_this.createListItem(score));
 			});
+			this.emptyBoard();
+			this.$board.appendChild(fragment);
 		}
 	}]);
 
