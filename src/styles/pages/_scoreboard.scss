@@ -5,14 +5,14 @@
 	padding: 0;
 
 	li {
-		padding: 15px 20px;
+		padding: 1vh 3vw;
 		position: relative;
 		background: white;
-		border: 3px solid black;
+		box-shadow: 0 3px 7px rgba(0, 0, 0, .2);
 		border-radius: 6px;
 
 		&:not(:last-child) {
-			margin-bottom: 15px;
+			margin-bottom: 2vh;
 		}
 
 		&:first-child:before {

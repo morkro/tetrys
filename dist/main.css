@@ -407,6 +407,9 @@ template {
   box-sizing: border-box;
   text-rendering: optimizeSpeed; }
 
+html {
+  overflow: hidden; }
+
 body {
   background: linear-gradient(#cbe1fe, #dcfcfc);
   width: 100vw;
@@ -444,7 +447,8 @@ p {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-pack: center;
-      justify-content: center; }
+      justify-content: center;
+  overflow: hidden; }
   .tetrys-view:last-of-type, .tetrys-view:target {
     transform: translateX(0); }
   .tetrys-view:target ~ .tetrys-view {
@@ -468,14 +472,15 @@ p {
   -ms-flex-align: center;
       align-items: center;
   width: 100%;
-  background: antiquewhite;
-  padding: 10px 10px; }
+  background: white;
+  box-shadow: 0px -7px 10px 10px rgba(0, 0, 0, 0.2);
+  padding: 1.5vw; }
   .tetrys-view header a {
     margin-right: 15px; }
   .tetrys-view header h1 {
     text-transform: uppercase;
     color: #000;
-    font-size: 350%;
+    font-size: 260%;
     text-shadow: 0px 3px 0px rgba(0, 0, 0, 0.25);
     text-align: center; }
 
@@ -501,17 +506,26 @@ button, [role=button] {
   background: white;
   border: none;
   border-radius: 6px;
-  padding: 18px 20px;
+  padding: 0;
   cursor: pointer;
-  box-shadow: 0px 3px 0px 0px rgba(0, 0, 0, 0.2);
   transform: translateY(0);
   outline-width: 0px;
   transition: transform 250ms cubic-bezier(0.175, 0.885, 0.32, 1.275), outline 150ms cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 250ms cubic-bezier(0.175, 0.885, 0.32, 1.275); }
   button:hover, button:active, button:focus, [role=button]:hover, [role=button]:active, [role=button]:focus {
     transform: translateY(-2px);
-    box-shadow: 0px 5px 0px 0px rgba(0, 0, 0, 0.2); }
+    box-shadow: 0px 7px 10px 0px rgba(0, 0, 0, 0.2); }
   button:focus, [role=button]:focus {
     outline: 2px solid rgba(255, 177, 0, 0.7); }
+  button.shadow, [role=button].shadow {
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.2);
+    padding: 2.5vh 5vw; }
+
+.back-button {
+  box-shadow: none;
+  padding: 0; }
+  .back-button, .back-button svg {
+    width: 8vw;
+    height: 8vw; }
 
 .tetrys-controls {
   display: -ms-flexbox;
@@ -519,10 +533,20 @@ button, [role=button] {
   -ms-flex-pack: center;
       justify-content: center;
   list-style: none;
-  padding: 0; }
+  padding: 0;
+  margin: 0; }
 
-.view-menu header a {
-  display: none; }
+.view-menu .view-inner {
+  -ms-flex-pack: justify;
+      justify-content: space-between; }
+
+.view-menu header {
+  background: transparent;
+  box-shadow: none;
+  -ms-flex-pack: center;
+      justify-content: center; }
+  .view-menu header a {
+    display: none; }
 
 .view-menu .tetrys-controls {
   -ms-flex-direction: column;
@@ -532,6 +556,8 @@ button, [role=button] {
       align-items: center; }
   .view-menu .tetrys-controls li {
     margin-bottom: 20px; }
+  .view-menu .tetrys-controls svg {
+    margin-right: 2.5vw; }
 
 .view-game header {
   -ms-flex-pack: justify;
@@ -554,13 +580,11 @@ button, [role=button] {
   -ms-flex-pack: center;
       justify-content: center;
   -ms-flex-align: center;
-      align-items: center; }
+      align-items: center;
+  margin-top: 3vh; }
 
 .game-current-score {
   background: white;
-  border-radius: 6px;
-  padding: 18px 20px;
-  box-shadow: 0px 3px 0px 0px rgba(0, 0, 0, 0.2);
   text-transform: uppercase;
   font-size: 150%; }
 
@@ -573,13 +597,13 @@ button, [role=button] {
   list-style: none;
   padding: 0; }
   .tetrys-scoreboard li {
-    padding: 15px 20px;
+    padding: 1vh 3vw;
     position: relative;
     background: white;
-    border: 3px solid black;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
     border-radius: 6px; }
     .tetrys-scoreboard li:not(:last-child) {
-      margin-bottom: 15px; }
+      margin-bottom: 2vh; }
     .tetrys-scoreboard li:first-child:before {
       background: #ffd54f; }
     .tetrys-scoreboard li:before {

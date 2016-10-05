@@ -7,6 +7,7 @@
 	transform: translateX(-110%);
 	display: flex;
 	justify-content: center;
+	overflow: hidden;
 
 	&:last-of-type,
 	&:target {
@@ -31,8 +32,9 @@
 	justify-content: flex-start;
 	align-items: center;
 	width: 100%;
-	background: antiquewhite;
-	padding: 10px 10px;
+	background: white;
+	box-shadow: 0px -7px 10px 10px rgba(0, 0, 0, .2);
+	padding: 1.5vw;
 
 	a {
 		margin-right: 15px;
@@ -41,7 +43,7 @@
 	h1 {
 		text-transform: uppercase;
 		color: #000;
-		font-size: 350%;
+		font-size: 260%;
 		text-shadow: 0px 3px 0px rgba(0, 0, 0, .25);
 		text-align: center;
 	}

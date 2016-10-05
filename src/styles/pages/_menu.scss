@@ -1,4 +1,12 @@
+.view-menu .view-inner {
+	justify-content: space-between;
+}
+
 .view-menu header {
+	background: transparent;
+	box-shadow: none;
+	justify-content: center;
+
 	a { display: none; }
 }
 
@@ -8,5 +16,9 @@
 
 	li {
 		margin-bottom: 20px;
+	}
+
+	svg {
+		margin-right: 2.5vw;
 	}
 }

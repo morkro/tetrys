@@ -3,6 +3,10 @@
 	text-rendering: optimizeSpeed;
 }
 
+html {
+	overflow: hidden;
+}
+
 body {
 	background: $app-background;
 	width: 100vw;
