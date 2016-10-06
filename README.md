@@ -1,4 +1,4 @@
-# Tetrys ☳
+# Tetrys ☳ [![Build Status](https://travis-ci.org/morkro/tetrys.svg?branch=master)](https://travis-ci.org/morkro/tetrys)
 Tetris as Progressive Web Application _(currently still in active development)_.
 
 ## News :fire:
