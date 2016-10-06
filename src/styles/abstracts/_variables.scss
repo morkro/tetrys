@@ -4,13 +4,13 @@ $source-code-pro: 'Source Code Pro', monospace;
 
 // Colors
 $white: #ffffff;
-$azure: #E0EFF1;
-$blue: #69D2E7;
-$green: #8A9B0F;
-$brown: #49281F;
-$yellow: #ffd54f;
+$black: #000000;
+$green: #45cb96;
+$blue: #474283;
 
-$app-background: linear-gradient(#cbe1fe, #dcfcfc);
+$app-background: $green;
+$normal-text: $white;
+$special-text: $blue;
 
 // Assets
 $base-url: '/assets/';

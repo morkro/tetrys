@@ -2,15 +2,17 @@
 	<div class="view-inner">
 		<header>
 		{% block header %}
-		{% include "partials/back-button.html" %}
+			{% include "partials/back-button.html" %}
+			{% if view_icon %}
+				<svg class="view-symbol"><use xlink:href="#{{ view_icon }}"></use></svg>
+			{% endif %}
 			{% if view_title %}
-			<h1>{{ view_title }}</h1>
+				<h1>{{ view_title }}</h1>
 			{% endif %}
 		{% endblock %}
 		</header>
 
 		{% block main %}{% endblock %}
-
 		{% block footer %}{% endblock %}
 	</div>
 </section>

@@ -1,6 +1,5 @@
 button, [role=button] {
 	display: inline-block;
-	font-weight: 700;
 	font-size: 200%;
 	text-transform: uppercase;
 	text-decoration: none;
@@ -36,9 +35,14 @@ button, [role=button] {
 .back-button {
 	box-shadow: none;
 	padding: 0;
+	background: transparent;
 
 	&, svg {
-		width: 8vw;
-		height: 8vw;
+		width: 10vw;
+		height: 10vw;
+	}
+
+	svg {
+		fill: $white;
 	}
 }

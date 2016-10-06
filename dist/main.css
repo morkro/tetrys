@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*! normalize.css v4.2.0 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Change the default font family in all browsers (opinionated).
@@ -411,7 +412,7 @@ html {
   overflow: hidden; }
 
 body {
-  background: linear-gradient(#cbe1fe, #dcfcfc);
+  background: #45cb96;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
@@ -426,16 +427,19 @@ main {
   position: relative; }
 
 body {
-  font-family: "Open Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif; }
+  font-family: "Open Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  color: #ffffff; }
   body.fonts-loaded {
     font-family: "Source Code Pro", monospace; }
 
 h1 {
-  margin: 0; }
+  margin: 0;
+  color: #474283; }
 
 p {
   font-size: 120%;
-  line-height: 160%; }
+  line-height: 160%;
+  color: #ffffff; }
 
 .tetrys-view {
   position: absolute;
@@ -472,17 +476,23 @@ p {
   -ms-flex-align: center;
       align-items: center;
   width: 100%;
-  background: white;
-  box-shadow: 0px -7px 10px 10px rgba(0, 0, 0, 0.2);
   padding: 1.5vw; }
   .tetrys-view header a {
-    margin-right: 15px; }
+    margin: 0 3vw; }
   .tetrys-view header h1 {
     text-transform: uppercase;
-    color: #000;
-    font-size: 260%;
-    text-shadow: 0px 3px 0px rgba(0, 0, 0, 0.25);
-    text-align: center; }
+    font-size: 13vw;
+    text-align: center;
+    line-height: 19vw; }
+
+.view-symbol {
+  position: absolute;
+  z-index: -1;
+  width: 30vw;
+  height: 30vw;
+  left: -5vw;
+  top: -5vw;
+  fill: rgba(0, 0, 0, 0.1); }
 
 .tetrys-view footer {
   width: 100vw;
@@ -498,7 +508,6 @@ p {
 
 button, [role=button] {
   display: inline-block;
-  font-weight: 700;
   font-size: 200%;
   text-transform: uppercase;
   text-decoration: none;
@@ -522,10 +531,13 @@ button, [role=button] {
 
 .back-button {
   box-shadow: none;
-  padding: 0; }
+  padding: 0;
+  background: transparent; }
   .back-button, .back-button svg {
-    width: 8vw;
-    height: 8vw; }
+    width: 10vw;
+    height: 10vw; }
+  .back-button svg {
+    fill: #ffffff; }
 
 .tetrys-controls {
   display: -ms-flexbox;
@@ -535,6 +547,10 @@ button, [role=button] {
   list-style: none;
   padding: 0;
   margin: 0; }
+  .tetrys-controls svg {
+    fill: #474283;
+    width: 1em;
+    height: 1em; }
 
 .view-menu .view-inner {
   -ms-flex-pack: justify;
@@ -547,6 +563,19 @@ button, [role=button] {
       justify-content: center; }
   .view-menu header a {
     display: none; }
+  .view-menu header h1 {
+    position: relative;
+    margin-top: 10vh;
+    font-size: 20vw;
+    letter-spacing: -4px; }
+    .view-menu header h1:before {
+      content: "☳";
+      position: absolute;
+      z-index: -1;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 40vw;
+      color: rgba(0, 0, 0, 0.1); }
 
 .view-menu .tetrys-controls {
   -ms-flex-direction: column;
@@ -556,8 +585,15 @@ button, [role=button] {
       align-items: center; }
   .view-menu .tetrys-controls li {
     margin-bottom: 20px; }
+  .view-menu .tetrys-controls a {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+        align-items: center; }
   .view-menu .tetrys-controls svg {
-    margin-right: 2.5vw; }
+    margin-right: 2.5vw;
+    width: 30px;
+    height: 30px; }
 
 .view-game header {
   -ms-flex-pack: justify;
@@ -605,7 +641,7 @@ button, [role=button] {
     .tetrys-scoreboard li:not(:last-child) {
       margin-bottom: 2vh; }
     .tetrys-scoreboard li:first-child:before {
-      background: #ffd54f; }
+      background: #474283; }
     .tetrys-scoreboard li:before {
       counter-increment: section;
       content: counter(section); }
