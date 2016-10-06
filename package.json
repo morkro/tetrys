@@ -37,8 +37,6 @@
     "package-json-versionify": "^1.0.2",
     "redux-devtools": "^3.3.1",
     "stats.js": "^0.16.0",
-    "tap-spec": "^4.1.1",
-    "tape": "^4.6.0",
     "uglify-js": "^2.6.4"
   },
   "dependencies": {
@@ -62,6 +60,8 @@
     "nunjucks": "^2.4.2",
     "postcss": "^5.1.0",
     "redux": "^3.5.2",
-    "rimraf": "^2.5.2"
+    "rimraf": "^2.5.2",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.6.0"
   }
 }
