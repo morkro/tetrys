@@ -24,6 +24,17 @@ function moveHumansTxt () {
 		.catch(debug)
 }
 
+/**
+ * Moves all images to dist directory.
+ * @return {Promise}
+ */
+function moveImages () {
+	debug('move all images')
+	return copy('./src/images', './dist/images', { clobber: true })
+		.catch(debug)
+}
+
 module.exports = () =>
 	moveManifestJson()
 		.then(() => moveHumansTxt())
+		.then(() => moveImages())
