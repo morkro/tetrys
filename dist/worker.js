@@ -1,10 +1,11 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var PACKAGE_VERSION = "1.0.0";
+var log = console.log.bind(console);
+var PACKAGE_VERSION = "0.1.0";
 
 var cacheKey = 'TETRYS_CACHE-' + PACKAGE_VERSION;
-var staticCacheItems = ['/', '/index.html', '/manifest.json', '/main.js', '/worker.js', '/main.css'];
+var staticCacheItems = ['/', '/humans.txt', '/index.html', '/manifest.json', '/main.js', '/worker.js', '/main.css', '/images/launcher-48.png', '/images/launcher-96.png', '/images/launcher-144.png', '/images/launcher-196.png', '/images/launcher-384.png'];
 
 /**
  * Adds static items to cache on installation.
@@ -27,7 +28,7 @@ self.addEventListener('activate', function (event) {
 			return key;
 		}));
 	}));
-	console.log('Activated', event);
+	log('%cserviceworker:activate', 'color:blue');
 });
 
 /**

@@ -9,6 +9,18 @@ export default class ScoreObserver {
 		this.$label = new ScoreLabel()
 	}
 
+	getFormattedList (list = []) {
+		return list.map(([score, date]) => [score, this.formatDate(date)])
+	}
+
+	formatDate (ms) {
+		const date = new Date(ms)
+		return [
+			`${date.getUTCDate()}.${date.getUTCMonth()}.${date.getUTCFullYear()}`,
+			`(${date.getUTCHours()}:${date.getUTCMinutes()}:${date.getUTCSeconds()})`
+		].join(' ')
+	}
+
 	updateScore () {
 		if (!isRunning(this.store)) {
 			return
@@ -18,7 +30,7 @@ export default class ScoreObserver {
 	}
 
 	updateScoreBoard () {
-		this.$board.updateBoard(getScoreList(this.store))
+		this.$board.updateBoard(this.getFormattedList(getScoreList(this.store)))
 	}
 
 	init () {

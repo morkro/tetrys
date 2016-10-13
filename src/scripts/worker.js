@@ -1,12 +1,19 @@
+const log = console.log.bind(console)
 const { PACKAGE_VERSION } = process.env
 const cacheKey = `TETRYS_CACHE-${PACKAGE_VERSION}`
 const staticCacheItems = [
 	'/',
+	'/humans.txt',
 	'/index.html',
 	'/manifest.json',
 	'/main.js',
 	'/worker.js',
-	'/main.css'
+	'/main.css',
+	'/images/launcher-48.png',
+	'/images/launcher-96.png',
+	'/images/launcher-144.png',
+	'/images/launcher-196.png',
+	'/images/launcher-384.png'
 ]
 
 /**
@@ -30,7 +37,7 @@ self.addEventListener('activate', (event) => {
 			return key
 		})))
 	)
-	console.log('Activated', event)
+	log('%cserviceworker:activate', 'color:blue')
 })
 
 /**

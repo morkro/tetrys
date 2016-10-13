@@ -22,7 +22,7 @@ export default function Score (state = initialState, action) {
 		})
 	case SCORE_ADD:
 		return Object.assign({}, state, {
-			all: updateScoreList(state.current, state.all)
+			all: updateScoreList([state.current, Date.now()], state.all)
 		})
 	default:
 		return state

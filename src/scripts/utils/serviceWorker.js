@@ -6,9 +6,15 @@ export default function installServiceWorker () {
 	navigator.serviceWorker
 		.register('/worker.js')
 		.then(registration => {
-			console.log('ServiceWorker registration successful with scope: ', registration.scope)
+			console.log(
+				'%cserviceworker:registration', 'color:green',
+				`successful with scope: ${registration.scope}`
+			)
 		})
 		.catch(error => {
-			console.error('ServiceWorker registration failed: ', error)
+			console.error(
+				'%cserviceworker:registration', 'color:red',
+				'failed: ', error
+			)
 		})
 }

@@ -1,5 +1,5 @@
 .tetrys-scoreboard {
-	width: calc(100% - 10vw);
+	width: calc(100% - 5vw);
 	counter-reset: section;
 	list-style: none;
 	padding: 0;
@@ -7,21 +7,31 @@
 	li {
 		padding: 1vh 3vw;
 		position: relative;
-		background: white;
-		box-shadow: 0 3px 7px rgba(0, 0, 0, .2);
-		border-radius: 6px;
+		border-bottom: 2px solid white;
+		color: white;
+		display: flex;
+		justify-content: space-between;
+
+		&:first-child {
+			background: black;
+			box-shadow: 0 4px 17px rgba(0,0,0,0.5);
+			border: none;
+
+			&:before {
+				font-size: 200%;
+			}
+		}
 
 		&:not(:last-child) {
 			margin-bottom: 2vh;
 		}
 
-		&:first-child:before {
-			background: $blue;
-		}
-
 		&:before {
 			counter-increment: section;
 			content: counter(section);
+			position: absolute;
+			top: 0;
+			left: 0;
 		}
 	}
 

@@ -1,11 +1,11 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-(function(){function l(a,b){document.addEventListener?a.addEventListener("scroll",b,!1):a.attachEvent("scroll",b)}function m(a){document.body?a():document.addEventListener?document.addEventListener("DOMContentLoaded",function c(){document.removeEventListener("DOMContentLoaded",c);a()}):document.attachEvent("onreadystatechange",function k(){if("interactive"==document.readyState||"complete"==document.readyState)document.detachEvent("onreadystatechange",k),a()})};function q(a){this.a=document.createElement("div");this.a.setAttribute("aria-hidden","true");this.a.appendChild(document.createTextNode(a));this.b=document.createElement("span");this.c=document.createElement("span");this.h=document.createElement("span");this.f=document.createElement("span");this.g=-1;this.b.style.cssText="max-width:none;display:inline-block;position:absolute;height:100%;width:100%;overflow:scroll;font-size:16px;";this.c.style.cssText="max-width:none;display:inline-block;position:absolute;height:100%;width:100%;overflow:scroll;font-size:16px;";
+(function(){function l(a,b){document.addEventListener?a.addEventListener("scroll",b,!1):a.attachEvent("scroll",b)}function m(a){document.body?a():document.addEventListener?document.addEventListener("DOMContentLoaded",function c(){document.removeEventListener("DOMContentLoaded",c);a()}):document.attachEvent("onreadystatechange",function k(){if("interactive"==document.readyState||"complete"==document.readyState)document.detachEvent("onreadystatechange",k),a()})};function r(a){this.a=document.createElement("div");this.a.setAttribute("aria-hidden","true");this.a.appendChild(document.createTextNode(a));this.b=document.createElement("span");this.c=document.createElement("span");this.h=document.createElement("span");this.f=document.createElement("span");this.g=-1;this.b.style.cssText="max-width:none;display:inline-block;position:absolute;height:100%;width:100%;overflow:scroll;font-size:16px;";this.c.style.cssText="max-width:none;display:inline-block;position:absolute;height:100%;width:100%;overflow:scroll;font-size:16px;";
 this.f.style.cssText="max-width:none;display:inline-block;position:absolute;height:100%;width:100%;overflow:scroll;font-size:16px;";this.h.style.cssText="display:inline-block;width:200%;height:200%;font-size:16px;max-width:none;";this.b.appendChild(this.h);this.c.appendChild(this.f);this.a.appendChild(this.b);this.a.appendChild(this.c)}
-function w(a,b){a.a.style.cssText="max-width:none;min-width:20px;min-height:20px;display:inline-block;overflow:hidden;position:absolute;width:auto;margin:0;padding:0;top:-999px;left:-999px;white-space:nowrap;font:"+b+";"}function x(a){var b=a.a.offsetWidth,c=b+100;a.f.style.width=c+"px";a.c.scrollLeft=c;a.b.scrollLeft=a.b.scrollWidth+100;return a.g!==b?(a.g=b,!0):!1}function z(a,b){function c(){var a=k;x(a)&&null!==a.a.parentNode&&b(a.g)}var k=a;l(a.b,c);l(a.c,c);x(a)};function A(a,b){var c=b||{};this.family=a;this.style=c.style||"normal";this.weight=c.weight||"normal";this.stretch=c.stretch||"normal"}var B=null,C=null,D=null;function H(){if(null===C){var a=document.createElement("div");try{a.style.font="condensed 100px sans-serif"}catch(b){}C=""!==a.style.font}return C}function I(a,b){return[a.style,a.weight,H()?a.stretch:"","100px",b].join(" ")}
-A.prototype.load=function(a,b){var c=this,k=a||"BESbswy",y=b||3E3,E=(new Date).getTime();return new Promise(function(a,b){null===D&&(D=!!document.fonts);if(D){var J=new Promise(function(a,b){function e(){(new Date).getTime()-E>=y?b():document.fonts.load(I(c,'"'+c.family+'"'),k).then(function(c){1<=c.length?a():setTimeout(e,25)},function(){b()})}e()}),K=new Promise(function(a,c){setTimeout(c,y)});Promise.race([K,J]).then(function(){a(c)},function(){b(c)})}else m(function(){function r(){var b;if(b=
--1!=f&&-1!=g||-1!=f&&-1!=h||-1!=g&&-1!=h)(b=f!=g&&f!=h&&g!=h)||(null===B&&(b=/AppleWebKit\/([0-9]+)(?:\.([0-9]+))/.exec(window.navigator.userAgent),B=!!b&&(536>parseInt(b[1],10)||536===parseInt(b[1],10)&&11>=parseInt(b[2],10))),b=B&&(f==t&&g==t&&h==t||f==u&&g==u&&h==u||f==v&&g==v&&h==v)),b=!b;b&&(null!==d.parentNode&&d.parentNode.removeChild(d),clearTimeout(G),a(c))}function F(){if((new Date).getTime()-E>=y)null!==d.parentNode&&d.parentNode.removeChild(d),b(c);else{var a=document.hidden;if(!0===a||
-void 0===a)f=e.a.offsetWidth,g=n.a.offsetWidth,h=p.a.offsetWidth,r();G=setTimeout(F,50)}}var e=new q(k),n=new q(k),p=new q(k),f=-1,g=-1,h=-1,t=-1,u=-1,v=-1,d=document.createElement("div"),G=0;d.dir="ltr";w(e,I(c,"sans-serif"));w(n,I(c,"serif"));w(p,I(c,"monospace"));d.appendChild(e.a);d.appendChild(n.a);d.appendChild(p.a);document.body.appendChild(d);t=e.a.offsetWidth;u=n.a.offsetWidth;v=p.a.offsetWidth;F();z(e,function(a){f=a;r()});w(e,I(c,'"'+c.family+'",sans-serif'));z(n,function(a){g=a;r()});
-w(n,I(c,'"'+c.family+'",serif'));z(p,function(a){h=a;r()});w(p,I(c,'"'+c.family+'",monospace'))})})};"undefined"!==typeof module?module.exports=A:(window.FontFaceObserver=A,window.FontFaceObserver.prototype.load=A.prototype.load);}());
+function x(a,b){a.a.style.cssText="max-width:none;min-width:20px;min-height:20px;display:inline-block;overflow:hidden;position:absolute;width:auto;margin:0;padding:0;top:-999px;left:-999px;white-space:nowrap;font:"+b+";"}function y(a){var b=a.a.offsetWidth,c=b+100;a.f.style.width=c+"px";a.c.scrollLeft=c;a.b.scrollLeft=a.b.scrollWidth+100;return a.g!==b?(a.g=b,!0):!1}function z(a,b){function c(){var a=k;y(a)&&null!==a.a.parentNode&&b(a.g)}var k=a;l(a.b,c);l(a.c,c);y(a)};function A(a,b){var c=b||{};this.family=a;this.style=c.style||"normal";this.weight=c.weight||"normal";this.stretch=c.stretch||"normal"}var B=null,D=null,E=null;function H(){if(null===D){var a=document.createElement("div");try{a.style.font="condensed 100px sans-serif"}catch(b){}D=""!==a.style.font}return D}function I(a,b){return[a.style,a.weight,H()?a.stretch:"","100px",b].join(" ")}
+A.prototype.load=function(a,b){var c=this,k=a||"BESbswy",q=0,C=b||3E3,F=(new Date).getTime();return new Promise(function(a,b){null===E&&(E=!!document.fonts);if(E){var J=new Promise(function(a,b){function e(){(new Date).getTime()-F>=C?b():document.fonts.load(I(c,'"'+c.family+'"'),k).then(function(c){1<=c.length?a():setTimeout(e,25)},function(){b()})}e()}),K=new Promise(function(a,c){q=setTimeout(c,C)});Promise.race([K,J]).then(function(){clearTimeout(q);a(c)},function(){b(c)})}else m(function(){function t(){var b;
+if(b=-1!=f&&-1!=g||-1!=f&&-1!=h||-1!=g&&-1!=h)(b=f!=g&&f!=h&&g!=h)||(null===B&&(b=/AppleWebKit\/([0-9]+)(?:\.([0-9]+))/.exec(window.navigator.userAgent),B=!!b&&(536>parseInt(b[1],10)||536===parseInt(b[1],10)&&11>=parseInt(b[2],10))),b=B&&(f==u&&g==u&&h==u||f==v&&g==v&&h==v||f==w&&g==w&&h==w)),b=!b;b&&(null!==d.parentNode&&d.parentNode.removeChild(d),clearTimeout(q),a(c))}function G(){if((new Date).getTime()-F>=C)null!==d.parentNode&&d.parentNode.removeChild(d),b(c);else{var a=document.hidden;if(!0===
+a||void 0===a)f=e.a.offsetWidth,g=n.a.offsetWidth,h=p.a.offsetWidth,t();q=setTimeout(G,50)}}var e=new r(k),n=new r(k),p=new r(k),f=-1,g=-1,h=-1,u=-1,v=-1,w=-1,d=document.createElement("div");d.dir="ltr";x(e,I(c,"sans-serif"));x(n,I(c,"serif"));x(p,I(c,"monospace"));d.appendChild(e.a);d.appendChild(n.a);d.appendChild(p.a);document.body.appendChild(d);u=e.a.offsetWidth;v=n.a.offsetWidth;w=p.a.offsetWidth;G();z(e,function(a){f=a;t()});x(e,I(c,'"'+c.family+'",sans-serif'));z(n,function(a){g=a;t()});x(n,
+I(c,'"'+c.family+'",serif'));z(p,function(a){h=a;t()});x(p,I(c,'"'+c.family+'",monospace'))})})};"undefined"!==typeof module?module.exports=A:(window.FontFaceObserver=A,window.FontFaceObserver.prototype.load=A.prototype.load);}());
 
 },{}],2:[function(require,module,exports){
 (function (global){
@@ -56,7 +56,7 @@ var isObject = require('./isObject'),
     now = require('./now'),
     toNumber = require('./toNumber');
 
-/** Used as the `TypeError` message for "Functions" methods. */
+/** Error message constants. */
 var FUNC_ERROR_TEXT = 'Expected a function';
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
@@ -444,7 +444,7 @@ module.exports = now;
 var debounce = require('./debounce'),
     isObject = require('./isObject');
 
-/** Used as the `TypeError` message for "Functions" methods. */
+/** Error message constants. */
 var FUNC_ERROR_TEXT = 'Expected a function';
 
 /**
@@ -1501,7 +1501,7 @@ var KeyboardControls = function () {
 	_createClass(KeyboardControls, [{
 		key: 'getBoundaries',
 		value: function getBoundaries() {
-			var config = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+			var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
 			var active = (0, _store.getTetromino)(this.store);
 			var grid = (0, _store.getGrid)(this.store);
@@ -1660,7 +1660,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var Router = function () {
 	function Router() {
-		var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+		var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
 		var _ref$defaultRoute = _ref.defaultRoute;
 		var defaultRoute = _ref$defaultRoute === undefined ? 'index' : _ref$defaultRoute;
@@ -1702,7 +1702,7 @@ var Router = function () {
 	}, {
 		key: 'init',
 		value: function init() {
-			var cb = arguments.length <= 0 || arguments[0] === undefined ? function () {} : arguments[0];
+			var cb = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
 
 			this.addEvents();
 			cb(this.currentRoute);
@@ -1726,6 +1726,8 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _utils = require('../../utils');
@@ -1746,11 +1748,23 @@ var ScoreBoard = function () {
 		}
 	}, {
 		key: 'createListItem',
-		value: function createListItem(txt) {
+		value: function createListItem() {
+			var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+			var _ref2 = _slicedToArray(_ref, 2);
+
+			var score = _ref2[0];
+			var time = _ref2[1];
+
 			var $li = document.createElement('li');
-			var $span = document.createElement('span');
-			$span.appendChild(document.createTextNode(txt));
-			$li.appendChild($span);
+			var $score = document.createElement('span');
+			var $time = document.createElement('span');
+
+			$score.appendChild(document.createTextNode(score));
+			$time.appendChild(document.createTextNode(time));
+			$li.appendChild($score);
+			$li.appendChild($time);
+
 			return $li;
 		}
 	}, {
@@ -1758,7 +1772,7 @@ var ScoreBoard = function () {
 		value: function updateBoard() {
 			var _this = this;
 
-			var list = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+			var list = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
 			var fragment = document.createDocumentFragment();
 			list.forEach(function (score) {
@@ -1799,7 +1813,7 @@ var ScoreLabel = function () {
 	_createClass(ScoreLabel, [{
 		key: 'updateLabel',
 		value: function updateLabel() {
-			var score = arguments.length <= 0 || arguments[0] === undefined ? this.initScore : arguments[0];
+			var score = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.initScore;
 
 			this.$labelCount.innerText = score;
 		}
@@ -1816,6 +1830,8 @@ exports.default = ScoreLabel;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -1843,6 +1859,27 @@ var ScoreObserver = function () {
 	}
 
 	_createClass(ScoreObserver, [{
+		key: 'getFormattedList',
+		value: function getFormattedList() {
+			var _this = this;
+
+			var list = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+			return list.map(function (_ref) {
+				var _ref2 = _slicedToArray(_ref, 2);
+
+				var score = _ref2[0];
+				var date = _ref2[1];
+				return [score, _this.formatDate(date)];
+			});
+		}
+	}, {
+		key: 'formatDate',
+		value: function formatDate(ms) {
+			var date = new Date(ms);
+			return [date.getUTCDate() + '.' + date.getUTCMonth() + '.' + date.getUTCFullYear(), '(' + date.getUTCHours() + ':' + date.getUTCMinutes() + ':' + date.getUTCSeconds() + ')'].join(' ');
+		}
+	}, {
 		key: 'updateScore',
 		value: function updateScore() {
 			if (!(0, _store.isRunning)(this.store)) {
@@ -1854,7 +1891,7 @@ var ScoreObserver = function () {
 	}, {
 		key: 'updateScoreBoard',
 		value: function updateScoreBoard() {
-			this.$board.updateBoard((0, _store.getScoreList)(this.store));
+			this.$board.updateBoard(this.getFormattedList((0, _store.getScoreList)(this.store)));
 		}
 	}, {
 		key: 'init',
@@ -1889,7 +1926,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var Canvas = function () {
 	function Canvas() {
-		var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+		var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
 		var BOARD_COLUMNS = _ref.BOARD_COLUMNS;
 		var BOARD_ROWS = _ref.BOARD_ROWS;
@@ -1925,7 +1962,7 @@ var Canvas = function () {
 	}, {
 		key: 'setBlockStyle',
 		value: function setBlockStyle() {
-			var _ref2 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+			var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
 			var fill = _ref2.fill;
 			var _ref2$stroke = _ref2.stroke;
@@ -2310,7 +2347,7 @@ var _board2 = require('../utils/board');
 var initialState = (0, _board2.getEmptyGrid)();
 
 function Board() {
-	var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
+	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
 	var action = arguments[1];
 
 	switch (action.type) {
@@ -2339,7 +2376,7 @@ var initialState = {
 };
 
 function Game() {
-	var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
+	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
 	var action = arguments[1];
 
 	switch (action.type) {
@@ -2410,7 +2447,7 @@ var initialState = {
 };
 
 function Score() {
-	var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
+	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
 	var action = arguments[1];
 
 	switch (action.type) {
@@ -2424,7 +2461,7 @@ function Score() {
 			});
 		case _score.SCORE_ADD:
 			return Object.assign({}, state, {
-				all: (0, _utils.updateScoreList)(state.current, state.all)
+				all: (0, _utils.updateScoreList)([state.current, Date.now()], state.all)
 			});
 		default:
 			return state;
@@ -2449,7 +2486,7 @@ var initialState = {
 };
 
 function Tetromino() {
-	var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
+	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
 	var action = arguments[1];
 
 	switch (action.type) {
@@ -2499,7 +2536,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var _window = window;
 var devToolsExtension = _window.devToolsExtension;
 function configureStore() {
-	var persistedState = arguments.length <= 0 || arguments[0] === undefined ? (0, _utils.loadState)() : arguments[0];
+	var persistedState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : (0, _utils.loadState)();
 
 	return (0, _redux.createStore)(_reducers2.default, persistedState, devToolsExtension && devToolsExtension());
 }
@@ -2605,7 +2642,7 @@ function getEmptyGrid() {
  * @return {Boolean}
  */
 function validBoardBoundary() {
-	var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
 	var _ref$active = _ref.active;
 	var active = _ref$active === undefined ? [] : _ref$active;
@@ -2662,7 +2699,7 @@ function rotate(current) {
  * @return {Array}
  */
 function freezeBoard() {
-	var _ref2 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
 	var tetromino = _ref2.tetromino;
 	var board = _ref2.board;
@@ -2794,11 +2831,12 @@ exports.default = updateScoreList;
 var _score = require('../constants/score');
 
 function updateScoreList() {
-	var score = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
-	var list = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+	var score = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
+	var list = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
-	return list.concat(score).sort(function (x, y) {
-		return x - y;
+	list.push(score);
+	return list.sort(function (x, y) {
+		return x[0] - y[0];
 	}).reverse().slice(0, _score.SCORE_LIST_LENGTH);
 }
 
@@ -2815,9 +2853,9 @@ function installServiceWorker() {
 	}
 
 	navigator.serviceWorker.register('/worker.js').then(function (registration) {
-		console.log('ServiceWorker registration successful with scope: ', registration.scope);
+		console.log('%cserviceworker:registration', 'color:green', 'successful with scope: ' + registration.scope);
 	}).catch(function (error) {
-		console.error('ServiceWorker registration failed: ', error);
+		console.error('%cserviceworker:registration', 'color:red', 'failed: ', error);
 	});
 }
 

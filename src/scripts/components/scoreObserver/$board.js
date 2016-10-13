@@ -9,11 +9,16 @@ export default class ScoreBoard {
 		this.$board.innerHTML = ''
 	}
 
-	createListItem (txt) {
+	createListItem ([score, time] = []) {
 		const $li = document.createElement('li')
-		const $span = document.createElement('span')
-		$span.appendChild(document.createTextNode(txt))
-		$li.appendChild($span)
+		const $score = document.createElement('span')
+		const $time = document.createElement('span')
+
+		$score.appendChild(document.createTextNode(score))
+		$time.appendChild(document.createTextNode(time))
+		$li.appendChild($score)
+		$li.appendChild($time)
+
 		return $li
 	}
 

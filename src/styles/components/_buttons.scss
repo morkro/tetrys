@@ -42,6 +42,13 @@ button, [role=button] {
 		height: 10vw;
 	}
 
+	&:hover,
+	&:active,
+	&:focus {
+		transform: translateX(-10%);
+		box-shadow: none;
+	}
+
 	svg {
 		fill: $white;
 	}

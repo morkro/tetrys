@@ -536,6 +536,9 @@ button, [role=button] {
   .back-button, .back-button svg {
     width: 10vw;
     height: 10vw; }
+  .back-button:hover, .back-button:active, .back-button:focus {
+    transform: translateX(-10%);
+    box-shadow: none; }
   .back-button svg {
     fill: #ffffff; }
 
@@ -581,7 +584,6 @@ button, [role=button] {
   -ms-flex-direction: column;
       flex-direction: column;
   -ms-flex-align: center;
-      -ms-grid-row-align: center;
       align-items: center; }
   .view-menu .tetrys-controls li {
     margin-bottom: 20px; }
@@ -628,23 +630,33 @@ button, [role=button] {
   padding: 0 5vw; }
 
 .tetrys-scoreboard {
-  width: calc(100% - 10vw);
+  width: calc(100% - 5vw);
   counter-reset: section;
   list-style: none;
   padding: 0; }
   .tetrys-scoreboard li {
     padding: 1vh 3vw;
     position: relative;
-    background: white;
-    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
-    border-radius: 6px; }
+    border-bottom: 2px solid white;
+    color: white;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: justify;
+        justify-content: space-between; }
+    .tetrys-scoreboard li:first-child {
+      background: black;
+      box-shadow: 0 4px 17px rgba(0, 0, 0, 0.5);
+      border: none; }
+      .tetrys-scoreboard li:first-child:before {
+        font-size: 200%; }
     .tetrys-scoreboard li:not(:last-child) {
       margin-bottom: 2vh; }
-    .tetrys-scoreboard li:first-child:before {
-      background: #474283; }
     .tetrys-scoreboard li:before {
       counter-increment: section;
-      content: counter(section); }
+      content: counter(section);
+      position: absolute;
+      top: 0;
+      left: 0; }
   .tetrys-scoreboard span {
     font-size: 125%;
     font-weight: 700; }
