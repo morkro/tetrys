@@ -15,10 +15,7 @@ export default class ScoreObserver {
 
 	formatDate (ms) {
 		const date = new Date(ms)
-		return [
-			`${date.getUTCDate()}.${date.getUTCMonth()}.${date.getUTCFullYear()}`,
-			`(${date.getUTCHours()}:${date.getUTCMinutes()}:${date.getUTCSeconds()})`
-		].join(' ')
+		return `${date.getUTCDate()}.${date.getUTCMonth()}.${date.getUTCFullYear()}`
 	}
 
 	updateScore () {

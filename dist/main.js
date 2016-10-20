@@ -1877,7 +1877,7 @@ var ScoreObserver = function () {
 		key: 'formatDate',
 		value: function formatDate(ms) {
 			var date = new Date(ms);
-			return [date.getUTCDate() + '.' + date.getUTCMonth() + '.' + date.getUTCFullYear(), '(' + date.getUTCHours() + ':' + date.getUTCMinutes() + ':' + date.getUTCSeconds() + ')'].join(' ');
+			return date.getUTCDate() + '.' + date.getUTCMonth() + '.' + date.getUTCFullYear();
 		}
 	}, {
 		key: 'updateScore',
