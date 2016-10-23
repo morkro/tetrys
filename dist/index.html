@@ -37,6 +37,12 @@
 </head>
 <body>
 	<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+	<symbol  id="play-icon" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+    <path d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M10,16.5L16,12L10,7.5V16.5Z" />
+	</symbol>
+	<symbol id="stop-icon" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+    <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4M9,9V15H15V9" />
+	</symbol>
 	<symbol id="trophy" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
 		<g><rect fill="none" width="24" height="24"/></g>
 		<g>
@@ -89,6 +95,7 @@
 	</symbol>
 </svg>
 
+
 	<main role="main">
 		<section class="tetrys-view view-scoreboard" id="score">
 	<div class="view-inner">
@@ -139,13 +146,6 @@
 	<div class="game-current-score">
 		<strong>Score:</strong> <span>0</span>
 	</div>
-	<ul class="tetrys-controls">
-		<li>
-			<button data-action="toggleGame">
-				Pause
-			</button>
-		</li>
-	</ul>
 
 		</header>
 
@@ -158,17 +158,17 @@
 	<footer>
 		<ul class="tetrys-controls">
 			<li>
-				<button role="button" data-action="moveTetrominoLeft" class="shadow">
+				<button role="button" data-action="TETROMINO_MOVE_LEFT" class="shadow">
 					<svg><use xlink:href="#arrow-left"></use></svg>
 				</button>
 			</li>
 			<li>
-				<button role="button" data-action="rotateBlock" class="shadow">
+				<button role="button" data-action="TETROMINO_ROTATE" class="shadow">
 					<svg><use xlink:href="#arrow-turn"></use></svg>
 				</button>
 			</li>
 			<li>
-				<button role="button" data-action="moveTetrominoRight" class="shadow">
+				<button role="button" data-action="TETROMINO_MOVE_RIGHT" class="shadow">
 					<svg><use xlink:href="#arrow-right"></use></svg>
 				</button>
 			</li>

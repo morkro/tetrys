@@ -24,6 +24,10 @@
 			}
 		}
 
+		&:last-child {
+			padding-left: 6vw;
+		}
+
 		&:not(:last-child) {
 			margin-bottom: 2vh;
 		}

@@ -609,6 +609,9 @@ button, [role=button] {
   margin: 0; }
   .view-game footer .tetrys-controls li {
     margin: 0 10px; }
+  .view-game footer .tetrys-controls button {
+    padding: 3vw;
+    line-height: 1vw; }
 
 .tetrys-game {
   width: 70vw;
@@ -625,7 +628,8 @@ button, [role=button] {
 
 .game-current-score {
   text-transform: uppercase;
-  font-size: 150%; }
+  font-size: 150%;
+  margin-right: 3vw; }
 
 .about-content {
   padding: 0 5vw; }
@@ -652,6 +656,8 @@ button, [role=button] {
       .tetrys-scoreboard li:first-child:before {
         font-size: 185%;
         left: 1.5vw; }
+    .tetrys-scoreboard li:last-child {
+      padding-left: 6vw; }
     .tetrys-scoreboard li:not(:last-child) {
       margin-bottom: 2vh; }
     .tetrys-scoreboard li:before {

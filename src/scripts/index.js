@@ -23,7 +23,13 @@ store.subscribe(throttle(() => {
 }, 5000))
 
 // Init routing
-route.init(view => document.body.classList.add(`page-${view}`))
+route.init(view => {
+	document.body.classList.add(`page-${view}`)
+
+	if (view === 'play') tetrisGame.start()
+	if (view === 'score') scoreObserver.updateScoreBoard()
+})
+
 route.onRouteChange((previous, current) => {
 	document.body.classList.remove(`page-${previous}`)
 	document.body.classList.add(`page-${current}`)

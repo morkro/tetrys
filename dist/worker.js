@@ -2,7 +2,7 @@
 'use strict';
 
 var log = console.log.bind(console);
-var PACKAGE_VERSION = "0.2.0";
+var PACKAGE_VERSION = "0.3.2";
 
 var cacheKey = 'TETRYS_CACHE-' + PACKAGE_VERSION;
 var staticCacheItems = ['/', '/humans.txt', '/index.html', '/manifest.json', '/main.js', '/worker.js', '/main.css', '/images/launcher-48.png', '/images/launcher-96.png', '/images/launcher-144.png', '/images/launcher-196.png', '/images/launcher-384.png'];

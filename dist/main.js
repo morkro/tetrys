@@ -1579,9 +1579,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _dom = require('../utils/dom');
+var _utils = require('../utils');
+
+var _store = require('../store');
 
 var _actions = require('../actions');
+
+var _tetromino = require('../constants/tetromino');
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -1594,46 +1598,66 @@ var PageControls = function () {
 	function PageControls(store) {
 		_classCallCheck(this, PageControls);
 
-		this.$buttons = [].concat(_toConsumableArray((0, _dom.$$)('button, [role=button]')));
+		this.$buttons = [].concat(_toConsumableArray((0, _utils.$$)('button, [role=button]')));
 		this.store = store;
 	}
 
 	/**
-  * Event handler that depending on the `data-` attributes of an element either updates
-  * the view or store.dispatches actions.
-  * @param {HTMLElement} target
-  * @return {undefined}
+  * Wrapper function for `validBoardBoundary()`.
+  * @param {Object} config
+  * @return {Boolean}
   */
 
 
 	_createClass(PageControls, [{
+		key: 'getBoundaries',
+		value: function getBoundaries() {
+			var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+			var active = (0, _store.getTetromino)(this.store);
+			var grid = (0, _store.getGrid)(this.store);
+			return (0, _utils.validBoardBoundary)(Object.assign({ active: active, grid: grid }, config));
+		}
+
+		/**
+   * Event handler that depending on the `data-` attributes of an element either updates
+   * the view or store.dispatches actions.
+   * @param {HTMLElement} target
+   * @return {undefined}
+   */
+
+	}, {
 		key: 'onClick',
 		value: function onClick(_ref) {
 			var target = _ref.target;
 
-			var node = target.hasAttribute('data-action') ? target : target.closest('[data-action]');
-			if (node === null) return;
+			var $node = target.hasAttribute('data-action') ? target : target.closest('[data-action]');
+			if ($node === null) return;
 
-			switch (node.getAttribute('data-action')) {
-				case 'pauseGame':
-					this.store.dispatch((0, _actions.endGame)());
-					this.store.dispatch((0, _actions.addScore)());
-					this.store.dispatch((0, _actions.clearCurrentScore)());
+			switch ($node.getAttribute('data-action')) {
+				case _tetromino.TETROMINO_MOVE_LEFT:
+					if (this.getBoundaries({ offsetX: -1 })) {
+						this.store.dispatch((0, _actions.moveTetromino)('LEFT'));
+					}
 					break;
-				case 'moveTetrominoLeft':
-					this.store.dispatch((0, _actions.moveTetromino)('LEFT'));
+				case _tetromino.TETROMINO_MOVE_RIGHT:
+					if (this.getBoundaries({ offsetX: 1 })) {
+						this.store.dispatch((0, _actions.moveTetromino)('RIGHT'));
+					}
 					break;
-				case 'moveTetrominoRight':
-					this.store.dispatch((0, _actions.moveTetromino)('RIGHT'));
-					break;
-				case 'rotateBlock':
-					this.store.dispatch((0, _actions.rotateTetromino)());
-					break;
+				case _tetromino.TETROMINO_ROTATE:
+					{
+						var tetromino = (0, _utils.rotate)((0, _store.getTetromino)(this.store).shape);
+						if (this.getBoundaries({ tetromino: tetromino })) {
+							this.store.dispatch((0, _actions.rotateTetromino)(tetromino));
+						}
+						break;
+					}
 				default:
 					break;
 			}
 
-			node.blur();
+			$node.blur();
 		}
 
 		/**
@@ -1648,7 +1672,6 @@ var PageControls = function () {
 
 			this.$buttons.forEach(function ($btn) {
 				$btn.addEventListener('click', _this.onClick.bind(_this));
-				$btn.addEventListener('touchstart', _this.onClick.bind(_this));
 			});
 		}
 	}]);
@@ -1658,7 +1681,7 @@ var PageControls = function () {
 
 exports.default = PageControls;
 
-},{"../actions":26,"../utils/dom":56}],32:[function(require,module,exports){
+},{"../actions":26,"../constants/tetromino":44,"../store":54,"../utils":57}],32:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1955,6 +1978,11 @@ var Canvas = function () {
 		this.height = this.$wrapper.offsetHeight;
 		this.blockWidth = this.width / this.BOARD_COLUMNS;
 		this.blockHeight = this.height / this.BOARD_ROWS;
+
+		this.colors = {
+			background: '#5fe2ae',
+			highlight: '#474283'
+		};
 	}
 
 	_createClass(Canvas, [{
@@ -1994,9 +2022,9 @@ var Canvas = function () {
 			for (var y = 0; y < grid.length; ++y) {
 				for (var x = 0; x < grid[y].length; ++x) {
 					if (grid[y][x] === 1) {
-						this.setBlockStyle({ fill: 'mediumseagreen' });
+						this.setBlockStyle({ fill: this.colors.highlight });
 					} else {
-						this.setBlockStyle({ fill: 'white' });
+						this.setBlockStyle({ fill: this.colors.background });
 					}
 					this.drawSimpleBlock(x, y);
 				}
@@ -2008,7 +2036,7 @@ var Canvas = function () {
 			for (var y = 0; y < block.shape.length; ++y) {
 				for (var x = 0; x < block.shape.length; ++x) {
 					if (block.shape[y][x]) {
-						this.setBlockStyle({ fill: 'cornflowerblue' });
+						this.setBlockStyle({ fill: this.colors.highlight });
 						this.drawSimpleBlock(block.column + x, block.row + y);
 					}
 				}
@@ -2273,6 +2301,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 var TETROMINO_ADD = exports.TETROMINO_ADD = 'TETROMINO_ADD';
 var TETROMINO_MOVE = exports.TETROMINO_MOVE = 'TETROMINO_MOVE';
+var TETROMINO_MOVE_LEFT = exports.TETROMINO_MOVE_LEFT = 'TETROMINO_MOVE_LEFT';
+var TETROMINO_MOVE_RIGHT = exports.TETROMINO_MOVE_RIGHT = 'TETROMINO_MOVE_RIGHT';
 var TETROMINO_ROTATE = exports.TETROMINO_ROTATE = 'TETROMINO_ROTATE';
 
 },{}],45:[function(require,module,exports){
@@ -2325,8 +2355,12 @@ store.subscribe((0, _throttle2.default)(function () {
 
 // Init routing
 route.init(function (view) {
-	return document.body.classList.add('page-' + view);
+	document.body.classList.add('page-' + view);
+
+	if (view === 'play') tetrisGame.start();
+	if (view === 'score') scoreObserver.updateScoreBoard();
 });
+
 route.onRouteChange(function (previous, current) {
 	document.body.classList.remove('page-' + previous);
 	document.body.classList.add('page-' + current);

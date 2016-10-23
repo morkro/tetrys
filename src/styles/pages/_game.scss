@@ -8,6 +8,11 @@
 	li {
 		margin: 0 10px;
 	}
+
+	button {
+		padding: 3vw;
+		line-height: 1vw;
+	}
 }
 
 .tetrys-game {
@@ -24,4 +29,5 @@
 .game-current-score {
 	text-transform: uppercase;
 	font-size: 150%;
+	margin-right: 3vw;
 }

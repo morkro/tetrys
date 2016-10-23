@@ -14,6 +14,11 @@ export default class Canvas {
 		this.height = this.$wrapper.offsetHeight
 		this.blockWidth = this.width / this.BOARD_COLUMNS
 		this.blockHeight = this.height / this.BOARD_ROWS
+
+		this.colors = {
+			background: '#5fe2ae',
+			highlight: '#474283'
+		}
 	}
 
 	setCanvasSize () {
@@ -47,10 +52,10 @@ export default class Canvas {
 		for (let y = 0; y < grid.length; ++y) {
 			for (let x = 0; x < grid[y].length; ++x) {
 				if (grid[y][x] === 1) {
-					this.setBlockStyle({ fill: 'mediumseagreen' })
+					this.setBlockStyle({ fill: this.colors.highlight })
 				}
 				else {
-					this.setBlockStyle({ fill: 'white' })
+					this.setBlockStyle({ fill: this.colors.background })
 				}
 				this.drawSimpleBlock(x, y)
 			}
@@ -61,7 +66,7 @@ export default class Canvas {
 		for (let y = 0; y < block.shape.length; ++y) {
 			for (let x = 0; x < block.shape.length; ++x) {
 				if (block.shape[y][x]) {
-					this.setBlockStyle({ fill: 'cornflowerblue' })
+					this.setBlockStyle({ fill: this.colors.highlight })
 					this.drawSimpleBlock(block.column + x, block.row + y)
 				}
 			}

@@ -1,11 +1,12 @@
-import { $$ } from '../utils/dom'
+import { $$, validBoardBoundary, rotate } from '../utils'
+import { getTetromino, getGrid } from '../store'
+import { moveTetromino, rotateTetromino } from '../actions'
 import {
-	endGame,
-	moveTetromino,
-	rotateTetromino,
-	addScore,
-	clearCurrentScore
-} from '../actions'
+	TETROMINO_MOVE_LEFT,
+	TETROMINO_ROTATE,
+	TETROMINO_MOVE_RIGHT
+} from '../constants/tetromino'
+
 
 /**
  * @class PageControls
@@ -17,35 +18,49 @@ export default class PageControls {
 	}
 
 	/**
+	 * Wrapper function for `validBoardBoundary()`.
+	 * @param {Object} config
+	 * @return {Boolean}
+	 */
+	getBoundaries (config = {}) {
+		const active = getTetromino(this.store)
+		const grid = getGrid(this.store)
+		return validBoardBoundary(Object.assign({ active, grid }, config))
+	}
+
+	/**
 	 * Event handler that depending on the `data-` attributes of an element either updates
 	 * the view or store.dispatches actions.
 	 * @param {HTMLElement} target
 	 * @return {undefined}
 	 */
 	onClick ({ target }) {
-		const node = target.hasAttribute('data-action') ? target : target.closest('[data-action]')
-		if (node === null) return
+		const $node = target.hasAttribute('data-action') ? target : target.closest('[data-action]')
+		if ($node === null) return
 
-		switch (node.getAttribute('data-action')) {
-		case 'pauseGame':
-			this.store.dispatch(endGame())
-			this.store.dispatch(addScore())
-			this.store.dispatch(clearCurrentScore())
+		switch ($node.getAttribute('data-action')) {
+		case TETROMINO_MOVE_LEFT:
+			if (this.getBoundaries({ offsetX: -1 })) {
+				this.store.dispatch(moveTetromino('LEFT'))
+			}
 			break
-		case 'moveTetrominoLeft':
-			this.store.dispatch(moveTetromino('LEFT'))
+		case TETROMINO_MOVE_RIGHT:
+			if (this.getBoundaries({ offsetX: 1 })) {
+				this.store.dispatch(moveTetromino('RIGHT'))
+			}
 			break
-		case 'moveTetrominoRight':
-			this.store.dispatch(moveTetromino('RIGHT'))
+		case TETROMINO_ROTATE: {
+			const tetromino = rotate(getTetromino(this.store).shape)
+			if (this.getBoundaries({ tetromino })) {
+				this.store.dispatch(rotateTetromino(tetromino))
+			}
 			break
-		case 'rotateBlock':
-			this.store.dispatch(rotateTetromino())
-			break
+		}
 		default:
 			break
 		}
 
-		node.blur()
+		$node.blur()
 	}
 
 	/**
@@ -55,7 +70,6 @@ export default class PageControls {
 	addEvents () {
 		this.$buttons.forEach($btn => {
 			$btn.addEventListener('click', this.onClick.bind(this))
-			$btn.addEventListener('touchstart', this.onClick.bind(this))
 		})
 	}
 }
