@@ -5,7 +5,7 @@
 	padding: 0;
 
 	li {
-		padding: 1vh 3vw;
+		padding: 1vh 3vw 1vh 5vw;
 		position: relative;
 		border-bottom: 2px solid white;
 		color: white;
@@ -16,9 +16,11 @@
 			background: black;
 			box-shadow: 0 4px 17px rgba(0,0,0,0.5);
 			border: none;
+			padding-left: 8vw;
 
 			&:before {
-				font-size: 200%;
+				font-size: 185%;
+				left: 1.5vw;
 			}
 		}
 
@@ -38,5 +40,11 @@
 	span {
 		font-size: 125%;
 		font-weight: 700;
+	}
+
+	span:last-of-type {
+		font-weight: 100;
+		font-style: italic;
+		opacity: .5;
 	}
 }
