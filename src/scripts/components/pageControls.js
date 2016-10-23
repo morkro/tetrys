@@ -23,7 +23,10 @@ export default class PageControls {
 	 * @return {undefined}
 	 */
 	onClick ({ target }) {
-		switch (target.getAttribute('data-action')) {
+		const node = target.hasAttribute('data-action') ? target : target.closest('[data-action]')
+		if (node === null) return
+
+		switch (node.getAttribute('data-action')) {
 		case 'pauseGame':
 			this.store.dispatch(endGame())
 			this.store.dispatch(addScore())
@@ -42,7 +45,7 @@ export default class PageControls {
 			break
 		}
 
-		target.blur()
+		node.blur()
 	}
 
 	/**
@@ -50,8 +53,9 @@ export default class PageControls {
 	 * @return {undefined}
 	 */
 	addEvents () {
-		this.$buttons.forEach(
-			$btn => $btn.addEventListener('click', this.onClick.bind(this))
-		)
+		this.$buttons.forEach($btn => {
+			$btn.addEventListener('click', this.onClick.bind(this))
+			$btn.addEventListener('touchstart', this.onClick.bind(this))
+		})
 	}
 }

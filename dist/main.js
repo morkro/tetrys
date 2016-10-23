@@ -1215,7 +1215,7 @@ module.exports = require('./lib/index');
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+  value: true
 });
 
 var _ponyfill = require('./ponyfill');
@@ -1224,12 +1224,19 @@ var _ponyfill2 = _interopRequireDefault(_ponyfill);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var root = undefined; /* global window */
+var root; /* global window */
 
-if (typeof global !== 'undefined') {
-	root = global;
+
+if (typeof self !== 'undefined') {
+  root = self;
 } else if (typeof window !== 'undefined') {
-	root = window;
+  root = window;
+} else if (typeof global !== 'undefined') {
+  root = global;
+} else if (typeof module !== 'undefined') {
+  root = module;
+} else {
+  root = Function('return this')();
 }
 
 var result = (0, _ponyfill2['default'])(root);
@@ -1604,7 +1611,10 @@ var PageControls = function () {
 		value: function onClick(_ref) {
 			var target = _ref.target;
 
-			switch (target.getAttribute('data-action')) {
+			var node = target.hasAttribute('data-action') ? target : target.closest('[data-action]');
+			if (node === null) return;
+
+			switch (node.getAttribute('data-action')) {
 				case 'pauseGame':
 					this.store.dispatch((0, _actions.endGame)());
 					this.store.dispatch((0, _actions.addScore)());
@@ -1623,7 +1633,7 @@ var PageControls = function () {
 					break;
 			}
 
-			target.blur();
+			node.blur();
 		}
 
 		/**
@@ -1637,7 +1647,8 @@ var PageControls = function () {
 			var _this = this;
 
 			this.$buttons.forEach(function ($btn) {
-				return $btn.addEventListener('click', _this.onClick.bind(_this));
+				$btn.addEventListener('click', _this.onClick.bind(_this));
+				$btn.addEventListener('touchstart', _this.onClick.bind(_this));
 			});
 		}
 	}]);

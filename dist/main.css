@@ -441,6 +441,10 @@ p {
   line-height: 160%;
   color: #ffffff; }
 
+a {
+  color: #474283;
+  text-decoration: none; }
+
 .tetrys-view {
   position: absolute;
   top: 0;
@@ -611,8 +615,6 @@ button, [role=button] {
   max-width: 363px;
   height: 125vw;
   max-height: 660px;
-  outline: 3px solid black;
-  border-radius: 6px;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-pack: center;
@@ -622,7 +624,6 @@ button, [role=button] {
   margin-top: 3vh; }
 
 .game-current-score {
-  background: white;
   text-transform: uppercase;
   font-size: 150%; }
 
@@ -635,7 +636,7 @@ button, [role=button] {
   list-style: none;
   padding: 0; }
   .tetrys-scoreboard li {
-    padding: 1vh 3vw;
+    padding: 1vh 3vw 1vh 5vw;
     position: relative;
     border-bottom: 2px solid white;
     color: white;
@@ -646,9 +647,11 @@ button, [role=button] {
     .tetrys-scoreboard li:first-child {
       background: black;
       box-shadow: 0 4px 17px rgba(0, 0, 0, 0.5);
-      border: none; }
+      border: none;
+      padding-left: 8vw; }
       .tetrys-scoreboard li:first-child:before {
-        font-size: 200%; }
+        font-size: 185%;
+        left: 1.5vw; }
     .tetrys-scoreboard li:not(:last-child) {
       margin-bottom: 2vh; }
     .tetrys-scoreboard li:before {
@@ -660,3 +663,7 @@ button, [role=button] {
   .tetrys-scoreboard span {
     font-size: 125%;
     font-weight: 700; }
+  .tetrys-scoreboard span:last-of-type {
+    font-weight: 100;
+    font-style: italic;
+    opacity: .5; }
