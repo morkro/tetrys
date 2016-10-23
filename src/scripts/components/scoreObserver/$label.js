@@ -1,5 +1,8 @@
 import { $ } from '../../utils'
 
+/**
+ * @class ScoreLabel
+ */
 export default class ScoreLabel {
 	constructor () {
 		this.$label = $('.game-current-score')

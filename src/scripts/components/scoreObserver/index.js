@@ -2,6 +2,9 @@ import { isRunning, getScoreList, getCurrentScore } from '../../store'
 import ScoreBoard from './$board'
 import ScoreLabel from './$label'
 
+/**
+ * @class ScoreObserver
+ */
 export default class ScoreObserver {
 	constructor (store) {
 		this.store = store

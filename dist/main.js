@@ -1491,6 +1491,9 @@ var _utils = require('../utils');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/**
+ * @class KeyboardControls
+ */
 var KeyboardControls = function () {
 	function KeyboardControls(store) {
 		_classCallCheck(this, KeyboardControls);
@@ -1692,6 +1695,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/**
+ * @class Router
+ */
 var Router = function () {
 	function Router() {
 		var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -1768,6 +1774,9 @@ var _utils = require('../../utils');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/**
+ * @class ScoreBoard
+ */
 var ScoreBoard = function () {
 	function ScoreBoard() {
 		_classCallCheck(this, ScoreBoard);
@@ -1835,6 +1844,9 @@ var _utils = require('../../utils');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/**
+ * @class ScoreLabel
+ */
 var ScoreLabel = function () {
 	function ScoreLabel() {
 		_classCallCheck(this, ScoreLabel);
@@ -1883,6 +1895,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/**
+ * @class ScoreObserver
+ */
 var ScoreObserver = function () {
 	function ScoreObserver(store) {
 		_classCallCheck(this, ScoreObserver);
@@ -1958,6 +1973,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/**
+ * @class Canvas
+ */
 var Canvas = function () {
 	function Canvas() {
 		var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -2092,6 +2110,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/**
+ * @class TetrisGame
+ */
 var TetrisGame = function () {
 	function TetrisGame(store) {
 		_classCallCheck(this, TetrisGame);
@@ -2208,6 +2229,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * Returns a new tetromino object.
+ * @class Tetromino
  * @return {Object}
  */
 var Tetromino = function Tetromino() {

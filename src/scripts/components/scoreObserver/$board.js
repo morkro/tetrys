@@ -1,5 +1,8 @@
 import { $ } from '../../utils'
 
+/**
+ * @class ScoreBoard
+ */
 export default class ScoreBoard {
 	constructor () {
 		this.$board = $('.tetrys-scoreboard')

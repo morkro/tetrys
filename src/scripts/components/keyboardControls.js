@@ -3,6 +3,9 @@ import { LEFT_ARROW, RIGHT_ARROW, UP_ARROW, SPACE_BAR } from '../constants/keyCo
 import { isRunning, getTetromino, getGrid } from '../store'
 import { validBoardBoundary, rotate } from '../utils'
 
+/**
+ * @class KeyboardControls
+ */
 export default class KeyboardControls {
 	constructor (store) {
 		this.store = store

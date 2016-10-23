@@ -1,6 +1,9 @@
 import throttle from 'lodash/throttle'
 import { $ } from '../../utils'
 
+/**
+ * @class Canvas
+ */
 export default class Canvas {
 	constructor ({ BOARD_COLUMNS, BOARD_ROWS } = {}) {
 		this.$canvas = $('#game')

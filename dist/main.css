@@ -670,6 +670,7 @@ button, [role=button] {
     font-size: 125%;
     font-weight: 700; }
   .tetrys-scoreboard span:last-of-type {
+    font-size: 100%;
     font-weight: 100;
     font-style: italic;
     opacity: .5; }

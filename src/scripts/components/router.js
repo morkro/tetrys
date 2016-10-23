@@ -1,3 +1,6 @@
+/**
+ * @class Router
+ */
 export default class Router {
 	constructor ({ defaultRoute = 'index' } = {}) {
 		this.defaultRoute = defaultRoute

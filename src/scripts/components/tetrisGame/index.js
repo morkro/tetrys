@@ -10,6 +10,9 @@ import {
 	updateCurrentScore, addScore, clearCurrentScore
 } from '../../actions'
 
+/**
+ * @class TetrisGame
+ */
 export default class TetrisGame {
 	constructor (store) {
 		this.store = store

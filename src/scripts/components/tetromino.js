@@ -2,6 +2,7 @@ import SHAPES from '../constants/shapes'
 
 /**
  * Returns a new tetromino object.
+ * @class Tetromino
  * @return {Object}
  */
 export default class Tetromino {
